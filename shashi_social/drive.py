@@ -126,6 +126,17 @@ class Review:
         self._run("moveto", self._path(src_folder, name),
                   self._path(dst_folder, name))
 
+    def probe(self) -> None:
+        """Fail loudly if the remote or the review folder is not usable.
+
+        ``ensure_folders`` and ``list_files`` both swallow errors on purpose -
+        mkdir on an existing folder is not news, and an empty folder and an
+        unreachable one both list as nothing. That makes them useless as a
+        health check, so this asks the one question that has a real answer:
+        can we read the review folder at all?
+        """
+        self._run("lsf", f"{self.remote}:", "--max-depth", "1")
+
     def check(self) -> dict[str, Any]:
         """Is the remote reachable and what is waiting in each folder?"""
         result: dict[str, Any] = {
@@ -134,6 +145,7 @@ class Review:
             "rclone": self.exe,
         }
         try:
+            self.probe()
             self.ensure_folders()
             result["folders"] = {
                 folder: self.list_files(folder) for folder in FOLDERS

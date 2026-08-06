@@ -122,6 +122,7 @@ def cmd_review(args: argparse.Namespace) -> int:
     """Render the day's creatives and park them in Drive for approval."""
     day = args.date or pipeline.today()
     review = drive.Review()
+    review.probe()          # an unreachable remote lists as "empty" - catch it here
     review.ensure_folders()
 
     try:
@@ -178,6 +179,7 @@ def cmd_publish_approved(args: argparse.Namespace) -> int:
     """Post everything sitting in Drive 'Approved', then move it to 'Posted'."""
     platforms = tuple(p.strip() for p in args.platforms.split(",") if p.strip())
     review = drive.Review()
+    review.probe()          # an unreachable remote lists as "empty" - catch it here
     review.ensure_folders()
 
     queue = [(name, drive.APPROVED) for name in review.list_files(drive.APPROVED)]
