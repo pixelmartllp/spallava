@@ -4,13 +4,24 @@ name: Shashi - Publish approved
 # 'Approved' subfolder to the Facebook Page + Instagram, then moves it to
 # 'Posted' so it can never go out twice.
 #
-# Tick "include pending" to also sweep up anything still awaiting approval -
-# that is the cutoff behaviour, and it is what a scheduled version of this
-# would run last thing each morning.
+# Step 2 of 2, the partner of generate-review.yml.
 #
-# MANUAL ONLY, and it is the partner of generate-review.yml - see the note
-# there. The everyday job is daily.yml.
+# 10:00 IST posts what you approved, so approving early gets it out early.
+# 11:00 IST is the CUTOFF: it posts Approved *plus* anything still sitting in
+# Pending. So approving is optional and deleting is how you say no - delete a
+# creative from Pending before 11:00 and it never goes out.
+#
+# 11:30 IST repeats the cutoff. Anything that posted has already been moved to
+# Posted, so that run only ever sees what failed - and the Graph API returns a
+# transient "code 1: please reduce the amount of data" often enough to lose a
+# post most days.
+#
+# Times are UTC; India is UTC+5:30.
 on:
+  schedule:
+    - cron: '30 4 * * *'    # 10:00 IST - post what is already Approved
+    - cron: '30 5 * * *'    # 11:00 IST - CUTOFF: Approved + whatever is left in Pending
+    - cron: '0 6 * * *'     # 11:30 IST - retry pass, see below
   workflow_dispatch:
     inputs:
       include_pending:
@@ -62,7 +73,8 @@ jobs:
           META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
           META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
           META_API_VERSION: v25.0
-          CUTOFF: ${{ inputs.include_pending }}
+          # the 10:00 run posts Approved only; the two later ones sweep Pending too
+          CUTOFF: ${{ github.event.schedule == '30 5 * * *' || github.event.schedule == '0 6 * * *' || inputs.include_pending }}
         run: |
           if ($env:CUTOFF -eq 'true') {
             python daily_run.py publish-approved --confirm --include-pending

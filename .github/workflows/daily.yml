@@ -1,23 +1,17 @@
 name: Shashi Daily - Generate and post
 
-# The everyday job: render the day's creatives and post them straight to the
-# Facebook Page + Instagram. No review step.
+# MANUAL ONLY. Renders the day's creatives and posts them straight to the
+# Facebook Page + Instagram, skipping the review folder entirely.
 #
-# Two runs. The first generates and posts. The second posts nothing new - it
-# only retries whatever failed, because the Graph API returns a transient
-# "code 1: please reduce the amount of data" often enough to lose a post most
-# days. The per-image guard in state.json means the retry can never repost
-# something that already went out.
+# The everyday job is generate-review.yml + publish-approved.yml. This one is
+# the escape hatch: use it to push a day out immediately, or as the fallback if
+# Drive access ever breaks. Giving it a `schedule:` while those two are also
+# scheduled would post the day twice.
 #
 # Windows runner on purpose: the brand fonts (constan.ttf / segoeui.ttf) ship
 # with Windows and brand.py falls back to them. On Ubuntu the creatives would
 # render in a different typeface.
-#
-# Times are UTC; India is UTC+5:30.
 on:
-  schedule:
-    - cron: '30 5 * * *'    # 11:00 IST - generate + post
-    - cron: '30 6 * * *'    # 12:00 IST - retry anything that failed
   workflow_dispatch:
     inputs:
       count:
@@ -26,6 +20,11 @@ on:
         default: '5'
       dry_run:
         description: 'Generate only - download the artifact, post nothing'
+        type: boolean
+        required: false
+        default: false
+      retry_only:
+        description: 'Post nothing new - only retry what today already failed'
         type: boolean
         required: false
         default: false
@@ -60,13 +59,13 @@ jobs:
           META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
           META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
           META_API_VERSION: v25.0
-          IS_RETRY: ${{ github.event.schedule == '30 6 * * *' }}
         run: |
           $count = '${{ inputs.count }}'
           if ([string]::IsNullOrWhiteSpace($count)) { $count = '5' }
 
-          if ($env:IS_RETRY -eq 'true') {
-            # Second slot: only pick up what the first slot failed to post.
+          if ('${{ inputs.retry_only }}' -eq 'true') {
+            # Generates nothing; the per-image guard means only the creatives
+            # that failed earlier today are actually attempted.
             python daily_run.py publish --confirm --keep-going
           } elseif ('${{ inputs.dry_run }}' -eq 'true') {
             python daily_run.py generate --count $count
