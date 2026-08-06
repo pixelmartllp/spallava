@@ -1,0 +1,101 @@
+name: Shashi Daily - Generate and post
+
+# The everyday job: render the day's creatives and post them straight to the
+# Facebook Page + Instagram. No review step.
+#
+# Two runs. The first generates and posts. The second posts nothing new - it
+# only retries whatever failed, because the Graph API returns a transient
+# "code 1: please reduce the amount of data" often enough to lose a post most
+# days. The per-image guard in state.json means the retry can never repost
+# something that already went out.
+#
+# Windows runner on purpose: the brand fonts (constan.ttf / segoeui.ttf) ship
+# with Windows and brand.py falls back to them. On Ubuntu the creatives would
+# render in a different typeface.
+#
+# Times are UTC; India is UTC+5:30.
+on:
+  schedule:
+    - cron: '30 5 * * *'    # 11:00 IST - generate + post
+    - cron: '30 6 * * *'    # 12:00 IST - retry anything that failed
+  workflow_dispatch:
+    inputs:
+      count:
+        description: 'How many creatives to make'
+        required: false
+        default: '5'
+      dry_run:
+        description: 'Generate only - download the artifact, post nothing'
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write            # to commit state/state.json back
+
+concurrency:
+  group: shashi-daily
+  cancel-in-progress: false
+
+jobs:
+  daily:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate and post
+        shell: pwsh
+        env:
+          # config.json is gitignored, so on the runner these secrets are the
+          # only source of credentials.
+          META_PAGE_ID: ${{ secrets.META_PAGE_ID }}
+          META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
+          META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+          META_API_VERSION: v25.0
+          IS_RETRY: ${{ github.event.schedule == '30 6 * * *' }}
+        run: |
+          $count = '${{ inputs.count }}'
+          if ([string]::IsNullOrWhiteSpace($count)) { $count = '5' }
+
+          if ($env:IS_RETRY -eq 'true') {
+            # Second slot: only pick up what the first slot failed to post.
+            python daily_run.py publish --confirm --keep-going
+          } elseif ('${{ inputs.dry_run }}' -eq 'true') {
+            python daily_run.py generate --count $count
+          } else {
+            # --skip-if-posted makes a re-run of the same day a no-op.
+            python daily_run.py auto --count $count `
+              --platforms facebook,instagram --confirm --keep-going --skip-if-posted
+          }
+
+      - name: Upload the day's creatives
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: creatives-${{ github.run_number }}
+          path: output/
+          retention-days: 14
+          if-no-files-found: ignore
+
+      - name: Save publish state back to the repo
+        if: always()
+        shell: pwsh
+        run: |
+          git config user.name  "shashi-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add state/state.json
+          if ([string]::IsNullOrEmpty((git status --porcelain state/state.json))) {
+            Write-Host "No state change."
+          } else {
+            git commit -m "Update publish state [skip ci]"
+            git pull --rebase --autostash
+            git push
+          }

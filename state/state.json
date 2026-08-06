@@ -477,6 +477,143 @@
       "ok": true,
       "media_id": "18375239074224426",
       "recorded_at": "2026-08-06T05:32:02+00:00"
+    },
+    {
+      "platform": "facebook",
+      "date": "2026-08-05",
+      "index": 2,
+      "image_path": "D:\\Shi\\output\\2026-08-05\\02-q039.jpg",
+      "content_id": "q039",
+      "ok": true,
+      "post_id": "1102415836299269_122113037895378470",
+      "photo_id": "122113037865378470",
+      "recorded_at": "2026-08-06T06:06:01+00:00"
+    },
+    {
+      "platform": "facebook",
+      "date": "2026-08-05",
+      "index": 3,
+      "image_path": "D:\\Shi\\output\\2026-08-05\\03-q023.jpg",
+      "content_id": "q023",
+      "ok": false,
+      "error": "GraphError (code 1): An unknown error occurred",
+      "recorded_at": "2026-08-06T06:06:35+00:00"
+    },
+    {
+      "platform": "instagram",
+      "date": "2026-08-05",
+      "index": 3,
+      "image_path": "D:\\Shi\\output\\2026-08-05\\03-q023.jpg",
+      "content_id": "q023",
+      "ok": true,
+      "media_id": "18343664248216636",
+      "recorded_at": "2026-08-06T06:06:50+00:00"
+    },
+    {
+      "platform": "facebook",
+      "date": "2026-08-05",
+      "index": 4,
+      "image_path": "D:\\Shi\\output\\2026-08-05\\04-q030.jpg",
+      "content_id": "q030",
+      "ok": true,
+      "post_id": "1102415836299269_122113038147378470",
+      "photo_id": "122113038123378470",
+      "recorded_at": "2026-08-06T06:06:55+00:00"
+    },
+    {
+      "platform": "instagram",
+      "date": "2026-08-05",
+      "index": 4,
+      "image_path": "D:\\Shi\\output\\2026-08-05\\04-q030.jpg",
+      "content_id": "q030",
+      "ok": true,
+      "media_id": "18088592309157756",
+      "recorded_at": "2026-08-06T06:07:14+00:00"
+    },
+    {
+      "platform": "facebook",
+      "date": "2026-08-05",
+      "index": 5,
+      "image_path": "D:\\Shi\\output\\2026-08-05\\05-q015.jpg",
+      "content_id": "q015",
+      "ok": true,
+      "post_id": "1102415836299269_122113038381378470",
+      "photo_id": "122113038351378470",
+      "recorded_at": "2026-08-06T06:07:19+00:00"
+    },
+    {
+      "platform": "instagram",
+      "date": "2026-08-05",
+      "index": 5,
+      "image_path": "D:\\Shi\\output\\2026-08-05\\05-q015.jpg",
+      "content_id": "q015",
+      "ok": true,
+      "media_id": "17900208171511779",
+      "recorded_at": "2026-08-06T06:07:34+00:00"
+    },
+    {
+      "platform": "facebook",
+      "date": "2026-08-05",
+      "index": 3,
+      "image_path": "D:\\Shi\\output\\2026-08-05\\03-q023.jpg",
+      "content_id": "q023",
+      "ok": true,
+      "post_id": "1102415836299269_122113038645378470",
+      "photo_id": "122113038621378470",
+      "recorded_at": "2026-08-06T06:07:50+00:00"
+    },
+    {
+      "platform": "facebook",
+      "date": "2026-08-06",
+      "index": 3,
+      "image_path": "D:\\Shi\\output\\2026-08-06\\03-q014.jpg",
+      "content_id": "q014",
+      "ok": true,
+      "post_id": "1102415836299269_122113044111378470",
+      "photo_id": "122113044087378470",
+      "recorded_at": "2026-08-06T06:45:29+00:00"
+    },
+    {
+      "platform": "facebook",
+      "date": "2026-08-06",
+      "index": 4,
+      "image_path": "D:\\Shi\\output\\2026-08-06\\04-q044.jpg",
+      "content_id": "q044",
+      "ok": true,
+      "post_id": "1102415836299269_122113044159378470",
+      "photo_id": "122113044135378470",
+      "recorded_at": "2026-08-06T06:45:35+00:00"
+    },
+    {
+      "platform": "instagram",
+      "date": "2026-08-06",
+      "index": 4,
+      "image_path": "D:\\Shi\\output\\2026-08-06\\04-q044.jpg",
+      "content_id": "q044",
+      "ok": true,
+      "media_id": "17913637410242262",
+      "recorded_at": "2026-08-06T06:45:52+00:00"
+    },
+    {
+      "platform": "facebook",
+      "date": "2026-08-06",
+      "index": 5,
+      "image_path": "D:\\Shi\\output\\2026-08-06\\05-q041.jpg",
+      "content_id": "q041",
+      "ok": true,
+      "post_id": "1102415836299269_122113044345378470",
+      "photo_id": "122113044315378470",
+      "recorded_at": "2026-08-06T06:45:57+00:00"
+    },
+    {
+      "platform": "instagram",
+      "date": "2026-08-06",
+      "index": 5,
+      "image_path": "D:\\Shi\\output\\2026-08-06\\05-q041.jpg",
+      "content_id": "q041",
+      "ok": true,
+      "media_id": "18103368800335667",
+      "recorded_at": "2026-08-06T06:46:12+00:00"
     }
   ]
 }

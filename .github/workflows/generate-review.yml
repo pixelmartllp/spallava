@@ -8,10 +8,13 @@ name: Shashi - Generate for review
 # with Windows and brand.py falls back to them. On Ubuntu the creatives would
 # render in a different typeface.
 #
+# MANUAL ONLY. The everyday job is daily.yml, which posts directly with no
+# review step. Give this one a `schedule:` block if you ever want to go back to
+# approving creatives before they go out - and take the schedule off daily.yml
+# at the same time, or the day gets posted twice.
+#
 # Times are UTC; India is UTC+5:30.
 on:
-  schedule:
-    - cron: '30 3 * * *'    # 09:00 IST - ready to review each morning
   workflow_dispatch:
     inputs:
       count:

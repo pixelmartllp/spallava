@@ -591,9 +591,19 @@ def _layout_arch_card(canvas: Image.Image, entry: dict[str, Any],
     bfont = None
     bullet_step = 0.0
     if bullets:
-        bfont = get_font("display", int(width * 0.042))
+        # Shrink the list until the whole block fits between zone_top and
+        # zone_bottom. At the nominal size a four-item list runs past the base
+        # of the arch and the last bullet gets sliced off by the card edge -
+        # the vertical centring below clamps at zone_top and cannot save it.
+        gap_bullets = height * 0.030
+        room = zone_bottom - zone_top - block - gap_bullets
+        size = int(width * 0.042)
+        floor_size = int(width * 0.026)
+        while size > floor_size and len(bullets) * size * 1.85 > room:
+            size -= 1
+        bfont = get_font("display", size)
         bullet_step = bfont.size * 1.85
-        block += height * 0.030 + len(bullets) * bullet_step
+        block += gap_bullets + len(bullets) * bullet_step
     elif accent:
         afont, alines = fit_text(accent, "display", inner_w, card_h * 0.24,
                                  max_size=int(width * 0.046),
@@ -801,7 +811,8 @@ def render(entry: dict[str, Any], out_path: Path,
     seed = seed or entry["id"]
     rng = random.Random(seed)
 
-    background, source = assets.get_background(size, seed, exclude_backgrounds)
+    background, source = assets.get_background(size, seed, exclude_backgrounds,
+                                               theme=entry.get("theme"))
     canvas = background.convert("RGBA")
     has_photo = source != "generated"
 
