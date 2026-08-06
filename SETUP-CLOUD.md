@@ -26,46 +26,33 @@ days.
 
 ---
 
-## 1. Make the review folder in Drive
+## 1. The review folder in Drive — ✅ done
 
-Signed in as **pixelmartllp@gmail.com**:
+`Shashi Review` exists in the pixelmartllp@gmail.com Drive, with `Pending`,
+`Approved` and `Posted` inside it. Its ID is
+**`1-wu2A9Lv-OpjOOxkw9f-lTcwMbzipg_L`** — that is the `DRIVE_REVIEW_FOLDER_ID`
+secret in step 3.
 
-1. Create a folder in Google Drive called **`Shashi Review`**.
-2. Open it and copy the **ID** out of the address bar — the long code after
-   `/folders/`:
+## 2. rclone access — ✅ done
 
-   ```
-   https://drive.google.com/drive/folders/1AbCdEfGhIjKlMnOpQrStUvWxYz
-                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^ this
-   ```
-
-   Keep it handy — it becomes the `DRIVE_REVIEW_FOLDER_ID` secret in step 3.
-
-You do **not** need to create Pending / Approved / Posted by hand — the first run
-makes them.
-
-## 2. Give rclone access to that Drive
-
-On your PC, in PowerShell:
-
-```powershell
-rclone config
-```
-
-Answer: `n` (new remote) → name it exactly **`shashi`** → storage **`drive`** →
-leave client id/secret blank → scope **`1`** (full access) → leave the rest at the
-defaults → `y` to open the browser → **sign in as pixelmartllp@gmail.com and
-allow** → `n` to team drive → `y` to confirm → `q` to quit.
-
-Check it worked:
+The remote is called **`shashi`** and is authorised against
+pixelmartllp@gmail.com. `config.json` already carries `drive_remote` and
+`drive_review_folder_id`, so this works locally:
 
 ```powershell
 cd D:\Shi
 .\.venv\Scripts\python.exe daily_run.py drive-check
 ```
 
-(For this to work locally, add the two Drive lines to `D:\Shi\config.json` —
-see `config.example.json` for the exact key names.)
+If that ever returns `ok: false` with a 401 / `Invalid Credentials`, the Google
+authorisation has lapsed. Re-run it and answer `y`, `y`, **`n`** (not a Shared
+Drive), `y`:
+
+```powershell
+rclone config reconnect shashi:
+```
+
+Then update the `RCLONE_CONF` secret, because reconnecting writes a new token.
 
 ## 3. Put the repo on GitHub
 
@@ -84,15 +71,16 @@ see `config.example.json` for the exact key names.)
    | `META_PAGE_ID` | `page_id` from `D:\Shi\config.json` |
    | `META_IG_USER_ID` | `ig_user_id` from `config.json` |
    | `META_ACCESS_TOKEN` | `access_token` from `config.json` (never expires) |
-   | `DRIVE_REVIEW_FOLDER_ID` | the folder ID from step 1 |
+   | `DRIVE_REVIEW_FOLDER_ID` | `1-wu2A9Lv-OpjOOxkw9f-lTcwMbzipg_L` |
    | `RCLONE_CONF` | the `[shashi]` block — see below |
 
-   The token never expires, so this is a one-time job.
+   The Meta token never expires, so that part is a one-time job.
 
    **RCLONE_CONF:** open `C:\Users\user\AppData\Roaming\rclone\rclone.conf` in
-   Notepad and copy **only the `[shashi]` section** (that line and everything
-   under it, up to the next `[` heading). Don't paste the AxisUV remotes —
-   this repo has no business holding them.
+   Notepad and copy **only the `[shashi]` section** — that heading and the four
+   lines under it (`type`, `scope`, the long `token = {...}` line, and
+   `team_drive =`), stopping before the next `[` heading. Don't paste the
+   AxisUV remotes; this repo has no business holding them.
 
 ## 4. Test it
 
