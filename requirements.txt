@@ -1,0 +1,8 @@
+# Runtime dependencies for the daily pipeline (daily_run.py).
+# The GitHub Actions workflow installs exactly this.
+pillow>=11,<14
+requests>=2.32,<3
+
+# The MCP server (shashi_social.server) additionally needs `mcp`, which is only
+# used locally by Claude Code - the cloud job never imports it:
+#   pip install mcp

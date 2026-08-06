@@ -1,0 +1,438 @@
+{
+  "_comment": "Content bank for Shashi Pallava daily creatives. Add your own entries any time - the rotation tracker in state/ makes sure nothing repeats until the whole bank has been used. 'accent' is the rose-coloured second line. 'bullets' turns an entry into a list-card layout.",
+
+  "hashtag_sets": {
+    "core": ["#ShashiPallava", "#LifeCoach", "#RelationshipCoach", "#MindsetCoach"],
+    "self_worth": ["#SelfWorth", "#SelfLove", "#KnowYourWorth", "#InnerHealing", "#SelfRespect"],
+    "relationships": ["#HealthyRelationships", "#LoveAndRespect", "#RelationshipAdvice", "#EmotionalSafety", "#CoupleGoals"],
+    "healing": ["#HealingJourney", "#EmotionalHealing", "#InnerChild", "#HealingIsPossible", "#SoftLife"],
+    "boundaries": ["#Boundaries", "#HealthyBoundaries", "#SayNo", "#ProtectYourPeace", "#SelfCare"],
+    "growth": ["#PersonalGrowth", "#GrowthMindset", "#BecomingHer", "#LevelUp", "#SelfDevelopment"],
+    "morning": ["#MorningAffirmations", "#DailyAffirmations", "#StartYourDay", "#PositiveMindset", "#MorningRitual"],
+    "anxiety": ["#AnxietyRelief", "#CalmMind", "#OverthinkingHelp", "#Mindfulness", "#NervousSystem"],
+    "letting_go": ["#LettingGo", "#MovingOn", "#Closure", "#ReleaseAndReceive", "#Detachment"]
+  },
+
+  "entries": [
+    {
+      "id": "q001",
+      "theme": "growth",
+      "headline": "You don't have to have it all figured out.",
+      "accent": "Just take the next kind step.",
+      "caption": "Clarity does not arrive in one big flash. It arrives one honest step at a time.\n\nIf today feels foggy, you are not behind. You are becoming.\n\nWhat is the next kind step you can take today? Tell me in the comments."
+    },
+    {
+      "id": "q002",
+      "theme": "relationships",
+      "headline": "Healthy love feels like:",
+      "bullets": ["clarity", "consistency", "emotional safety", "mutual effort"],
+      "caption": "Love should not feel like a test you keep failing.\n\nIf you are constantly guessing where you stand, that is not chemistry - that is anxiety.\n\nSave this as your standard. Share it with someone who needs the reminder."
+    },
+    {
+      "id": "q003",
+      "theme": "self_worth",
+      "headline": "You are not too much.",
+      "accent": "You were simply with someone who had too little to give.",
+      "caption": "Being called 'too emotional', 'too sensitive', 'too needy' is often a sign of mismatched capacity - not a flaw in you.\n\nThe right people will not ask you to shrink.\n\nDouble tap if you needed to hear this today."
+    },
+    {
+      "id": "q004",
+      "theme": "morning",
+      "headline": "Say this before you check your phone:",
+      "bullets": ["I am safe in this moment", "I do not have to rush", "I can begin again today"],
+      "caption": "The first ten minutes of your morning set the tone for the next ten hours.\n\nGive your nervous system something kind to wake up to.\n\nSave this for tomorrow morning."
+    },
+    {
+      "id": "q005",
+      "theme": "boundaries",
+      "headline": "A boundary is not a punishment.",
+      "accent": "It is a doorway that tells people how to love you well.",
+      "caption": "People who respect you will adjust. People who benefited from you having no limits will call you difficult.\n\nBoth reactions are information.\n\nWhich boundary are you working on right now?"
+    },
+    {
+      "id": "q006",
+      "theme": "healing",
+      "headline": "Healing is not linear.",
+      "accent": "Some days you rebuild. Some days you simply rest.",
+      "caption": "You are allowed to have a heavy week inside a healing year.\n\nProgress is not the absence of hard days. It is how much faster you come back to yourself.\n\nBe gentle with you today."
+    },
+    {
+      "id": "q007",
+      "theme": "anxiety",
+      "headline": "Overthinking is not a personality trait.",
+      "accent": "It is a nervous system asking for safety.",
+      "caption": "Your mind loops because some part of you is trying to prevent an old hurt from happening again.\n\nYou do not need to think your way out. You need to feel safe enough to stop.\n\nComment CALM and I will share a grounding practice."
+    },
+    {
+      "id": "q008",
+      "theme": "letting_go",
+      "headline": "Closure is something you give yourself.",
+      "accent": "Not something you wait for them to hand you.",
+      "caption": "Some people will never explain. Some apologies will never come.\n\nYou can still close the chapter. You are allowed to write the last line yourself.\n\nShare this with someone still waiting."
+    },
+    {
+      "id": "q009",
+      "theme": "self_worth",
+      "headline": "Your worth was never up for negotiation.",
+      "accent": "It does not rise with approval or fall with rejection.",
+      "caption": "If someone could not see your value, that is a limitation in their vision - not a reduction in your worth.\n\nStop auditioning for people who are not even watching.\n\nSave this for the days you forget."
+    },
+    {
+      "id": "q010",
+      "theme": "relationships",
+      "headline": "Red flags you keep excusing:",
+      "bullets": ["inconsistent effort", "silence as punishment", "your feelings called drama", "promises without change"],
+      "caption": "Excusing a pattern does not make it stop. It only makes it comfortable.\n\nNotice how often you explain someone's behaviour to yourself.\n\nSave this. Read it the next time you are talking yourself out of what you saw."
+    },
+    {
+      "id": "q011",
+      "theme": "growth",
+      "headline": "Growth asks you to let go of who you were.",
+      "accent": "That grief is part of the process.",
+      "caption": "Becoming someone new means saying goodbye to the version of you that survived on old habits.\n\nYou can honour her and still outgrow her.\n\nWhat are you outgrowing right now?"
+    },
+    {
+      "id": "q012",
+      "theme": "boundaries",
+      "headline": "No is a complete sentence.",
+      "accent": "You do not owe anyone a paragraph of justification.",
+      "caption": "Over-explaining is often a trauma response - a way of asking permission to have limits.\n\nPractise the short no. It gets easier.\n\nDouble tap if you are working on this."
+    },
+    {
+      "id": "q013",
+      "theme": "morning",
+      "headline": "Three questions to start your day:",
+      "bullets": ["What do I need today?", "What can wait?", "What deserves my energy?"],
+      "caption": "Most burnout is not from doing too much. It is from doing too much that was never yours to carry.\n\nAsk before you begin.\n\nSave this to your morning routine."
+    },
+    {
+      "id": "q014",
+      "theme": "healing",
+      "headline": "You are allowed to rest",
+      "accent": "before you are exhausted.",
+      "caption": "Rest is not a reward you earn after collapse. It is maintenance.\n\nYou do not have to prove your tiredness to deserve a pause.\n\nTag someone who needs to hear this."
+    },
+    {
+      "id": "q015",
+      "theme": "relationships",
+      "headline": "Love is not enough on its own.",
+      "accent": "It needs respect, effort and emotional safety to survive.",
+      "caption": "Many relationships end with love still present. Love was never the missing piece - capacity was.\n\nAsk for more than feelings. Ask for behaviour.\n\nShare this with someone who is holding on to potential."
+    },
+    {
+      "id": "q016",
+      "theme": "self_worth",
+      "headline": "Stop shrinking to fit rooms",
+      "accent": "you have already outgrown.",
+      "caption": "If you have to hide half of yourself to be accepted, you were never truly accepted.\n\nThe right rooms will not require your silence.\n\nWhere are you still shrinking?"
+    },
+    {
+      "id": "q017",
+      "theme": "anxiety",
+      "headline": "When your mind races, name five things you can see.",
+      "accent": "Presence is the fastest way home.",
+      "caption": "Anxiety lives in the future. Your senses only live in now.\n\nName five things you can see, four you can touch, three you can hear. Watch your body settle.\n\nSave this for your next spiral."
+    },
+    {
+      "id": "q018",
+      "theme": "letting_go",
+      "headline": "Some people are lessons,",
+      "accent": "not lifetimes.",
+      "caption": "Not every connection was meant to stay. Some arrived to show you what you will no longer accept.\n\nThat is not wasted time. That is education.\n\nDouble tap if you have learned this the hard way."
+    },
+    {
+      "id": "q019",
+      "theme": "growth",
+      "headline": "Signs you are actually growing:",
+      "bullets": ["you pause before reacting", "you say no without guilt", "old triggers feel smaller", "you choose peace over proving"],
+      "caption": "Growth is quiet. It rarely announces itself.\n\nIt shows up as a calmer response to a situation that used to wreck you.\n\nWhich one are you noticing in yourself?"
+    },
+    {
+      "id": "q020",
+      "theme": "boundaries",
+      "headline": "You can be kind",
+      "accent": "and still be unavailable.",
+      "caption": "Kindness does not mean unlimited access to you.\n\nYou can care about someone deeply and still protect your time, your peace and your energy.\n\nSave this for the next guilt trip."
+    },
+    {
+      "id": "q021",
+      "theme": "healing",
+      "headline": "Your body kept the score",
+      "accent": "long after your mind said it was fine.",
+      "caption": "The tight chest. The shallow breath. The exhaustion that sleep does not fix.\n\nYour body has been telling the truth your mind was too busy to hear.\n\nListen gently today."
+    },
+    {
+      "id": "q022",
+      "theme": "relationships",
+      "headline": "Ask this before you commit:",
+      "bullets": ["Do I feel calm or anxious?", "Do their words match their actions?", "Can I be honest without fear?"],
+      "caption": "Butterflies are not always excitement. Sometimes they are your body warning you.\n\nChoose the person who makes your nervous system settle, not spike.\n\nSave this before your next date."
+    },
+    {
+      "id": "q023",
+      "theme": "self_worth",
+      "headline": "You do not have to earn",
+      "accent": "the love you already deserve.",
+      "caption": "If you have to perform, over-give and over-function to be chosen, that is not love - that is a job.\n\nRest. The right love does not require constant proof.\n\nDouble tap if you are unlearning this."
+    },
+    {
+      "id": "q024",
+      "theme": "morning",
+      "headline": "Today I choose",
+      "accent": "peace over proving.",
+      "caption": "You do not have to win every conversation. You do not have to explain yourself to everyone.\n\nSome days the strongest thing you can do is stay quiet and stay calm.\n\nSave this affirmation."
+    },
+    {
+      "id": "q025",
+      "theme": "anxiety",
+      "headline": "You are not behind.",
+      "accent": "You are on a timeline that is honestly yours.",
+      "caption": "Comparison collapses your sense of time. Someone else's chapter twelve is not a comment on your chapter three.\n\nLook at how far you have come, not how far they have gone.\n\nShare this with someone who needs it."
+    },
+    {
+      "id": "q026",
+      "theme": "letting_go",
+      "headline": "Forgiveness is not for them.",
+      "accent": "It is you putting down something too heavy to carry.",
+      "caption": "Forgiving does not mean forgetting, excusing, or reopening the door.\n\nIt means you stop letting the weight of it shape your days.\n\nSave this for when you are ready."
+    },
+    {
+      "id": "q027",
+      "theme": "growth",
+      "headline": "Discipline is self-respect",
+      "accent": "in action.",
+      "caption": "Every promise you keep to yourself rebuilds trust with yourself.\n\nStart smaller than you think you should. Consistency beats intensity.\n\nWhat is one small promise you will keep this week?"
+    },
+    {
+      "id": "q028",
+      "theme": "relationships",
+      "headline": "Emotional safety sounds like:",
+      "bullets": ["\"Tell me more.\"", "\"That is fair.\"", "\"I hear you.\"", "\"Let us fix this together.\""],
+      "caption": "The right partner does not make you brace before you speak.\n\nSafety is not a bonus feature in a relationship. It is the foundation.\n\nSave this and share it with your person."
+    },
+    {
+      "id": "q029",
+      "theme": "self_worth",
+      "headline": "Being chosen is nice.",
+      "accent": "Choosing yourself is freedom.",
+      "caption": "You spent years waiting to be picked. Try picking yourself first and watch how the room changes.\n\nSelf-abandonment is the most expensive habit there is.\n\nDouble tap if you are choosing you this year."
+    },
+    {
+      "id": "q030",
+      "theme": "boundaries",
+      "headline": "Guilt is not proof",
+      "accent": "that you did something wrong.",
+      "caption": "When you have been the giver for years, the first no will feel like a crime.\n\nIt is not. It is just unfamiliar.\n\nFeel the guilt. Hold the boundary anyway."
+    },
+    {
+      "id": "q031",
+      "theme": "healing",
+      "headline": "You survived it.",
+      "accent": "Now you are allowed to build something gentler.",
+      "caption": "Surviving was the hard part and you already did it.\n\nThe next chapter is not about endurance. It is about ease.\n\nWhat does a gentler life look like for you?"
+    },
+    {
+      "id": "q032",
+      "theme": "morning",
+      "headline": "A calm morning is built the night before.",
+      "bullets": ["phone away an hour early", "tomorrow's three priorities written", "one thing already done"],
+      "caption": "You cannot out-affirm a chaotic morning.\n\nProtect tomorrow by closing today properly.\n\nSave this to your evening routine."
+    },
+    {
+      "id": "q033",
+      "theme": "anxiety",
+      "headline": "You are not responsible",
+      "accent": "for how everyone feels about your honesty.",
+      "caption": "You can deliver truth with kindness and someone can still be upset. That is allowed.\n\nManaging everyone's emotions is not your job.\n\nDouble tap if you are putting that job down."
+    },
+    {
+      "id": "q034",
+      "theme": "relationships",
+      "headline": "Consistency is the loudest form of love.",
+      "accent": "Anyone can be intense for a week.",
+      "caption": "Grand gestures are easy. Showing up on an ordinary Tuesday is not.\n\nWatch the pattern, not the peak.\n\nShare this with someone who is confusing intensity for intimacy."
+    },
+    {
+      "id": "q035",
+      "theme": "growth",
+      "headline": "You cannot heal in the same environment",
+      "accent": "that keeps hurting you.",
+      "caption": "Insight is not enough if the conditions never change.\n\nSometimes the work is not more therapy - it is a different room, a different circle, a different answer.\n\nWhat needs to change around you?"
+    },
+    {
+      "id": "q036",
+      "theme": "letting_go",
+      "headline": "Missing someone",
+      "accent": "is not a reason to go back.",
+      "caption": "Your mind will replay the highlights and quietly delete the reasons you left.\n\nWrite the reasons down. Read them when the missing gets loud.\n\nSave this. You will need it at 2am."
+    },
+    {
+      "id": "q037",
+      "theme": "self_worth",
+      "headline": "Speak to yourself",
+      "accent": "the way you speak to someone you love.",
+      "caption": "You would never tell your best friend she is a failure for having a hard week.\n\nWhy is the harshest voice in your life still your own?\n\nComment with one kind thing you will say to yourself today."
+    },
+    {
+      "id": "q038",
+      "theme": "boundaries",
+      "headline": "People will test a new boundary.",
+      "accent": "Hold it anyway. That is how it becomes real.",
+      "caption": "The first few weeks are the hardest. Expect pushback - it means the boundary is working.\n\nConsistency is what turns a request into a standard.\n\nDouble tap for strength."
+    },
+    {
+      "id": "q039",
+      "theme": "healing",
+      "headline": "The child in you",
+      "accent": "is still waiting to hear it was not their fault.",
+      "caption": "So much of adult anxiety is an old story still looking for a different ending.\n\nYou can give her that ending now.\n\nComment INNER and I will share a practice for this."
+    },
+    {
+      "id": "q040",
+      "theme": "morning",
+      "headline": "Repeat after me:",
+      "bullets": ["I am allowed to take up space", "My peace is a priority", "I am doing better than I think"],
+      "caption": "Affirmations do not work because they are magic. They work because repetition rewires what you believe by default.\n\nSay them out loud. Say them daily.\n\nSave this."
+    },
+    {
+      "id": "q041",
+      "theme": "relationships",
+      "headline": "You cannot love someone",
+      "accent": "into treating you well.",
+      "caption": "More patience will not fix a lack of respect. More understanding will not create effort that was never there.\n\nYou are not a rehabilitation programme.\n\nShare this with someone who is trying to love harder."
+    },
+    {
+      "id": "q042",
+      "theme": "anxiety",
+      "headline": "Rest is not laziness.",
+      "accent": "Your worth is not a productivity score.",
+      "caption": "You were taught that stillness is wasted time. It is not - it is where your nervous system repairs.\n\nDo one restful thing today without earning it.\n\nDouble tap to give yourself permission."
+    },
+    {
+      "id": "q043",
+      "theme": "growth",
+      "headline": "The version of you that you are becoming",
+      "accent": "needs different habits, not more motivation.",
+      "caption": "Motivation is a mood. Habits are a system.\n\nBuild the system and you will not need to feel inspired to keep going.\n\nWhat is one habit you are building this month?"
+    },
+    {
+      "id": "q044",
+      "theme": "letting_go",
+      "headline": "Let it be unfinished.",
+      "accent": "Not every story gets a clean ending.",
+      "caption": "The need for a perfect ending keeps you tied to a chapter that already closed.\n\nYou can walk away mid-sentence and still be whole.\n\nSave this if you are holding on for closure."
+    },
+    {
+      "id": "q045",
+      "theme": "self_worth",
+      "headline": "Your standards are not too high.",
+      "accent": "You have just been settling for too long.",
+      "caption": "Basic respect, honesty and effort are not a luxury list. They are the floor.\n\nRaise the floor and watch who stays.\n\nDouble tap if you are done settling."
+    },
+    {
+      "id": "q046",
+      "theme": "boundaries",
+      "headline": "Not every conversation",
+      "accent": "deserves your energy.",
+      "caption": "Some people are not confused. They are committed to misunderstanding you.\n\nYou do not have to keep explaining.\n\nSave this for your next draining conversation."
+    },
+    {
+      "id": "q047",
+      "theme": "healing",
+      "headline": "Softness is not weakness.",
+      "accent": "It takes strength to stay open after being hurt.",
+      "caption": "Anyone can build walls. Staying tender in a world that hardened you is the real courage.\n\nProtect your softness. Do not bury it.\n\nDouble tap if you are choosing softness."
+    },
+    {
+      "id": "q048",
+      "theme": "relationships",
+      "headline": "Green flags to look for:",
+      "bullets": ["repairs after conflict", "curious about your world", "keeps small promises", "calm in disagreement"],
+      "caption": "We talk so much about red flags that we forget to name what good actually looks like.\n\nThis is the standard. Save it.\n\nWhich green flag matters most to you?"
+    },
+    {
+      "id": "q049",
+      "theme": "morning",
+      "headline": "Start before you feel ready.",
+      "accent": "Confidence is built, not waited for.",
+      "caption": "Readiness is a feeling that usually arrives after you begin - not before.\n\nDo the small version today.\n\nWhat have you been waiting to feel ready for?"
+    },
+    {
+      "id": "q050",
+      "theme": "anxiety",
+      "headline": "You do not have to carry",
+      "accent": "everything at the same time.",
+      "caption": "Put something down today. Not forever - just for now.\n\nOverwhelm is often just too many things held simultaneously rather than sequentially.\n\nWhat can you set down this week?"
+    },
+    {
+      "id": "q051",
+      "theme": "growth",
+      "headline": "You are allowed to change your mind",
+      "accent": "about a life you already built.",
+      "caption": "Sunk cost keeps more people stuck than fear does.\n\nThe years you already gave are not a reason to give the rest.\n\nDouble tap if you needed permission."
+    },
+    {
+      "id": "q052",
+      "theme": "self_worth",
+      "headline": "Being alone",
+      "accent": "is safer than being lonely beside someone.",
+      "caption": "The loneliest place is not an empty room. It is a relationship where you are unseen.\n\nSolitude can be peaceful. Settling never is.\n\nShare this with someone who needs it."
+    },
+    {
+      "id": "q053",
+      "theme": "letting_go",
+      "headline": "Grief is love",
+      "accent": "with nowhere left to go.",
+      "caption": "You are not weak for still feeling it. You are simply someone who loved fully.\n\nLet it move through you rather than around you.\n\nBe gentle with yourself today."
+    },
+    {
+      "id": "q054",
+      "theme": "boundaries",
+      "headline": "Protect your peace",
+      "accent": "like it pays your bills.",
+      "caption": "Your calm is the foundation everything else stands on - your work, your health, your relationships.\n\nGuard it as fiercely as you guard your income.\n\nDouble tap if peace is your priority this year."
+    },
+    {
+      "id": "q055",
+      "theme": "relationships",
+      "headline": "Communication is not just talking.",
+      "bullets": ["listening without defending", "asking before assuming", "repairing after conflict"],
+      "caption": "Most couples do not have a communication problem. They have a listening problem.\n\nTry hearing to understand rather than to reply.\n\nSave this and try one this week."
+    },
+    {
+      "id": "q056",
+      "theme": "healing",
+      "headline": "You are not the worst thing",
+      "accent": "that ever happened to you.",
+      "caption": "Your history is context, not identity.\n\nWhat happened shaped you. It does not define what you are capable of becoming.\n\nDouble tap if you are rewriting the story."
+    },
+    {
+      "id": "q057",
+      "theme": "growth",
+      "headline": "Small consistent effort",
+      "accent": "beats occasional intensity every time.",
+      "caption": "Ten calm minutes daily will change your life more than one dramatic weekend of motivation.\n\nShow up small. Show up often.\n\nWhat is your ten minutes today?"
+    },
+    {
+      "id": "q058",
+      "theme": "morning",
+      "headline": "Before you say yes to anything today,",
+      "accent": "check if you have said yes to yourself first.",
+      "caption": "Self-abandonment usually begins with a very small yes you did not mean.\n\nPause before you answer.\n\nSave this for tomorrow."
+    },
+    {
+      "id": "q059",
+      "theme": "anxiety",
+      "headline": "What if it works out?",
+      "accent": "Your mind rehearses disaster. Let it rehearse this too.",
+      "caption": "You have imagined the worst case a hundred times. Give the best case equal airtime.\n\nYour brain believes whatever you practise.\n\nComment with one thing you hope works out."
+    },
+    {
+      "id": "q060",
+      "theme": "self_worth",
+      "headline": "You are not hard to love.",
+      "accent": "You were just loved by people who found it inconvenient.",
+      "caption": "There is a difference between being difficult and being with someone unwilling.\n\nDo not rewrite your worth to explain their limits.\n\nDouble tap if this landed."
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+name: Shashi - Generate for review
+
+# Step 1 of 2. Renders the day's creatives and puts them in the Google Drive
+# review folder's 'Pending' subfolder. Posts NOTHING - you review on your phone
+# and drag the ones you like into 'Approved'; publish-approved.yml posts those.
+#
+# Windows runner on purpose: the brand fonts (constan.ttf / segoeui.ttf) ship
+# with Windows and brand.py falls back to them. On Ubuntu the creatives would
+# render in a different typeface.
+#
+# Times are UTC; India is UTC+5:30.
+on:
+  schedule:
+    - cron: '30 3 * * *'    # 09:00 IST - ready to review each morning
+  workflow_dispatch:
+    inputs:
+      count:
+        description: 'How many creatives to make'
+        required: false
+        default: '5'
+
+permissions:
+  contents: write            # to commit state/state.json back
+
+concurrency:
+  group: shashi-generate
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install rclone + write config
+        shell: pwsh
+        env:
+          RCLONE_CONF_CONTENT: ${{ secrets.RCLONE_CONF }}
+        run: |
+          choco install rclone -y --no-progress
+          "RCLONE_EXE=$((Get-Command rclone).Source)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          $conf = Join-Path $env:RUNNER_TEMP 'rclone.conf'
+          $env:RCLONE_CONF_CONTENT | Out-File -FilePath $conf -Encoding ascii
+          "RCLONE_CONFIG=$conf" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Render and upload to Pending
+        shell: pwsh
+        env:
+          DRIVE_REMOTE: shashi
+          DRIVE_REVIEW_FOLDER_ID: ${{ secrets.DRIVE_REVIEW_FOLDER_ID }}
+        run: |
+          $count = '${{ inputs.count }}'
+          if ([string]::IsNullOrWhiteSpace($count)) { $count = '5' }
+          python daily_run.py review --count $count
+
+      - name: Save rotation state back to the repo
+        if: always()
+        shell: pwsh
+        run: |
+          git config user.name  "shashi-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add state/state.json
+          if ([string]::IsNullOrEmpty((git status --porcelain state/state.json))) {
+            Write-Host "No state change."
+          } else {
+            git commit -m "Update rotation state [skip ci]"
+            git pull --rebase --autostash
+            git push
+          }

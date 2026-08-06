@@ -1,0 +1,20 @@
+# Live credentials - never commit. In the cloud these come from GitHub secrets.
+config.json
+.env
+
+# Virtual environment
+.venv/
+
+# Generated creatives - regenerated every run, far too big for git
+output/
+
+# Runtime state: the rotation/publish ledger IS committed (the cloud run has no
+# other memory of what it already posted); the log is not.
+state/*
+!state/state.json
+
+# Rebuilt from assets/logo.png on demand
+assets/logo_transparent.png
+
+__pycache__/
+*.pyc

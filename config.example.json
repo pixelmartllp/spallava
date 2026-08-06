@@ -1,0 +1,17 @@
+{
+  "_comment": "Copy this file to config.json and fill in your real values. config.json holds a live access token - never commit or share it. config.json takes priority; anything left out is read from the environment instead: META_APP_ID, META_APP_SECRET, META_PAGE_ID, META_IG_USER_ID, META_ACCESS_TOKEN, META_API_VERSION, DRIVE_REMOTE, DRIVE_REVIEW_FOLDER_ID.",
+
+  "app_id": "YOUR_META_APP_ID",
+  "app_secret": "YOUR_META_APP_SECRET",
+
+  "page_id": "YOUR_FACEBOOK_PAGE_ID",
+  "ig_user_id": "YOUR_INSTAGRAM_BUSINESS_ACCOUNT_ID",
+
+  "access_token": "YOUR_NEVER_EXPIRING_PAGE_ACCESS_TOKEN",
+
+  "api_version": "v21.0",
+
+  "_drive_comment": "Only needed for the Drive review flow (see SETUP-CLOUD.md). drive_remote is the rclone remote name; drive_review_folder_id is the ID from the review folder's Drive URL.",
+  "drive_remote": "shashi",
+  "drive_review_folder_id": "YOUR_DRIVE_REVIEW_FOLDER_ID"
+}
