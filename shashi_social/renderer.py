@@ -920,8 +920,12 @@ def render(entry: dict[str, Any], out_path: Path,
     seed = seed or entry["id"]
     rng = random.Random(seed)
 
+    # A bullet list needs a solid card to sit on, and a card big enough for
+    # four lines leaves so little of a photograph showing that the photo reads
+    # as an accident rather than a choice. Bullet days get a generated scene.
     background, source = assets.get_background(size, seed, exclude_backgrounds,
-                                               theme=entry.get("theme"))
+                                               theme=entry.get("theme"),
+                                               allow_photo=not entry.get("bullets"))
     canvas = background.convert("RGBA")
     has_photo = source != "generated"
 

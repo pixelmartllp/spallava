@@ -15,7 +15,11 @@ name: Shashi - Generate for review
 # Times are UTC; India is UTC+5:30.
 on:
   schedule:
-    - cron: '30 2 * * *'    # 08:00 IST - ready to review over breakfast
+    # 08:07 IST, not 08:00. GitHub queues every repo's cron on the same
+    # minute, and the on-the-hour and half-hour slots are the most contended -
+    # runs there get delayed by hours or dropped. An odd minute is the
+    # documented way to actually land near the time you asked for.
+    - cron: '37 2 * * *'    # 08:07 IST - ready to review over breakfast
   workflow_dispatch:
     inputs:
       count:

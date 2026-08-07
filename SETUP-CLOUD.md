@@ -9,18 +9,18 @@ in the cloud:
 
 | Time (IST) | What happens |
 |---|---|
-| **08:00** | 5 creatives are rendered and dropped into Drive → **Pending** |
-| *08:00–11:00* | You look at them on your phone. Drag the good ones into **Approved**. **Delete** the ones you don't want. |
-| **10:00** | Anything already in **Approved** is posted, then moved to **Posted** |
-| **11:00** | **Cutoff** — Approved *plus* anything still left in Pending is posted |
-| **11:30** | Retry pass — posts nothing new, only picks up what failed at 11:00 |
+| **08:07** | 5 creatives are rendered and dropped into Drive → **Pending** |
+| *08:07–11:09* | You look at them on your phone. Drag the good ones into **Approved**. **Delete** the ones you don't want. |
+| **10:08** | Anything already in **Approved** is posted, then moved to **Posted** |
+| **11:09** | **Cutoff** — Approved *plus* anything still left in Pending is posted |
+| **11:41** | Retry pass — posts nothing new, only picks up what failed at 11:09 |
 
 So approving is optional; **deleting is how you say no**. Do nothing and the
-day goes out at 11:00 anyway. Approve early and it goes out at 10:00 instead.
+day goes out at 11:09 anyway. Approve early and it goes out at 10:08 instead.
 Nothing can be posted twice — posting moves the file out of the folders the
 publisher reads.
 
-The 11:30 slot is there because the Graph API returns a transient
+The 11:41 slot is there because the Graph API returns a transient
 `code 1: please reduce the amount of data` often enough to lose a post most
 days.
 
@@ -128,11 +128,14 @@ Don't leave it enabled alongside the cloud, or the day gets posted twice.
 - **Need a day out right now, no review?** Actions → **Shashi Daily - Generate
   and post** → Run workflow. It skips Drive entirely. It has no schedule, so it
   can't collide with the daily flow.
-- GitHub's scheduled times drift by a few (sometimes many) minutes — normal.
+- The odd minutes in the crons are deliberate. GitHub queues every repo's
+  schedule on the same minute and the on-the-hour slots are the most
+  contended, so runs there get delayed by hours or dropped entirely.
+  Expect a few minutes of drift even so.
 
 ## Content bank
 
-`content_bank.json` holds 60 quotes. At 5/day the rotation **restarts
+`content_bank.json` holds 185 quotes. At 5/day the rotation **restarts
 automatically** when it runs out — it won't fail, it will start repeating old
 quotes. Top it up with `add_content_entry` (or by editing `content_bank.json`)
 before that happens. Check what's left any time:
@@ -154,7 +157,7 @@ The realistic causes:
 - **`ConfigError: Missing Meta credentials`** — one of the three `META_*`
   secrets is missing or misspelled.
 - **`GraphError (code 1): Please reduce the amount of data...`** — a Facebook
-  flake, not your setup. The 11:30 run exists for exactly this; if it survives
+  flake, not your setup. The 11:41 run exists for exactly this; if it survives
   that too, the creative is still sitting in Drive, so just run **Publish
   approved** by hand.
 - **Meta permission errors** — check the token locally:

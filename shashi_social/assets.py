@@ -529,13 +529,15 @@ def photo_theme(path: Path) -> str | None:
 
 def get_background(size: tuple[int, int], seed: str,
                    exclude: set[str] | None = None,
-                   theme: str | None = None) -> tuple[Image.Image, str]:
+                   theme: str | None = None,
+                   allow_photo: bool = True) -> tuple[Image.Image, str]:
     """Pick a background photo from the pool, else synthesise one.
 
     Returns the image plus a short source label for logging.
     """
     exclude = exclude or set()
-    pool = [p for p in list_backgrounds() if p.name not in exclude]
+    pool = [] if not allow_photo else [
+        p for p in list_backgrounds() if p.name not in exclude]
 
     # A photo of a couple at sunset behind an anxiety quote reads as a mistake,
     # so a theme with no photo of its own gets its generated scene instead of
