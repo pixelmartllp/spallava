@@ -516,6 +516,17 @@ def procedural_background(size: tuple[int, int], seed: str,
     return base.convert("RGB")
 
 
+def photo_theme(path: Path) -> str | None:
+    """Which theme a background photo is reserved for, from its filename.
+
+    `relationships-01.jpg` is only ever used behind a relationships quote.
+    Anything else - `beach.jpg`, a photo the user simply dropped in - carries
+    no theme and is fair game for any of them.
+    """
+    prefix = path.stem.rsplit("-", 1)[0].strip().lower()
+    return prefix if prefix in THEME_SCENES else None
+
+
 def get_background(size: tuple[int, int], seed: str,
                    exclude: set[str] | None = None,
                    theme: str | None = None) -> tuple[Image.Image, str]:
@@ -525,6 +536,11 @@ def get_background(size: tuple[int, int], seed: str,
     """
     exclude = exclude or set()
     pool = [p for p in list_backgrounds() if p.name not in exclude]
+
+    # A photo of a couple at sunset behind an anxiety quote reads as a mistake,
+    # so a theme with no photo of its own gets its generated scene instead of
+    # borrowing someone else's.
+    pool = [p for p in pool if photo_theme(p) in (None, theme)]
 
     if pool:
         rng = _seeded_rng(seed)

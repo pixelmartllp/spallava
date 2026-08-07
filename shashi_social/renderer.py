@@ -336,6 +336,29 @@ def region_brightness(base: Image.Image, box: tuple[int, int, int, int]) -> floa
     return sum(pixels) / len(pixels)
 
 
+def calm_extent(base: Image.Image, floor: float = 0.30,
+                ceiling: float = 0.58, threshold: float = 13.0) -> float:
+    """How far down the image stays visually quiet, as a fraction of height.
+
+    Sky, a plain wall, still water - all nearly uniform across a row. A
+    horizon, a treeline, a person's shoulders are not. So the first row whose
+    left-to-right spread jumps is where the calm part ends, and type below it
+    starts colliding with the subject. Measuring beats guessing a fixed
+    fraction, because one photograph puts the couple at the waterline and the
+    next has them halfway up the frame.
+    """
+    small = base.convert("L").resize((64, 128), Image.BILINEAR)
+    pixels = list(small.getdata())
+
+    for row_index in range(128):
+        row = pixels[row_index * 64:(row_index + 1) * 64]
+        mean = sum(row) / len(row)
+        spread = (sum((v - mean) ** 2 for v in row) / len(row)) ** 0.5
+        if spread > threshold:
+            return min(ceiling, max(floor, row_index / 128))
+    return ceiling
+
+
 def draw_brand_footer(base: Image.Image, centre_x: float,
                       top_y: float, bottom_y: float,
                       with_name: bool = False,
@@ -775,12 +798,94 @@ def _layout_soft_band(canvas: Image.Image, entry: dict[str, Any],
                       max_logo_width=width * 0.26)
 
 
+def _layout_editorial(canvas: Image.Image, entry: dict[str, Any],
+                      rng: random.Random, has_photo: bool) -> None:
+    """Full-bleed photograph, quote set into its empty sky.
+
+    The photography we use puts its subject low in the frame - a couple at the
+    waterline, a figure on a horizon - and leaves the top half open. So the
+    type goes up there and the picture is never covered: no card, no band, just
+    a gradient deep enough to hold the words. Whether that gradient is dark or
+    cream is decided from the actual pixels, because a pale sky and a dusk sky
+    need opposite treatment.
+    """
+    width, height = canvas.size
+
+    # Measured before any scrim goes down, or we would be reading our own
+    # gradient instead of the photograph.
+    calm = calm_extent(canvas)
+    content_top = height * 0.090
+    content_bottom = height * calm
+    footer_top = height * 0.845
+
+    pale_sky = region_brightness(canvas, (0, 0, width, int(height * calm))) > 150
+    if pale_sky:
+        scrim, ink, accent_ink = brand.CREAM_LIGHT, brand.BROWN, brand.ROSE
+        frame_colour, flourish_colour = brand.GOLD, brand.GOLD
+    else:
+        scrim, ink, accent_ink = brand.INK, brand.WHITE, brand.ROSE_PALE
+        frame_colour, flourish_colour = brand.CREAM, brand.GOLD_LIGHT
+
+    canvas.alpha_composite(vertical_scrim((width, height), scrim,
+                                          strength=0.90, extent=calm + 0.16,
+                                          from_top=True))
+    # Just enough at the foot to seat the logo; the subject sits above it.
+    canvas.alpha_composite(vertical_scrim((width, height), scrim,
+                                          strength=0.55, extent=0.22))
+
+    draw_frame(canvas, colour=frame_colour, inset_ratio=0.048, opacity=120)
+
+    draw = ImageDraw.Draw(canvas)
+    text_w = width * 0.78
+    left = (width - text_w) / 2
+
+    accent = smart_quotes(entry["accent"]) if entry.get("accent") else None
+    font, lines = fit_text(smart_quotes(entry["headline"]), "display", text_w,
+                           height * (0.20 if accent else 0.30),
+                           max_size=int(width * 0.088),
+                           min_size=int(width * 0.036))
+    afont = alines = None
+    if accent:
+        afont, alines = fit_text(accent, "display", text_w, height * 0.14,
+                                 max_size=int(width * 0.050),
+                                 min_size=int(width * 0.026))
+
+    flourish_w = width * 0.24
+    flourish_h = flourish_w * 0.16
+    gap_flourish = height * 0.042
+    gap_divider = height * 0.030
+
+    block = flourish_h + gap_flourish + len(lines) * font.size * 1.16
+    if alines:
+        block += gap_divider * 2 + len(alines) * afont.size * 1.20
+
+    y = content_top + max(0.0, (content_bottom - content_top - block) / 2)
+
+    draw_flourish(canvas, width / 2, y + flourish_h / 2, flourish_w,
+                  colour=flourish_colour, dot_colour=brand.ROSE_LIGHT)
+    y += flourish_h + gap_flourish
+
+    y = draw_lines(draw, lines, font, left, y, ink + (255,),
+                   line_spacing=1.16, align="center", box_width=text_w)
+
+    if alines:
+        y += gap_divider
+        draw_divider(canvas, width / 2, y, width * 0.22, colour=flourish_colour)
+        y += gap_divider
+        draw_lines(draw, alines, afont, left, y, accent_ink + (255,),
+                   line_spacing=1.20, align="center", box_width=text_w)
+
+    draw_brand_footer(canvas, width / 2, footer_top, height * 0.955,
+                      max_logo_width=width * 0.26)
+
+
 _LAYOUT_FUNCS = {
     "paper_quote": _layout_paper_quote,
     "quote_left": _layout_quote_left,
     "arch_card": _layout_arch_card,
     "center_overlay": _layout_center_overlay,
     "soft_band": _layout_soft_band,
+    "editorial": _layout_editorial,
 }
 
 
@@ -791,7 +896,11 @@ def choose_layout(entry: dict[str, Any], rng: random.Random,
         return "arch_card"
     if not has_photo:
         return rng.choice(["paper_quote", "paper_quote", "arch_card"])
-    return rng.choice(["quote_left", "center_overlay", "soft_band", "quote_left"])
+    # quote_left and soft_band both assume a photo with an empty side or an
+    # empty top half. Our photography is centre-weighted, so they crop the
+    # subject in half or drop the accent line straight onto it. They stay
+    # available by name, but nothing picks them automatically.
+    return rng.choice(["editorial", "editorial", "center_overlay"])
 
 
 # --------------------------------------------------------------------------
