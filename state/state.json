@@ -45,13 +45,15 @@
     "q014",
     "q044",
     "q041",
-    "q027",
+    "q067",
     "q029",
-    "q021",
-    "q005",
-    "q008"
+    "q161",
+    "q056",
+    "q164"
   ],
-  "used_backgrounds": [],
+  "used_backgrounds": [
+    "letting_go-01.jpg"
+  ],
   "posts": [
     {
       "platform": "facebook",
