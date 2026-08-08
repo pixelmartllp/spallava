@@ -25,7 +25,7 @@ on:
       count:
         description: 'How many creatives to make'
         required: false
-        default: '5'
+        default: '1'
 
 permissions:
   contents: write            # to commit state/state.json back
@@ -65,8 +65,10 @@ jobs:
           DRIVE_REMOTE: shashi
           DRIVE_REVIEW_FOLDER_ID: ${{ secrets.DRIVE_REVIEW_FOLDER_ID }}
         run: |
+          # The scheduled run passes no input, so this fallback is the real
+          # daily number - one post a day.
           $count = '${{ inputs.count }}'
-          if ([string]::IsNullOrWhiteSpace($count)) { $count = '5' }
+          if ([string]::IsNullOrWhiteSpace($count)) { $count = '1' }
           python daily_run.py review --count $count
 
       - name: Save rotation state back to the repo

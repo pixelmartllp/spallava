@@ -25,6 +25,12 @@ on:
     - cron: '38 4 * * *'    # 10:08 IST - post what is already Approved
     - cron: '39 5 * * *'    # 11:09 IST - CUTOFF: Approved + whatever is left in Pending
     - cron: '11 6 * * *'    # 11:41 IST - retry pass, see below
+    # Late sweeps. The 08:07 generate is regularly delayed by GitHub's queue -
+    # on 08 Aug it landed at 10:54 - and if it ever slips past 11:41 the day
+    # would simply never go out. These cost nothing on a normal day: anything
+    # already published has been moved to Posted, so they find an empty queue.
+    - cron: '23 8 * * *'    # 13:53 IST
+    - cron: '17 11 * * *'   # 16:47 IST
   workflow_dispatch:
     inputs:
       include_pending:
@@ -76,8 +82,11 @@ jobs:
           META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
           META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
           META_API_VERSION: v25.0
-          # the 10:00 run posts Approved only; the two later ones sweep Pending too
-          CUTOFF: ${{ github.event.schedule == '39 5 * * *' || github.event.schedule == '11 6 * * *' || inputs.include_pending }}
+          # the 10:08 run posts Approved only; every later one sweeps Pending too
+          # github.event.schedule is empty on a manual run, so the event name
+          # has to be checked too - otherwise "Approved only" would silently
+          # sweep Pending as well.
+          CUTOFF: ${{ (github.event_name == 'schedule' && github.event.schedule != '38 4 * * *') || inputs.include_pending }}
         run: |
           if ($env:CUTOFF -eq 'true') {
             python daily_run.py publish-approved --confirm --include-pending

@@ -130,14 +130,21 @@ Two automation paths, both on `windows-latest` on purpose (the brand fonts
 `constan.ttf` / `segoeui.ttf` ship with Windows; Ubuntu would silently render a
 different typeface):
 
-**Everyday, two-step review flow**
-1. `generate-review.yml` — cron `37 2 * * *` (08:07 IST). Renders and uploads
-   to Google Drive `Pending`. Posts nothing. Commits rotation state.
-2. `publish-approved.yml` — cron 10:08 / 11:09 / 11:41 IST. 10:08 posts only
-   `Approved`. 11:09 is the **cutoff**: it posts `Approved` *plus* whatever is
-   still in `Pending`, so approving is optional and **deleting from Pending is
-   how you say no**. 11:41 is the retry pass. Posted files move to `Posted`,
-   which is what prevents double-posting.
+**Everyday, two-step review flow — one creative a day**
+1. `generate-review.yml` — cron `37 2 * * *` (08:07 IST). Renders **one**
+   creative (the scheduled run passes no input, so the step's own `$count`
+   fallback is the real daily number) and uploads it to Google Drive `Pending`.
+   Posts nothing. Commits rotation state.
+2. `publish-approved.yml` — 10:08 / 11:09 / 11:41 / 13:53 / 16:47 IST. 10:08
+   posts only `Approved`. **Every later run is a cutoff**: it posts `Approved`
+   *plus* whatever is still in `Pending`, so approving is optional and
+   **deleting from Pending before 11:09 is how you say no**. The last two exist
+   because the 08:07 generate is regularly delayed by GitHub's queue — on
+   08 Aug 2026 it landed at 10:54 — and a day that generates late must still go
+   out. They are free on a normal day: anything published has already moved to
+   `Posted`, so they find an empty queue.
+
+Posted files move to `Posted`, which is what prevents double-posting.
 
 **Escape hatch** — `daily.yml`, `workflow_dispatch` only. Generates and posts
 straight to the Page, skipping review. Never give it a `schedule:`; with the
