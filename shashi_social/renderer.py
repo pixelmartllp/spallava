@@ -299,6 +299,76 @@ def horizontal_scrim(size: tuple[int, int], colour: tuple,
     return layer
 
 
+def band_scrim(size: tuple[int, int], colour: tuple, top: float, bottom: float,
+               strength: float = 0.45, feather: float = 0.11) -> Image.Image:
+    """A soft-edged horizontal band of colour, for seating text on a photo.
+
+    Feathered hard - at a tenth of the canvas the edges are invisible, so it
+    reads as the light changing rather than as a panel laid on the picture.
+    A hard edge here would just be the cream card again under another name.
+    """
+    width, height = size
+    ramp = Image.new("L", (1, height), 0)
+    draw = ImageDraw.Draw(ramp)
+    fade = max(1.0, feather * height)
+
+    for y in range(height):
+        if y < top - fade or y > bottom + fade:
+            level = 0.0
+        elif y < top:
+            level = 1 - (top - y) / fade
+        elif y > bottom:
+            level = 1 - (y - bottom) / fade
+        else:
+            level = 1.0
+        draw.point((0, y), fill=int(255 * strength * level ** 1.5))
+
+    layer = Image.new("RGBA", size, colour + (0,))
+    layer.putalpha(ramp.resize(size, Image.BICUBIC))
+    return layer
+
+
+def region_levels(base: Image.Image, box: tuple[float, float, float, float],
+                  low: float = 0.12, high: float = 0.88) -> tuple[float, float]:
+    """Near-darkest and near-brightest luminance in a region.
+
+    The mean is the wrong number for this job. A band of wheat averages bright
+    while every ear in it is mid-tone, so a mean-based check passes and the
+    rose accent still lands on something too dark to read against. The tails
+    are what the type actually has to survive; the percentiles rather than the
+    true min/max keep one stray highlight from driving the whole decision.
+    """
+    left, top, right, bottom = box
+    left = max(0, min(base.width - 1, int(left)))
+    right = max(left + 1, min(base.width, int(right)))
+    top = max(0, min(base.height - 1, int(top)))
+    bottom = max(top + 1, min(base.height, int(bottom)))
+
+    crop = base.convert("RGB").crop((left, top, right, bottom))
+    pixels = sorted(crop.resize((32, 32), Image.BILINEAR).convert("L").getdata())
+    return (pixels[int(low * (len(pixels) - 1))],
+            pixels[int(high * (len(pixels) - 1))])
+
+
+def seat_text(canvas: Image.Image, top: float, bottom: float, pale: bool,
+              colour: tuple, passes: int = 5) -> None:
+    """Deepen a soft band behind text until the ink will actually read.
+
+    A single fixed-strength gradient is not enough on a real photograph: the
+    scrim that seats a headline over calm sky disappears against a blown out
+    sun or a stand of wheat, and the accent line - smaller and lower contrast
+    than the headline - is what goes first. So measure what is actually there,
+    judge it on the tail that fights the ink, and keep going until the band has
+    separated.
+    """
+    for _ in range(passes):
+        dark, bright = region_levels(canvas, (0, top, canvas.width, bottom))
+        if (pale and dark >= 196) or (not pale and bright <= 104):
+            return
+        canvas.alpha_composite(band_scrim(canvas.size, colour, top, bottom,
+                                          strength=0.50))
+
+
 def vertical_scrim(size: tuple[int, int], colour: tuple,
                    strength: float = 0.75, extent: float = 0.55,
                    from_top: bool = False) -> Image.Image:
@@ -818,7 +888,48 @@ def _layout_editorial(canvas: Image.Image, entry: dict[str, Any],
     content_bottom = height * calm
     footer_top = height * 0.845
 
-    pale_sky = region_brightness(canvas, (0, 0, width, int(height * calm))) > 150
+    # The type is measured before anything is painted, because where the block
+    # actually lands is what decides whether the picture underneath it needs
+    # holding back - and by how much.
+    text_w = width * 0.78
+    left = (width - text_w) / 2
+
+    accent = smart_quotes(entry["accent"]) if entry.get("accent") else None
+
+    flourish_w = width * 0.24
+    flourish_h = flourish_w * 0.16
+    gap_flourish = height * 0.042
+    gap_divider = height * 0.030
+
+    # Fit the type to the calm zone this particular photograph offers, not to
+    # a fixed fraction of the canvas. On a frame with a high treeline the calm
+    # zone is short, and a block sized for a big empty sky overflows it - which
+    # is how the accent line ended up sitting on the trees. Smaller type on a
+    # busy frame is the right answer; more scrim would just bury the picture.
+    room = max(height * 0.40, content_bottom - content_top) - flourish_h - gap_flourish
+    if accent:
+        room -= gap_divider * 2
+
+    font, lines = fit_text(smart_quotes(entry["headline"]), "display", text_w,
+                           room * (0.66 if accent else 1.0),
+                           max_size=int(width * 0.088),
+                           min_size=int(width * 0.034))
+    afont = alines = None
+    if accent:
+        afont, alines = fit_text(accent, "display", text_w, room * 0.32,
+                                 max_size=int(width * 0.050),
+                                 min_size=int(width * 0.024))
+
+    block = flourish_h + gap_flourish + len(lines) * font.size * 1.16
+    if alines:
+        block += gap_divider * 2 + len(alines) * afont.size * 1.20
+
+    y = content_top + max(0.0, (content_bottom - content_top - block) / 2)
+
+    # Judged on the band the words will occupy, not on the whole upper half.
+    # A frame can average out pale while the strip carrying the accent line is
+    # a blown out sun, and that is exactly where the type used to vanish.
+    pale_sky = region_brightness(canvas, (0, y, width, y + block)) > 150
     if pale_sky:
         scrim, ink, accent_ink = brand.CREAM_LIGHT, brand.BROWN, brand.ROSE
         frame_colour, flourish_colour = brand.GOLD, brand.GOLD
@@ -833,33 +944,14 @@ def _layout_editorial(canvas: Image.Image, entry: dict[str, Any],
     canvas.alpha_composite(vertical_scrim((width, height), scrim,
                                           strength=0.55, extent=0.22))
 
+    # Then top both zones up until the ink genuinely separates from what is
+    # behind it. Usually a no-op - the gradients above are enough on calm sky.
+    seat_text(canvas, y, y + block, pale_sky, scrim)
+    seat_text(canvas, footer_top, height * 0.955, pale_sky, scrim, passes=2)
+
     draw_frame(canvas, colour=frame_colour, inset_ratio=0.048, opacity=120)
 
     draw = ImageDraw.Draw(canvas)
-    text_w = width * 0.78
-    left = (width - text_w) / 2
-
-    accent = smart_quotes(entry["accent"]) if entry.get("accent") else None
-    font, lines = fit_text(smart_quotes(entry["headline"]), "display", text_w,
-                           height * (0.20 if accent else 0.30),
-                           max_size=int(width * 0.088),
-                           min_size=int(width * 0.036))
-    afont = alines = None
-    if accent:
-        afont, alines = fit_text(accent, "display", text_w, height * 0.14,
-                                 max_size=int(width * 0.050),
-                                 min_size=int(width * 0.026))
-
-    flourish_w = width * 0.24
-    flourish_h = flourish_w * 0.16
-    gap_flourish = height * 0.042
-    gap_divider = height * 0.030
-
-    block = flourish_h + gap_flourish + len(lines) * font.size * 1.16
-    if alines:
-        block += gap_divider * 2 + len(alines) * afont.size * 1.20
-
-    y = content_top + max(0.0, (content_bottom - content_top - block) / 2)
 
     draw_flourish(canvas, width / 2, y + flourish_h / 2, flourish_w,
                   colour=flourish_colour, dot_colour=brand.ROSE_LIGHT)
