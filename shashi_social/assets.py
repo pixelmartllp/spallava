@@ -83,14 +83,29 @@ def load_logo(target_width: int, transparent: bool = True) -> Image.Image:
 
 
 def load_logo_fit(max_width: int, max_height: int,
-                  transparent: bool = True) -> Image.Image:
-    """Scale the logo to fit inside a box without distorting or overflowing."""
+                  transparent: bool = True, gain: float = 0.62) -> Image.Image:
+    """Scale the logo to fit inside a box without distorting or overflowing.
+
+    The mark is a hairline script inside a hairline gold ring. Shrunk to footer
+    size those strokes land on a fraction of a pixel, downsampling averages
+    them against the transparent background, and what should be a signature
+    fades to a smudge. So the alpha channel is pulled up by a gamma afterwards:
+    a stroke that survived at 40% opacity comes back to about 57%, which reads
+    as the same mark drawn confidently rather than a different, fainter one.
+    Colour is untouched - only how much of it actually lands.
+    """
     path = prepare_logo() if transparent else brand.LOGO_SOURCE
     img = Image.open(path).convert("RGBA")
     scale = min(max_width / img.width, max_height / img.height)
     size = (max(1, int(round(img.width * scale))),
             max(1, int(round(img.height * scale))))
-    return img.resize(size, Image.LANCZOS)
+    img = img.resize(size, Image.LANCZOS)
+
+    if gain < 1.0:
+        alpha = img.split()[3].point(
+            lambda v: int(round(255 * (v / 255) ** gain)))
+        img.putalpha(alpha)
+    return img
 
 
 def load_logo_mono(max_width: int, max_height: int,

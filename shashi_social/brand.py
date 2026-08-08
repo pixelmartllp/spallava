@@ -147,7 +147,7 @@ def font_report() -> dict[str, str]:
 # --------------------------------------------------------------------------
 
 BRAND_NAME = "Shashi Pallava"
-BRAND_TAGLINE = "Life  •  Relationship  •  Coach"
+BRAND_TAGLINE = "Life & Relationship Coach"
 BRAND_HANDLE = "@shashipallava"
 PAGE_URL = "https://www.facebook.com/shashipallava"
 

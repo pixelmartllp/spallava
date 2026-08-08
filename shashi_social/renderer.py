@@ -795,7 +795,7 @@ def _layout_center_overlay(canvas: Image.Image, entry: dict[str, Any],
                    line_spacing=1.20, align="center", box_width=text_w)
 
     draw_brand_footer(canvas, width / 2, footer_top + height * 0.020,
-                      height * 0.940, max_logo_width=width * 0.30)
+                      height * 0.945, max_logo_width=width * 0.42)
 
 
 def _layout_soft_band(canvas: Image.Image, entry: dict[str, Any],
@@ -886,7 +886,7 @@ def _layout_editorial(canvas: Image.Image, entry: dict[str, Any],
     calm = calm_extent(canvas)
     content_top = height * 0.090
     content_bottom = height * calm
-    footer_top = height * 0.845
+    footer_top = height * 0.782
 
     # The type is measured before anything is painted, because where the block
     # actually lands is what decides whether the picture underneath it needs
@@ -947,7 +947,7 @@ def _layout_editorial(canvas: Image.Image, entry: dict[str, Any],
     # Then top both zones up until the ink genuinely separates from what is
     # behind it. Usually a no-op - the gradients above are enough on calm sky.
     seat_text(canvas, y, y + block, pale_sky, scrim)
-    seat_text(canvas, footer_top, height * 0.955, pale_sky, scrim, passes=2)
+    seat_text(canvas, footer_top, height * 0.965, pale_sky, scrim, passes=2)
 
     draw_frame(canvas, colour=frame_colour, inset_ratio=0.048, opacity=120)
 
@@ -967,8 +967,8 @@ def _layout_editorial(canvas: Image.Image, entry: dict[str, Any],
         draw_lines(draw, alines, afont, left, y, accent_ink + (255,),
                    line_spacing=1.20, align="center", box_width=text_w)
 
-    draw_brand_footer(canvas, width / 2, footer_top, height * 0.955,
-                      max_logo_width=width * 0.26)
+    draw_brand_footer(canvas, width / 2, footer_top, height * 0.965,
+                      max_logo_width=width * 0.42)
 
 
 _LAYOUT_FUNCS = {
