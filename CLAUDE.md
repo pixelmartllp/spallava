@@ -1,8 +1,10 @@
 # CLAUDE.md — Shashi Pallava daily social pipeline
 
 Read this before touching anything in this repo. It exists because the same
-three things kept going wrong: the creatives came out in the old card style,
-the backgrounds were not real photographs, and the day did not auto-post.
+things kept going wrong: the creatives came out in the old card style, the
+backgrounds were not real photographs, and the day did not auto-post — and then,
+once real photographs went in, the type and the logo stopped reading on them.
+Every rule below is something that actually shipped wrong at least once.
 
 The owner is **Sanjeev** (@axisuv), writing for the **Shashi Pallava** life &
 relationship coaching brand — facebook.com/shashipallava and the linked
@@ -65,12 +67,62 @@ Pool size has to comfortably exceed the exclusion window.
 
 **History:** on 08 Aug 2026 the pool was 5 files covering only 2 themes, which
 is why 4 of 5 creatives on 07 Aug and 5 of 5 on 06 Aug came out in the old
-style. It was rebuilt that day to 27 files, 22 of them theme-neutral, all
-public-domain natural photography — see `assets/backgrounds/SOURCES.md` for
-provenance and the rules for adding more. Keep the neutral majority: it is what
-guarantees a photo is always available.
+style. It was rebuilt that day to **27 photographs — 21 theme-neutral, 6 locked**
+(`letting_go-01`, `relationships-01..05`), all public-domain natural
+photography. See `assets/backgrounds/SOURCES.md` for provenance and the rules
+for adding more. Keep the neutral majority: it is what guarantees a photo is
+always available.
 
-### 1.3 The day must actually post — verify, never assume
+Sourcing that actually works, if the pool ever needs topping up: **Wikimedia
+Commons**, filtered to CC0 / public-domain marks read from each file's own
+`extmetadata`, pulled through the API's `iiurlwidth` render. Two other routes
+were tried first and both failed on pixels, not taste — Openverse hands back a
+1024px derivative from most providers whatever the original size, and StockSnap's
+CDN returns 403. Commons throttles hard: keep downloads to ~4 concurrent with
+backoff, or most of them 429. A good slice of the usable results are the CC0
+Unsplash photographs mirrored onto Commons.
+
+Always **look at the candidates before shipping them** — a contact sheet cropped
+the way the renderer crops is the cheap way. That check is what caught a
+watermark, a person in a red jacket, an Angkor Wat silhouette and a vintage
+painting in this pool's own shortlist. Metadata will not tell you any of that.
+
+### 1.3 Type has to read on the photograph — and so does the logo
+
+Putting real pictures behind the words is what exposed both of these. Neither is
+a preference; both were shipped defects the owner spotted.
+
+**The scrim is measured, not assumed.** `_layout_editorial` now fits the type
+*before* anything is painted, picks its palette from the band the words actually
+occupy, and calls `seat_text()`, which deepens a feathered `band_scrim()` until
+the tail that fights the ink has separated. Three things there are load-bearing:
+
+- Judge the **band the text occupies**, not the whole upper frame. A frame can
+  average pale while the strip carrying the accent line is a blown-out sun.
+- Judge on a **percentile, not the mean** (`region_levels()`). A band of wheat
+  averages bright while every ear in it is mid-tone; a mean-based test passes
+  and the rose accent still lands on something too dark to read against.
+- The **accent line fails first** — it is smaller and lower contrast than the
+  headline. If you are eyeballing a creative, check the accent, not the
+  headline.
+
+Type is also fitted to the calm zone the photograph offers (`calm_extent()`), so
+a frame with a high treeline gets smaller type. That is deliberate: more scrim
+would bury the picture, which is the thing we went to real photography for.
+
+**The logo is sized by the footer band's height, not its width.** The mark is
+nearly square, so a short band binds on height — at the old 0.11-of-canvas band
+it rendered 98px wide on a 1080 canvas and simply vanished. `editorial` and
+`center_overlay` now give it a taller band (~215px). On top of that,
+`load_logo_fit()` lifts the alpha by a gamma after resizing: these are hairline
+strokes inside a hairline gold ring, they land on a fraction of a pixel once
+shrunk, and downsampling averages them against transparency. Colour is
+untouched — only how much of it lands.
+
+Judge both **at full size**. A contact sheet squeezed to 430px makes a perfectly
+good logo look faint, which will send you chasing a bug that is not there.
+
+### 1.4 The day must actually post — verify, never assume
 
 "Generated" is not "posted". The automation has three separate places where a
 day can die silently, and it has died in all three:
@@ -85,7 +137,13 @@ day can die silently, and it has died in all three:
   commit appears — so the failure leaves almost no trace in the repo.
 - **Graph API flakes.** The API returns a transient `code 1: please reduce the
   amount of data` often enough to lose a post most days; that is what the
-  11:41 IST retry pass is for.
+  repeated cutoff passes are for.
+
+The drift race is partly mitigated — since 08 Aug the publish side sweeps at
+13:53 and 16:47 IST as well, so a generate that lands after 11:41 still goes
+out the same day. The Drive-auth failure is **not** fixed and cannot be fixed
+from here: it needs the owner to paste a fresh local `rclone.conf` into the
+`RCLONE_CONF` GitHub secret.
 
 So: after any change, or any time the owner asks whether the day went out,
 **check the evidence**, do not read the workflow file and infer.
@@ -181,7 +239,11 @@ bare `python` on this machine hits the Microsoft Store stub and fails.
   `shashi_social/brand.py` — change them there, never inline in the renderer.
 - Canvas default `portrait` 1080×1350. Logo goes on bare (no white plate); the
   renderer picks the full-colour or cream monochrome mark from the measured
-  brightness behind it.
+  brightness behind it. See §1.3 before changing anything about its size.
+- Strapline is `BRAND_TAGLINE = "Life & Relationship Coach"` — one phrase, set
+  by the owner on 08 Aug 2026. Note the logo artwork already contains
+  "LIFE • RELATIONSHIP • COACH", so the line under it is a deliberate repeat.
+  He has been told; do not silently "fix" it.
 - Voice: warm, plain, second person, no jargon, no hard sell. Captions get a
   CTA plus up to 18 hashtags on Instagram, 5 on Facebook.
 - New quotes go in `content_bank.json` with a unique `id`, a `theme` from the
@@ -199,3 +261,29 @@ bare `python` on this machine hits the Microsoft Store stub and fails.
 - Ship the whole thing. If part is blocked (e.g. Drive token expired and only
   he can re-auth), finish everything else and name the blocked part precisely,
   with what he has to do.
+- He reviews on his phone, in Drive. Send him finished work, not options.
+
+---
+
+## 7. Where things stand (08 Aug 2026)
+
+Facts, so a later session does not have to re-derive them:
+
+- **Cadence: one creative a day**, live from 09 Aug. Set in
+  `generate-review.yml` — and note the number that matters is the run step's own
+  `$count` fallback, because the scheduled run passes no input. The dispatch
+  input default is only what a manual run sees. Both are `1`.
+- **Content bank**: 185 entries, 115 unused → ~115 days at one a day. The
+  rotation resets itself when the bank empties, so it never hard-fails.
+- **Backgrounds**: 27 photographs, 21 of them theme-neutral.
+- **08 Aug posted 5 creatives × 2 platforms**, all `ok`, published manually
+  after the day's scheduled windows had passed — the owner approved all five
+  explicitly. 06–07 Aug also went out; 30 Jul–04 Aug are failures in the ledger.
+- **Open, needs the owner**: the `RCLONE_CONF` GitHub secret. Drive works from
+  this machine; the cloud's copy is the prime suspect for 08 Aug posting
+  nothing on schedule (a 401 appears in the log on 06 Aug). If a day generates
+  but never posts, look there first.
+- Working scripts from the background-sourcing job live in the session
+  scratchpad, not the repo — `fetch_commons.py` (Commons + PD filter),
+  `sheet.py` (contact sheet), `install_bg.py` (resize, rename, write
+  SOURCES.md). Worth rewriting rather than hunting for.
