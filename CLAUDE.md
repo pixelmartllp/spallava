@@ -124,26 +124,37 @@ good logo look faint, which will send you chasing a bug that is not there.
 
 ### 1.4 The day must actually post — verify, never assume
 
-"Generated" is not "posted". The automation has three separate places where a
-day can die silently, and it has died in all three:
+"Generated" is not "posted". The automation has four separate places where a
+day can die, and it has died in all four:
 
+- **Meta credentials in the cloud.** This is what killed 09 Aug 2026: every
+  attempt, on both platforms, returned `OAuthException (code 190): Bad
+  signature` — the `META_ACCESS_TOKEN` GitHub secret held a token the Graph API
+  would not accept. Nothing about Drive or the renderer was wrong; the creative
+  generated, uploaded, was approved, downloaded, and only the post itself
+  failed. **A working local token proves nothing about the cloud** — the runner
+  never reads `config.json`, only the secrets.
 - **GitHub cron drift.** `generate-review.yml` asks for 08:07 IST but GitHub
-  regularly runs it 2–3 hours late. On 2026-08-08 it landed at 10:54 IST —
-  after the 10:08 publish run had already found `Pending` empty and exited
-  with "Nothing to post".
-- **Drive auth.** The rclone token in the `RCLONE_CONF` secret expires. When it
-  does, `review.probe()` raises and `daily_run.py` logs `NOT READY: … Error 401`
-  and returns 3. Nothing posts, and because no post was recorded, no state
-  commit appears — so the failure leaves almost no trace in the repo.
+  regularly runs it 2–3 hours late — 10:54 IST on 08 Aug, 11:05 on 09 Aug. On
+  08 Aug that put it after the 10:08 publish run, which found `Pending` empty
+  and exited with "Nothing to post".
+- **Drive auth.** The rclone token in the `RCLONE_CONF` secret can expire. When
+  it does, `review.probe()` raises and `daily_run.py` logs
+  `NOT READY: … Error 401` and returns 3. Nothing posts, and because no post was
+  recorded, no state commit appears — so this one leaves almost no trace in the
+  repo. Seen on 06 Aug; **not** the cause of 08 or 09 Aug.
 - **Graph API flakes.** The API returns a transient `code 1: please reduce the
   amount of data` often enough to lose a post most days; that is what the
   repeated cutoff passes are for.
 
 The drift race is partly mitigated — since 08 Aug the publish side sweeps at
 13:53 and 16:47 IST as well, so a generate that lands after 11:41 still goes
-out the same day. The Drive-auth failure is **not** fixed and cannot be fixed
-from here: it needs the owner to paste a fresh local `rclone.conf` into the
-`RCLONE_CONF` GitHub secret.
+out the same day.
+
+Telling these apart is the whole job, and the ledger does it for you: a `190`
+is credentials, a `401` in the log with no ledger rows at all is Drive, a
+`code 1` is a flake worth retrying. Read the error before naming a cause — on
+09 Aug the documented "prime suspect" here was `RCLONE_CONF`, and it was wrong.
 
 So: after any change, or any time the owner asks whether the day went out,
 **check the evidence**, do not read the workflow file and infer.
@@ -279,10 +290,16 @@ Facts, so a later session does not have to re-derive them:
 - **08 Aug posted 5 creatives × 2 platforms**, all `ok`, published manually
   after the day's scheduled windows had passed — the owner approved all five
   explicitly. 06–07 Aug also went out; 30 Jul–04 Aug are failures in the ledger.
-- **Open, needs the owner**: the `RCLONE_CONF` GitHub secret. Drive works from
-  this machine; the cloud's copy is the prime suspect for 08 Aug posting
-  nothing on schedule (a 401 appears in the log on 06 Aug). If a day generates
-  but never posts, look there first.
+- **09 Aug generated but did not post**: one creative (`q003`), approved in
+  Drive, six publish attempts, all `code 190: Bad signature`. The owner updated
+  the `META_ACCESS_TOKEN` secret on 10 Aug and the very next scheduled run
+  posted it to both platforms — 12 failed rows then 2 `ok` rows against the same
+  image, which is the cleanest proof available that the secret was the fault.
+  The local token is a SYSTEM_USER token that never expires, so if the cloud
+  fails this way again it is the secret's copy that is wrong, not the token.
+- **`gh` is not installed here**, so secrets cannot be set and workflow runs
+  cannot be triggered or read from this machine. The only way to confirm a
+  cloud fix is to wait for the next scheduled run and read the ledger.
 - Working scripts from the background-sourcing job live in the session
   scratchpad, not the repo — `fetch_commons.py` (Commons + PD filter),
   `sheet.py` (contact sheet), `install_bg.py` (resize, rename, write
