@@ -988,6 +988,27 @@
       "ok": false,
       "error": "OAuthException (code 190): Bad signature",
       "recorded_at": "2026-08-09T13:58:35+00:00"
+    },
+    {
+      "platform": "facebook",
+      "date": "2026-08-09",
+      "index": 1,
+      "image_path": "2026-08-09-01-q003.jpg",
+      "content_id": "q003",
+      "ok": true,
+      "post_id": "1102415836299269_122113815399378470",
+      "photo_id": "122113815375378470",
+      "recorded_at": "2026-08-10T05:07:59+00:00"
+    },
+    {
+      "platform": "instagram",
+      "date": "2026-08-09",
+      "index": 1,
+      "image_path": "2026-08-09-01-q003.jpg",
+      "content_id": "q003",
+      "ok": true,
+      "media_id": "18117079117908077",
+      "recorded_at": "2026-08-10T05:07:59+00:00"
     }
   ]
 }
