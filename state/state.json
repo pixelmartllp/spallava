@@ -1080,6 +1080,27 @@
       "ok": true,
       "media_id": "18108882185065078",
       "recorded_at": "2026-08-12T09:46:03+00:00"
+    },
+    {
+      "platform": "facebook",
+      "date": "2026-08-13",
+      "index": 1,
+      "image_path": "2026-08-13-01-q062.jpg",
+      "content_id": "q062",
+      "ok": true,
+      "post_id": "1102415836299269_122114433489378470",
+      "photo_id": "122114433441378470",
+      "recorded_at": "2026-08-13T09:46:02+00:00"
+    },
+    {
+      "platform": "instagram",
+      "date": "2026-08-13",
+      "index": 1,
+      "image_path": "2026-08-13-01-q062.jpg",
+      "content_id": "q062",
+      "ok": true,
+      "media_id": "18451868746191114",
+      "recorded_at": "2026-08-13T09:46:02+00:00"
     }
   ]
 }
