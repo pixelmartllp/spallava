@@ -999,6 +999,54 @@ def choose_layout(entry: dict[str, Any], rng: random.Random,
 # Entry point
 # --------------------------------------------------------------------------
 
+def draw_watermark(canvas: Image.Image) -> None:
+    """Lay the handle faintly across the centre of the canvas.
+
+    Two things keep it from fighting the quote. It is drawn straight onto a
+    fully transparent layer at a low alpha, so it never darkens the picture the
+    way a scrim would; and its colour is picked from what is actually behind it
+    - cream on a dusk photograph, brown on a pencil sketch - because a single
+    fixed colour disappears on half the pool.
+    """
+    width, height = canvas.size
+    size = max(12, int(width * 0.052))
+    font = get_font("display", size)
+
+    text = brand.BRAND_WATERMARK
+    # Letter-spaced by hand: PIL has no tracking, and set solid at this size
+    # the handle reads as a title rather than as a watermark.
+    tracking = size * 0.14
+    widths = [font.getlength(ch) for ch in text]
+    total = sum(widths) + tracking * (len(text) - 1)
+
+    centre_y = height / 2
+    dark, light = region_levels(canvas, (0, centre_y - size, width,
+                                         centre_y + size))
+    # Mid-grey is the one place either colour is equally weak; bias to cream
+    # there, which is what the rest of the type does on a busy frame.
+    pale_ground = (dark + light) / 2 > 150
+    colour = brand.BROWN if pale_ground else brand.CREAM_LIGHT
+    halo = brand.CREAM_LIGHT if pale_ground else brand.BROWN
+
+    # One colour is never enough: the centre of a frame is exactly where a
+    # figure's dark hair meets pale mist, and a single cream mark vanishes on
+    # one and shouts on the other. A faint halo of the opposite tone under the
+    # letters keeps it evenly legible without making it any heavier.
+    offset = max(1, int(size * 0.03))
+    layer = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
+    draw = ImageDraw.Draw(layer)
+    for dx, dy, fill in ((-offset, -offset, halo + (42,)),
+                         (offset, offset, halo + (42,)),
+                         (0, 0, colour + (92,))):
+        x = (width - total) / 2
+        for ch, advance in zip(text, widths):
+            draw.text((x + dx, centre_y + dy), ch, font=font, fill=fill,
+                      anchor="lm")
+            x += advance + tracking
+
+    canvas.alpha_composite(layer)
+
+
 def render(entry: dict[str, Any], out_path: Path,
            canvas_name: str = brand.DEFAULT_CANVAS,
            layout: str | None = None, seed: str | None = None,
@@ -1025,6 +1073,12 @@ def render(entry: dict[str, Any], out_path: Path,
     if layout not in _LAYOUT_FUNCS:
         raise ValueError(f"Unknown layout {layout!r}. "
                          f"Choose from {sorted(_LAYOUT_FUNCS)}")
+    # Before the layout, not after: at the centre of the canvas the handle
+    # would otherwise cross the accent line and the divider, and a watermark
+    # printed over the words reads as a mistake rather than as a mark. Going
+    # first costs it some strength under the scrim, which draw_watermark
+    # allows for.
+    draw_watermark(canvas)
     _LAYOUT_FUNCS[layout](canvas, entry, rng, has_photo)
 
     out_path.parent.mkdir(parents=True, exist_ok=True)

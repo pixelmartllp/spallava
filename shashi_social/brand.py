@@ -153,7 +153,15 @@ def font_report() -> dict[str, str]:
 
 BRAND_NAME = "Shashi Pallava"
 BRAND_TAGLINE = "Life & Relationship Coach"
+
 BRAND_HANDLE = "@shashipallava"
+
+# The same handle set the way the owner writes it, for the faint mark across
+# the middle of every creative - so a screenshot that gets cropped or reshared
+# still carries it. Separate from BRAND_HANDLE because that one is an actual
+# @mention in captions and has to match the account exactly; this one is
+# lettering. Deliberately quiet: a watermark, not a second logo.
+BRAND_WATERMARK = "@ShashiPallava"
 PAGE_URL = "https://www.facebook.com/shashipallava"
 
 

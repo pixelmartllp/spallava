@@ -312,6 +312,21 @@ bare `python` on this machine hits the Microsoft Store stub and fails.
 
 - Palette, fonts, canvas sizes and the strapline all live in
   `shashi_social/brand.py` — change them there, never inline in the renderer.
+- **The brand fonts now ship in the repo.** `brand.py` had always named
+  Playfair Display and Montserrat, but `assets/fonts/` was empty, so every
+  creative up to 27 Aug 2026 silently rendered in the Windows fallbacks
+  (Constantia + Segoe UI) — which is what the owner meant by "font brand ke
+  according ho". Five static instances cut from the Google Fonts variable
+  files now sit in `assets/fonts/` with their OFL licences. Check
+  `brand.font_report()` after touching anything here; it prints the concrete
+  file each role resolves to, and a silent fallback looks fine until you read
+  that output.
+- Two handles, deliberately: `BRAND_HANDLE` (`@shashipallava`) is a real
+  @mention in captions and must match the account exactly. `BRAND_WATERMARK`
+  (`@ShashiPallava`) is lettering — the faint letter-spaced mark
+  `draw_watermark()` lays across the centre of every creative, drawn *before*
+  the layout so the quote prints over it rather than under it, with a halo of
+  the opposite tone so it survives both a dark photograph and a cream sketch.
 - Canvas default `portrait` 1080×1350. Logo goes on bare (no white plate); the
   renderer picks the full-colour or cream monochrome mark from the measured
   brightness behind it. See §1.3 before changing anything about its size.
