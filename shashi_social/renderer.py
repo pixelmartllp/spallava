@@ -1059,6 +1059,7 @@ def render(entry: dict[str, Any], out_path: Path,
 
     seed = seed or entry["id"]
     rng = random.Random(seed)
+    explicit_layout = layout is not None
 
     # A bullet list needs a solid card to sit on, and a card big enough for
     # four lines leaves so little of a photograph showing that the photo reads
@@ -1070,6 +1071,18 @@ def render(entry: dict[str, Any], out_path: Path,
     has_photo = source != "generated"
 
     layout = layout or choose_layout(entry, rng, has_photo)
+
+    # center_overlay lays brand.INK over the whole frame and then sets the
+    # quote in light type - it assumes a dusk photograph, and on a pencil
+    # sketch it washes the cream paper to grey and throws the drawing away.
+    # _layout_editorial measures what is behind the words and picks its ink to
+    # match, so a pale picture goes there instead. Only skip this when the
+    # caller named the layout itself.
+    if layout == "center_overlay" and not explicit_layout:
+        dark, light = region_levels(canvas, (0, 0, size[0], size[1]))
+        if (dark + light) / 2 > 150:
+            layout = "editorial"
+
     if layout not in _LAYOUT_FUNCS:
         raise ValueError(f"Unknown layout {layout!r}. "
                          f"Choose from {sorted(_LAYOUT_FUNCS)}")
