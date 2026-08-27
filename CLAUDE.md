@@ -171,10 +171,16 @@ day can die, and it has died in all four:
   generated, uploaded, was approved, downloaded, and only the post itself
   failed. **A working local token proves nothing about the cloud** — the runner
   never reads `config.json`, only the secrets.
-- **GitHub cron drift.** `generate-review.yml` asks for 08:07 IST but GitHub
-  regularly runs it 2–3 hours late — 10:54 IST on 08 Aug, 11:05 on 09 Aug. On
-  08 Aug that put it after the 10:08 publish run, which found `Pending` empty
-  and exited with "Nothing to post".
+- **GitHub cron drift — and outright no-shows.** `generate-review.yml` asks for
+  08:07 IST but GitHub regularly runs it 2–3 hours late — 10:54 IST on 08 Aug,
+  11:05 on 09 Aug. On 08 Aug that put it after the 10:08 publish run, which
+  found `Pending` empty and exited with "Nothing to post". Worse, the runs can
+  simply never fire: on **27 Aug 2026 not one of the six scheduled runs
+  happened all day** — no generate, and none of the five publish sweeps. The
+  workflows were still `state: active`, nothing in the repo was wrong, and
+  GitHub's own docs allow scheduled runs to be delayed or dropped under load.
+  Treat "the day is quiet" as a possible cause in its own right, and check the
+  run list before blaming credentials or Drive.
 - **Drive auth.** The rclone token in the `RCLONE_CONF` secret can expire. When
   it does, `review.probe()` raises and `daily_run.py` logs
   `NOT READY: … Error 401` and returns 3. Nothing posts, and because no post was
@@ -245,9 +251,24 @@ Pass = a publish-state commit exists, `ok: true` rows exist for both platforms,
 and every `background` is a real filename. Anything else is a failure — say so
 plainly and name which of the three stages broke.
 
-`gh` is not installed on this machine, so Actions logs are not readable from
-here. If a run's outcome cannot be established from the repo, say that instead
-of guessing.
+`gh` is not installed on this machine, but **the repo is public, so the GitHub
+REST API answers without a token** — this is the fastest way to tell "the run
+failed" from "the run never happened", and it was how 27 Aug 2026 was
+diagnosed:
+
+```bash
+curl -sS "https://api.github.com/repos/pixelmartllp/spallava/actions/runs?per_page=12"
+curl -sS "https://api.github.com/repos/pixelmartllp/spallava/actions/workflows"
+```
+
+The first gives each run's `run_started_at`, `event`, `status` and
+`conclusion`; the second gives each workflow's `state`, which is how you rule
+out GitHub having disabled a schedule for inactivity. Per-step *logs* still
+need auth, so a run that failed internally may still be opaque — say so rather
+than guessing.
+
+(The repo being public is fine for secrets: `config.json` is gitignored and
+`state/state.json` carries no credentials. Keep it that way.)
 
 ---
 
