@@ -3,15 +3,15 @@
 Used by Windows Task Scheduler. Generation is always safe to run; publishing
 requires --confirm so a mis-scheduled task can never post by accident.
 
-    python daily_run.py generate --count 5
+    python daily_run.py generate --count 1
     python daily_run.py publish --confirm
-    python daily_run.py auto --count 5 --confirm
+    python daily_run.py auto --count 1 --confirm
     python daily_run.py status
 
 The cloud uses the Drive review flow instead - generate into 'Pending', post
 only what a human moved into 'Approved':
 
-    python daily_run.py review --count 5
+    python daily_run.py review --count 1
     python daily_run.py publish-approved --confirm
     python daily_run.py drive-check
 """
@@ -288,7 +288,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     gen = sub.add_parser("generate", help="Render the day's creatives")
     add_common(gen)
-    gen.add_argument("--count", type=int, default=5)
+    gen.add_argument("--count", type=int, default=1)
     gen.add_argument("--canvas", default="portrait",
                      choices=sorted(brand.CANVAS))
     gen.add_argument("--theme", default=None)
@@ -308,7 +308,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     auto = sub.add_parser("auto", help="Generate then publish in one run")
     add_common(auto)
-    auto.add_argument("--count", type=int, default=5)
+    auto.add_argument("--count", type=int, default=1)
     auto.add_argument("--canvas", default="portrait", choices=sorted(brand.CANVAS))
     auto.add_argument("--theme", default=None)
     auto.add_argument("--overwrite", action="store_true")
@@ -323,7 +323,7 @@ def build_parser() -> argparse.ArgumentParser:
     rev = sub.add_parser("review",
                          help="Render the day and upload it to Drive 'Pending'")
     add_common(rev)
-    rev.add_argument("--count", type=int, default=5)
+    rev.add_argument("--count", type=int, default=1)
     rev.add_argument("--canvas", default="portrait", choices=sorted(brand.CANVAS))
     rev.add_argument("--theme", default=None)
     rev.add_argument("--overwrite", action="store_true")

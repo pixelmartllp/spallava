@@ -380,10 +380,15 @@ bare `python` on this machine hits the Microsoft Store stub and fails.
 
 Facts, so a later session does not have to re-derive them:
 
-- **Cadence: one creative a day**, live from 09 Aug. Set in
-  `generate-review.yml` — and note the number that matters is the run step's own
-  `$count` fallback, because the scheduled run passes no input. The dispatch
-  input default is only what a manual run sees. Both are `1`.
+- **Cadence: one creative a day**, live from 09 Aug, restated by the owner on
+  27 Aug. `generate-review.yml` was already right — and note the number that
+  matters there is the run step's own `$count` fallback, because the scheduled
+  run passes no input; the dispatch input default is only what a manual run
+  sees. But **every other default was still `5`** — `daily.yml`, all three
+  `daily_run.py` subcommands, `pipeline.generate_day()` and the
+  `generate_daily_creatives` MCP tool — so any manual or MCP run made five.
+  All of them are `1` now. If the cadence ever changes, change it in all six
+  places or they will disagree again.
 - **Content bank**: 185 entries, 115 unused → ~115 days at one a day. The
   rotation resets itself when the bank empties, so it never hard-fails.
 - **Backgrounds**: 27 photographs, 21 of them theme-neutral.

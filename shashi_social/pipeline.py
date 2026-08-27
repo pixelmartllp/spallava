@@ -71,7 +71,7 @@ def list_batches() -> list[str]:
 # Generation
 # --------------------------------------------------------------------------
 
-def generate_day(count: int = 5, day: str | None = None,
+def generate_day(count: int = 1, day: str | None = None,
                  canvas: str = brand.DEFAULT_CANVAS,
                  theme: str | None = None,
                  layout: str | None = None,

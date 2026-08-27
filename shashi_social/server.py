@@ -188,13 +188,13 @@ def add_content_entry(headline: str, theme: str, caption: str,
 # --------------------------------------------------------------------------
 
 @mcp.tool()
-def generate_daily_creatives(count: int = 5, date: str = "",
+def generate_daily_creatives(count: int = 1, date: str = "",
                              theme: str = "", canvas: str = "portrait",
                              layout: str = "", overwrite: bool = False) -> str:
     """Generate the day's creatives with the logo applied. Does not publish.
 
     Args:
-        count: How many creatives to make (default 5).
+        count: How many creatives to make (default 1).
         date: YYYY-MM-DD. Defaults to today.
         theme: Restrict to one theme. Empty means a mixed batch.
         canvas: portrait (1080x1350), square, or story.

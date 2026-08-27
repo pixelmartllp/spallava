@@ -17,7 +17,7 @@ on:
       count:
         description: 'How many creatives to make'
         required: false
-        default: '5'
+        default: '1'
       dry_run:
         description: 'Generate only - download the artifact, post nothing'
         type: boolean
@@ -61,7 +61,7 @@ jobs:
           META_API_VERSION: v25.0
         run: |
           $count = '${{ inputs.count }}'
-          if ([string]::IsNullOrWhiteSpace($count)) { $count = '5' }
+          if ([string]::IsNullOrWhiteSpace($count)) { $count = '1' }
 
           if ('${{ inputs.retry_only }}' -eq 'true') {
             # Generates nothing; the per-image guard means only the creatives
