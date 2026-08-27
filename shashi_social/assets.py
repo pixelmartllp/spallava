@@ -127,13 +127,22 @@ def load_logo_mono(max_width: int, max_height: int,
 # --------------------------------------------------------------------------
 
 def list_backgrounds() -> list[Path]:
-    """Every usable photo in the background pool, sorted for stable ordering."""
-    if not brand.BACKGROUND_DIR.is_dir():
-        return []
-    return sorted(
-        p for p in brand.BACKGROUND_DIR.iterdir()
-        if p.is_file() and p.suffix.lower() in PHOTO_SUFFIXES
-    )
+    """Every usable image in the pool, sorted for stable ordering.
+
+    Two directories feed it: the commissioned artwork (figures seen from
+    behind, the look the brand actually wants) and the older plain nature
+    photographs, which stay as a safety net so a day can never be left with
+    nothing to render on.
+    """
+    found: list[Path] = []
+    for directory in (brand.ARTWORK_DIR, brand.BACKGROUND_DIR):
+        if not directory.is_dir():
+            continue
+        found.extend(
+            p for p in directory.iterdir()
+            if p.is_file() and p.suffix.lower() in PHOTO_SUFFIXES
+        )
+    return sorted(found, key=lambda p: (p.parent.name, p.name))
 
 
 def cover_crop(img: Image.Image, size: tuple[int, int]) -> Image.Image:
@@ -570,12 +579,22 @@ def get_background(size: tuple[int, int], seed: str,
     eligible = [] if not allow_photo else [
         p for p in list_backgrounds() if photo_theme(p) in (None, theme)]
 
-    # Skipping recently used photos is a nice-to-have; a real photograph is a
+    # The commissioned artwork is the look the brand asked for - a figure seen
+    # from behind, matched to the quote. The plain nature photographs are the
+    # older stock and only stand in when the artwork pool has nothing fresh,
+    # which it will while the pool is still being built out.
+    artwork = [p for p in eligible if p.parent.name == brand.ARTWORK_DIR.name]
+    plain = [p for p in eligible if p.parent.name != brand.ARTWORK_DIR.name]
+
+    # Skipping recently used images is a nice-to-have; a real picture is a
     # requirement. Filtering first and asking "is anything left?" second meant
     # a full recent window read exactly like an empty pool, and the day fell
     # through to a generated scene - which is how every creative from 15 to
-    # 26 Aug 2026 shipped in the old card look. Repeat a photo instead.
-    pool = [p for p in eligible if p.name not in exclude] or eligible
+    # 26 Aug 2026 shipped in the old card look. Take the repeat instead.
+    def _fresh(group: list[Path]) -> list[Path]:
+        return [p for p in group if p.name not in exclude]
+
+    pool = _fresh(artwork) or _fresh(plain) or artwork or plain
 
     if pool:
         rng = _seeded_rng(seed)

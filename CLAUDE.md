@@ -18,19 +18,37 @@ about what actually happened, not what the code intends to happen.
 These are decisions the owner has already made and repeated. Treat them as
 requirements, not preferences.
 
-### 1.1 Backgrounds must be real, natural, live photography — and must not show faces
+### 1.1 A figure seen from behind, in the quote's own scene — and never a face
 
-Every background is a photograph of the real world: light, water, sky, leaves,
-mist, sand, stone, fabric, a window, a horizon. "Live natural" means an actual
-photo, not a drawn or generated scene.
+**Updated 27 Aug 2026. This supersedes the old "empty nature photograph only"
+rule; do not revert it.** The owner sent four references and asked for
+creatives that are "energetic, natural and paintings type", each day different
+so the feed stays fresh. What he pointed at was a person *in* the picture —
+a woman at a lake, a couple walking away, someone at a crossroads — carrying
+the feeling of the quote.
 
-**No human faces. Ever.** No identifiable person, no couple facing camera, no
-portrait. A silhouette, a back-of-head at distance, or hands are acceptable
-only if no face is readable. The brand's authority comes from the words and the
-logo; a stock face makes it look like a stock post.
+So the picture should show **men, women or a couple as the quote calls for,
+always seen from behind or otherwise turned away**. Two styles, chosen by him:
 
-Also out: text baked into the photo, watermarks, logos of other brands,
-recognisable landmarks, anything AI-obviously-generated.
+- **natural photograph** — warm, real light, documentary feel
+- **pen-and-ink or pencil sketch** — hand-drawn on cream paper
+
+He also asked for watercolour. The model available reliably returns a
+photograph when asked for watercolour, and he has said **drop it** rather than
+hold the work up. Do not re-add it without asking.
+
+**No readable face. Ever.** Backs, silhouettes, hands, a head turned away are
+the whole vocabulary. The moment a face is legible the post looks like stock,
+and the brand's authority comes from the words and the logo. Check every new
+piece by eye before it goes in the pool — a prompt saying "face not visible" is
+not evidence that the face is not visible.
+
+Also out: text baked into the picture, watermarks, other brands' logos,
+recognisable landmarks, visibly broken hands or limbs.
+
+Empty nature photographs (`assets/backgrounds/`) are no longer the target look.
+They stay as a **safety net** and `get_background()` only reaches for them when
+the artwork pool has nothing fresh — see §1.5.
 
 The synthetic scenes in `shashi_social/assets.py` (`procedural_background`,
 `THEME_SCENES`, `_scene_dawn`, `_botanical`, …) are a **fallback only**. They
@@ -177,6 +195,33 @@ is credentials, a `401` in the log with no ledger rows at all is Drive, a
 
 So: after any change, or any time the owner asks whether the day went out,
 **check the evidence**, do not read the workflow file and infer.
+
+### 1.5 The artwork pool, and how it gets topped up
+
+`assets/artwork/` is the commissioned pool: `photo-*` and `sketch-*`, figures
+seen from behind. `assets/backgrounds/` is the old empty-nature stock, kept
+only as a fallback. `list_backgrounds()` reads both; `get_background()` prefers
+fresh artwork, then fresh fallback, then repeats artwork, then repeats
+fallback, and only synthesises a scene when there is genuinely nothing.
+
+Pieces are generated through the Higgsfield MCP, model `z_image`, aspect `3:4`
+(the renderer's `cover_crop` handles 3:4 → 4:5), **0.15 credits each**. Two
+limits bind, and the second is the one that actually hurts:
+
+- credits — 10.65 left on 27 Aug 2026, so ~70 more pieces
+- **a daily generation cap of about 5 images** on his `plus` plan while it is
+  in "grace period". Everything past that returns *"You've reached the daily
+  generation limit for your grace period."*
+
+The owner's instruction on 27 Aug: **top the pool up every day within whatever
+the cap allows, and never let posting stall waiting for it.** So each session,
+generate what the cap permits, eyeball the results, install the good ones, and
+carry on. Consumption is one a day; adding even three a day outruns it.
+
+Prompts that worked: name the style, the subject and that the **face is
+completely hidden and not visible**, ask for generous calm space at the top for
+the type, and end with "no text, no words, no lettering, no watermark, no
+signature". Name the theme's feeling rather than the quote itself.
 
 ---
 

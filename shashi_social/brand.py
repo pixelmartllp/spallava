@@ -14,6 +14,11 @@ ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "assets"
 FONT_DIR = ASSETS / "fonts"
 BACKGROUND_DIR = ASSETS / "backgrounds"
+# The commissioned pool: figures seen from behind with no readable face, in
+# natural-photograph and pen/pencil-sketch styles. Kept apart from
+# backgrounds/ because a sketch on cream paper needs dark type, where a
+# photograph needs light - see renderer.artwork_is_light().
+ARTWORK_DIR = ASSETS / "artwork"
 OUTPUT_DIR = ROOT / "output"
 STATE_DIR = ROOT / "state"
 
@@ -154,5 +159,6 @@ PAGE_URL = "https://www.facebook.com/shashipallava"
 
 def ensure_dirs() -> None:
     """Create the directory layout the pipeline expects."""
-    for directory in (ASSETS, FONT_DIR, BACKGROUND_DIR, OUTPUT_DIR, STATE_DIR):
+    for directory in (ASSETS, FONT_DIR, BACKGROUND_DIR, ARTWORK_DIR,
+                      OUTPUT_DIR, STATE_DIR):
         directory.mkdir(parents=True, exist_ok=True)
