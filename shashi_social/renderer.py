@@ -1009,7 +1009,7 @@ def draw_watermark(canvas: Image.Image) -> None:
     fixed colour disappears on half the pool.
     """
     width, height = canvas.size
-    size = max(12, int(width * 0.052))
+    size = max(10, int(width * 0.030))
     font = get_font("display", size)
 
     text = brand.BRAND_WATERMARK
