@@ -87,10 +87,10 @@
     "q154",
     "q151",
     "q123",
-    "q160"
+    "q160",
+    "q090"
   ],
   "used_backgrounds": [
-    "sprig-01.jpg",
     "leaf-01.jpg",
     "leaf-03.jpg",
     "still-01.jpg",
@@ -99,7 +99,8 @@
     "shore-01.jpg",
     "light-01.jpg",
     "water-02.jpg",
-    "horizon-01.jpg"
+    "horizon-01.jpg",
+    "still-02.jpg"
   ],
   "posts": [
     {
