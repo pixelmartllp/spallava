@@ -60,10 +60,29 @@ Two known traps that silently produce the old look:
   so any quote with a `bullets` list is *forced* onto `arch_card` with a
   generated background. If bullet entries keep landing in the daily batch,
   that is a source of old-look creatives — raise it rather than shipping it.
+- **The recent-photo exclusion window eating the pool.** This note used to only
+  warn about this. Then it happened. `state.recent_backgrounds()` excludes
+  recently used photos so consecutive days do not look identical, and
+  `get_background()` used to filter the pool by that list and only *then* ask
+  "is anything left?" — so
+  a full window read exactly like an empty pool and the day fell through to a
+  generated scene. With `keep_last=25` against 21 theme-neutral photographs,
+  one creative a day guaranteed starvation in three weeks. **Every creative
+  from 15 to 26 Aug 2026 — twelve days — shipped in the old card look because
+  of this**, and each one posted to both platforms.
 
-Also: `state.recent_backgrounds()` excludes recently used photos. With a pool
-of five, exclusion can empty the pool and drop everything back to generated.
-Pool size has to comfortably exceed the exclusion window.
+  Fixed on 27 Aug 2026 in two places, and both matter:
+  - `get_background()` now builds the theme-eligible list first and only
+    applies the exclusion if something survives it (`pool = [...] or eligible`).
+    Skipping a repeat is a nice-to-have; a real photograph is a requirement, so
+    exclusion can never again be the reason a day loses its photo.
+  - the window is now derived from the pool on disk — `assets.recent_window()`
+    returns `max(3, neutral_photos // 2)` (10 today), and `pipeline` passes it
+    to `state.mark_background_used()`. The old 25 was a bare constant larger
+    than the pool it was filtering.
+
+  If you ever raise the window or shrink the photo pool, check the two numbers
+  against each other. `assets.recent_window()` keeps them tied automatically.
 
 **History:** on 08 Aug 2026 the pool was 5 files covering only 2 themes, which
 is why 4 of 5 creatives on 07 Aug and 5 of 5 on 06 Aug came out in the old

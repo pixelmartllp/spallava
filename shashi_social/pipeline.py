@@ -16,7 +16,7 @@ from typing import Any
 
 from PIL import Image as PILImage
 
-from . import brand, content, meta_api, renderer, state
+from . import assets, brand, content, meta_api, renderer, state
 
 MANIFEST_NAME = "batch.json"
 PLATFORMS = ("facebook", "instagram")
@@ -119,7 +119,8 @@ def generate_day(count: int = 5, day: str | None = None,
 
     state.mark_content_used([e["id"] for e in entries])
     if used_backgrounds:
-        state.mark_background_used(used_backgrounds)
+        state.mark_background_used(used_backgrounds,
+                                   keep_last=assets.recent_window())
 
     batch = {
         "date": day,

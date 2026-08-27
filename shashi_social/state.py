@@ -68,8 +68,15 @@ def reset_content_rotation() -> None:
     save(data)
 
 
-def mark_background_used(names: list[str], keep_last: int = 25) -> None:
-    """Remember recent backgrounds so consecutive days do not look identical."""
+def mark_background_used(names: list[str], keep_last: int = 10) -> None:
+    """Remember recent backgrounds so consecutive days do not look identical.
+
+    `keep_last` must stay well under the number of photos a theme can draw on.
+    The old default of 25 was larger than the 21 theme-neutral photographs in
+    the pool, so after three weeks of one-a-day the window held every usable
+    photo and every creative fell back to a generated scene. Callers should
+    pass `assets.recent_window()`, which derives it from the pool on disk.
+    """
     data = load()
     used = [n for n in data["used_backgrounds"] if n not in names]
     used.extend(names)

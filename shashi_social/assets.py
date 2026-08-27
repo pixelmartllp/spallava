@@ -542,6 +542,18 @@ def photo_theme(path: Path) -> str | None:
     return prefix if prefix in THEME_SCENES else None
 
 
+def recent_window() -> int:
+    """How many recently used photos `state` should keep excluding.
+
+    This has to stay comfortably under the number of photos a single theme can
+    actually draw on, or the exclusion list eats the pool. A theme with no
+    photograph of its own draws only on the theme-neutral ones, so that count
+    is what binds - not the total on disk.
+    """
+    neutral = sum(1 for p in list_backgrounds() if photo_theme(p) is None)
+    return max(3, neutral // 2)
+
+
 def get_background(size: tuple[int, int], seed: str,
                    exclude: set[str] | None = None,
                    theme: str | None = None,
@@ -551,13 +563,19 @@ def get_background(size: tuple[int, int], seed: str,
     Returns the image plus a short source label for logging.
     """
     exclude = exclude or set()
-    pool = [] if not allow_photo else [
-        p for p in list_backgrounds() if p.name not in exclude]
 
     # A photo of a couple at sunset behind an anxiety quote reads as a mistake,
     # so a theme with no photo of its own gets its generated scene instead of
     # borrowing someone else's.
-    pool = [p for p in pool if photo_theme(p) in (None, theme)]
+    eligible = [] if not allow_photo else [
+        p for p in list_backgrounds() if photo_theme(p) in (None, theme)]
+
+    # Skipping recently used photos is a nice-to-have; a real photograph is a
+    # requirement. Filtering first and asking "is anything left?" second meant
+    # a full recent window read exactly like an empty pool, and the day fell
+    # through to a generated scene - which is how every creative from 15 to
+    # 26 Aug 2026 shipped in the old card look. Repeat a photo instead.
+    pool = [p for p in eligible if p.name not in exclude] or eligible
 
     if pool:
         rng = _seeded_rng(seed)
