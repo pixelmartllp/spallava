@@ -12,6 +12,11 @@ from . import brand, state
 BANK_FILE = brand.ROOT / "content_bank.json"
 
 MAX_HASHTAGS = 18
+
+# The bank no longer recycles used quotes, so it can genuinely run out. Shout
+# with a fortnight's warning rather than on the morning it breaks - topping the
+# bank up is a writing job, and the owner needs notice to do it.
+LOW_BANK_WARNING = 14
 CTA_LINES = [
     "Book a 1:1 session - link in bio.",
     "Follow @shashipallava for daily clarity.",
@@ -22,6 +27,13 @@ CTA_LINES = [
 
 class ContentBankError(RuntimeError):
     pass
+
+
+def log_low_bank(remaining: int) -> None:
+    """Warn on stdout, which is where the GitHub Actions log picks it up."""
+    print(f"WARNING: only {remaining} unused quotes left in the content bank. "
+          f"At one creative a day that is {remaining} days. Add more to "
+          f"content_bank.json before it runs dry.", flush=True)
 
 
 def load_bank() -> dict[str, Any]:
@@ -71,10 +83,13 @@ def bank_stats() -> dict[str, Any]:
 def select(count: int, theme: str | None = None,
            seed: str | None = None,
            allow_repeats: bool = False) -> list[dict[str, Any]]:
-    """Pick `count` entries, preferring ones that have not been used yet.
+    """Pick `count` entries that have not been used before.
 
-    The rotation resets automatically once the bank is exhausted, so a daily
-    job never fails just because it ran out of fresh quotes.
+    The rotation used to reset itself once the bank ran dry, so the daily job
+    could never fail - but that also meant quotes silently came round again.
+    The owner's rule is that a quote never repeats, so an exhausted bank is now
+    a loud failure instead: better a missing day he can fix than a repeat he
+    only notices in the feed. `allow_repeats=True` is the deliberate override.
     """
     bank = load_bank()
     entries = [e for e in bank["entries"]
@@ -86,10 +101,16 @@ def select(count: int, theme: str | None = None,
     fresh = [e for e in entries if e["id"] not in used]
 
     if len(fresh) < count:
-        # Bank exhausted for this filter - start the rotation over.
-        if theme is None and not allow_repeats:
-            state.reset_content_rotation()
-        fresh = fresh + [e for e in entries if e["id"] in used]
+        raise ContentBankError(
+            f"Only {len(fresh)} unused entries left"
+            + (f" for theme {theme!r}" if theme else "")
+            + f", need {count}. Add new quotes to content_bank.json - the "
+            f"rotation no longer recycles used ones, because a repeat in the "
+            f"feed is worse than a day that did not go out."
+        )
+
+    if len(fresh) <= LOW_BANK_WARNING:
+        log_low_bank(len(fresh))
 
     rng = random.Random(seed) if seed else random.Random()
     rng.shuffle(fresh)
