@@ -95,10 +95,10 @@
     "q143",
     "q184",
     "q145",
-    "q077"
+    "q077",
+    "q088"
   ],
   "used_backgrounds": [
-    "dawn-03.jpg",
     "shore-01.jpg",
     "light-01.jpg",
     "water-02.jpg",
@@ -110,7 +110,8 @@
     "sketch-man-window-01.jpg",
     "sketch-woman-crossroads-01.jpg",
     "grass-03.jpg",
-    "leaf-03.jpg"
+    "leaf-03.jpg",
+    "grass-01.jpg"
   ],
   "posts": [
     {
