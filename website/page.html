@@ -1,0 +1,673 @@
+<style>body{margin:0;background:#0A0A0B}.wp-site-blocks,.wp-site-blocks>*{margin:0!important;padding:0!important;max-width:none!important}:where(.is-layout-constrained)>*{max-width:none!important;margin-inline:0!important}</style>
+<div class="sp"><script>var _sp=document.currentScript.parentNode;_sp.classList.add("js");setTimeout(function(){if(!window.__spAlive){_sp.classList.remove("js");}},2000);</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap">
+<style>
+/* ============================================================
+   Structure and palette follow the reference the owner picked.
+   Type stays Archivo. Every word and number here is Shashi's own.
+   Mobile is the base; desktop is added at the bottom.
+   ============================================================ */
+.sp{
+  --bg:#0A0A0B;            /* hsl(240 10% 4%) */
+  --card:#131315;          /* hsl(240 10% 8%) */
+  --card-2:#1A1A1D;
+  --line:#2A2A2E;          /* hsl(240 10% 18%) */
+  --fg:#FAFAFA;
+  --dim:#C4C4CB;
+  --muted:#A2A2AB;         /* hsl(240 5% 65%) */
+  --gold:#FBBD23;          /* hsl(43 96% 56%) */
+  --gold-hi:#FFD666;       /* hsl(43 100% 70%) */
+  --gold-dk:#DA9C0B;
+  --on-gold:#0A0A0B;
+  --glow:0 0 60px -12px rgba(251,189,35,.4);
+  --r:12px;
+  background:var(--bg);color:var(--fg);
+  font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip;
+  padding-bottom:calc(74px + env(safe-area-inset-bottom));
+}
+.sp *{box-sizing:border-box}
+/* WordPress wpautop injects <br> at every newline in this markup, which
+   turns into stray flex items and phantom line breaks. Kill them all,
+   then put back the two the design actually asks for. */
+.sp br{display:none}
+.sp .stat .k br{display:block}
+.sp h1,.sp h2,.sp h3{font-weight:800;line-height:1.1;letter-spacing:-.03em;margin:0;
+  text-wrap:balance;color:var(--fg)}
+.sp p{margin:0}
+.sp a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.sp img{max-width:100%;display:block}
+.sp .wrap{width:100%;padding-inline:18px;margin-inline:auto;max-width:540px}
+.sp section{padding:52px 0}
+.sp .gold{color:var(--gold)}
+.sp .eyebrow{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--gold);border:1px solid rgba(251,189,35,.35);
+  border-radius:999px;padding:6px 14px;margin-bottom:16px;background:rgba(251,189,35,.06)}
+.sp h2{font-size:1.75rem}
+.sp .sec-lede{margin-top:12px;color:var(--muted);font-size:.95rem}
+.sp .center{text-align:center}
+.sp .center .eyebrow{margin-inline:auto;display:inline-block}
+.sp .btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;min-height:54px;padding:0 24px;
+  border-radius:var(--r);font-family:inherit;font-size:.83rem;font-weight:700;letter-spacing:.04em;
+  background:linear-gradient(135deg,var(--gold-hi),var(--gold));color:var(--on-gold);
+  border:1px solid transparent;box-shadow:var(--glow);transition:transform .15s ease;width:100%;
+}
+.sp .btn:active{transform:scale(.976)}
+.sp .btn-ghost{background:rgba(255,255,255,.03);color:var(--fg);border-color:var(--line);box-shadow:none}
+.sp a:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.sp .cta{display:flex;flex-direction:column;gap:10px;margin-top:24px}
+.sp.js .rv{opacity:0;transform:translateY(20px);
+  transition:opacity .65s cubic-bezier(.22,.61,.36,1),transform .65s cubic-bezier(.22,.61,.36,1)}
+.sp.js .rv.in{opacity:1;transform:none}
+/* ---- app bar ---- */
+.sp .appbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 18px;background:rgba(10,10,11,.88);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line)}
+.sp .appbar img{height:44px;width:auto;transition:height .25s ease}
+.sp .appbar.tight{padding-top:6px;padding-bottom:6px;box-shadow:0 6px 24px -18px #000}
+.sp .appbar.tight img{height:36px}
+.sp .appbar .nm{font-size:.85rem;font-weight:700;line-height:1.15}
+.sp .appbar .rl{font-size:.56rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.sp .appbar .call{margin-left:auto;width:40px;height:40px;border-radius:50%;flex:none;
+  background:rgba(251,189,35,.12);display:grid;place-items:center}
+.sp .appbar .call svg{width:19px;height:19px;stroke:var(--gold);fill:none;stroke-width:1.9}
+/* ---- hero ---- */
+.sp .hero{position:relative;padding:34px 0 40px;overflow:hidden;text-align:center}
+.sp .hero::before{content:"";position:absolute;left:50%;top:-10%;width:150vw;height:80%;
+  transform:translateX(-50%);pointer-events:none;
+  background:radial-gradient(ellipse 40% 46% at 50% 45%,rgba(251,189,35,.15),transparent 70%)}
+.sp .hero-ph{position:relative;width:min(66%,250px);margin-left:auto;margin-right:auto;margin-bottom:26px;display:block;aspect-ratio:1;
+  border-radius:50%;overflow:hidden;border:2px solid rgba(251,189,35,.45);
+  box-shadow:0 0 70px -18px rgba(251,189,35,.55)}
+.sp .hero-ph img{width:100%;height:100%;object-fit:cover;object-position:50% 22%}
+.sp .hero .name{font-size:clamp(1.5rem,6.4vw,2rem);font-weight:800;letter-spacing:-.035em;
+  line-height:1.1;margin-bottom:6px}
+.sp .hero .role{font-size:.66rem;font-weight:700;letter-spacing:.17em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:22px}
+.sp .hero h1{font-size:clamp(2rem,9vw,2.7rem);font-weight:900}
+.sp .hero h1 span{color:var(--gold);display:block}
+.sp .hero .lede{margin-top:16px;color:var(--dim);font-size:.98rem}
+.sp .hnote{margin-top:16px;font-size:.7rem;font-weight:600;letter-spacing:.05em;color:var(--muted)}
+/* ---- stats ---- */
+.sp .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:26px}
+.sp .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 8px;text-align:center}
+.sp .stat .n{font-size:1.5rem;font-weight:900;letter-spacing:-.04em;color:var(--gold);
+  font-variant-numeric:tabular-nums;line-height:1.05}
+.sp .stat .k{font-size:.55rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-top:6px;line-height:1.3}
+/* ---- pillars ---- */
+.sp .cards{display:flex;flex-direction:column;gap:12px;margin-top:26px}
+.sp .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 20px}
+.sp .card{text-align:center}
+.sp .card .ic{width:68px;height:68px;border-radius:20px;margin:0 auto 18px;
+  background:radial-gradient(circle at 50% 35%,rgba(251,189,35,.20),rgba(251,189,35,.07));
+  border:1px solid rgba(251,189,35,.28);display:grid;place-items:center;
+  box-shadow:0 0 34px -14px rgba(251,189,35,.55)}
+.sp .card .ic svg{width:32px;height:32px;stroke:var(--gold);fill:none;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+.sp .card h3{font-size:1.1rem;margin-bottom:8px}
+.sp .card p{color:var(--muted);font-size:.9rem}
+/* ---- about ---- */
+.sp .about{background:var(--card);border-block:1px solid var(--line)}
+.sp .about .av{width:130px;aspect-ratio:1;border-radius:50%;overflow:hidden;margin:0 auto 20px;
+  border:2px solid rgba(251,189,35,.4);box-shadow:0 0 50px -20px rgba(251,189,35,.6)}
+.sp .about .av img{width:100%;height:100%;object-fit:cover;object-position:50% 26%}
+.sp .about .rl{font-size:.66rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--gold);margin-top:8px}
+.sp .about p{color:var(--muted);font-size:.93rem}
+.sp .about p+p{margin-top:12px}
+.sp .pull{color:var(--fg)!important;font-size:1.05rem;font-weight:700;line-height:1.35;
+  letter-spacing:-.02em;border-left:3px solid var(--gold);padding-left:14px;margin-top:18px;text-align:left}
+.sp .creds{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;padding:0;list-style:none;justify-content:center}
+.sp .creds li{font-size:.6rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--gold);border:1px solid rgba(251,189,35,.35);border-radius:999px;padding:7px 13px}
+/* ---- offers ---- */
+.sp .doors{display:flex;flex-direction:column;gap:14px;margin-top:26px}
+.sp .door,.sp .door h3,.sp .door p,.sp .door ul{text-align:left}
+.sp .doors{text-align:left}
+.sp .door{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 20px;position:relative}
+.sp .door.paid{border-color:rgba(251,189,35,.55);box-shadow:var(--glow);
+  background:linear-gradient(160deg,#1C1810,#111113)}
+.sp .door.paid::after{content:"Most chosen";position:absolute;top:-10px;right:18px;
+  background:linear-gradient(135deg,var(--gold-hi),var(--gold));color:var(--on-gold);
+  font-size:.54rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  padding:5px 11px;border-radius:7px}
+.sp .door .kick{font-size:.6rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:10px}
+.sp .door h3{font-size:1.3rem}
+.sp .door .sub{color:var(--muted);font-size:.85rem;margin-top:8px}
+.sp .door .price{font-size:1.7rem;font-weight:900;letter-spacing:-.04em;color:var(--gold);margin-top:16px}
+.sp .door .price small{font-size:.42em;font-weight:600;color:var(--muted);letter-spacing:0}
+.sp .door ul{list-style:none;padding:0;margin:16px 0 20px;display:flex;flex-direction:column;gap:10px}
+.sp .door li{position:relative;padding-left:26px;font-size:.89rem;color:var(--dim)}
+.sp .door li::before{content:"";position:absolute;left:0;top:.28em;width:17px;height:17px;
+  border-radius:50%;background:rgba(251,189,35,.14)}
+.sp .door li::after{content:"";position:absolute;left:5px;top:.6em;width:6px;height:3px;
+  border-left:1.7px solid var(--gold);border-bottom:1.7px solid var(--gold);transform:rotate(-45deg)}
+/* ---- community ---- */
+.sp .comm{text-align:center;position:relative;overflow:hidden}
+.sp .comm::before{content:"";position:absolute;left:50%;bottom:-40%;width:150vw;height:80%;
+  transform:translateX(-50%);background:radial-gradient(ellipse 40% 50% at 50% 50%,rgba(251,189,35,.13),transparent 70%)}
+.sp .comm .panel{position:relative;border:1px solid rgba(251,189,35,.3);border-radius:20px;
+  padding:30px 22px;background:linear-gradient(160deg,#16150F,#0D0D0E)}
+.sp footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-size:.76rem;text-align:center}
+.sp footer .mark{height:104px;width:auto;margin:0 auto 18px;opacity:.95}
+.sp .flinks{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-bottom:12px}
+.sp .flinks a{color:var(--dim);font-weight:600}
+/* ---- process + faq ---- */
+.sp .steps{display:flex;flex-direction:column;gap:12px;margin-top:26px;counter-reset:st}
+.sp .step{background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:24px 20px;text-align:center;position:relative;counter-increment:st}
+.sp .step .ic{width:68px;height:68px;border-radius:20px;margin:0 auto 16px;
+  background:radial-gradient(circle at 50% 35%,rgba(251,189,35,.20),rgba(251,189,35,.07));
+  border:1px solid rgba(251,189,35,.28);display:grid;place-items:center;
+  box-shadow:0 0 34px -14px rgba(251,189,35,.55)}
+.sp .step .ic svg{width:32px;height:32px;stroke:var(--gold);fill:none;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+.sp .step .no{font-size:.68rem;font-weight:800;letter-spacing:.14em;color:var(--gold);margin-bottom:8px}
+.sp .step .no::before{content:"STEP 0" counter(st)}
+.sp .step h3{font-size:1.05rem;margin-bottom:6px}
+.sp .step p{color:var(--muted);font-size:.89rem}
+.sp .faq{margin-top:24px;display:flex;flex-direction:column;gap:10px;text-align:left}
+.sp details{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.sp summary{list-style:none;cursor:pointer;padding:16px 46px 16px 18px;position:relative;
+  font-weight:700;font-size:.94rem;letter-spacing:-.01em}
+.sp summary::-webkit-details-marker{display:none}
+.sp summary::after{content:"";position:absolute;right:20px;top:50%;width:9px;height:9px;
+  margin-top:-6px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);
+  transform:rotate(45deg);transition:transform .2s ease}
+.sp details[open] summary::after{transform:rotate(-135deg);margin-top:-2px}
+.sp details p{padding:0 18px 16px;color:var(--muted);font-size:.89rem}
+@media (min-width:900px){
+  .sp .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .sp .faq{max-width:760px;margin-inline:auto}
+}
+/* ---- success stories: built and waiting for real client words.
+   Stays hidden until they arrive - remove hidden on the <section>. ---- */
+.sp .stories[hidden]{display:none}
+.sp .swrap{margin-top:24px;overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;display:flex;gap:12px;
+  padding:2px 18px 8px;margin-inline:-18px}
+.sp .swrap::-webkit-scrollbar{display:none}
+.sp .story{scroll-snap-align:center;flex:0 0 80%;background:var(--card);
+  border:1px solid var(--line);border-radius:16px;padding:22px 20px;text-align:left}
+.sp .story .qm{font-size:2rem;font-weight:900;color:var(--gold);line-height:.8;margin-bottom:10px}
+.sp .story p{color:var(--dim);font-size:.94rem;line-height:1.55}
+.sp .story .who{display:flex;align-items:center;gap:10px;margin-top:16px;
+  padding-top:14px;border-top:1px solid var(--line)}
+.sp .story .init{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;
+  background:rgba(251,189,35,.12);color:var(--gold);font-weight:800;font-size:.82rem}
+.sp .story .nm{font-weight:700;font-size:.86rem}
+.sp .story .mt{font-size:.68rem;color:var(--muted);font-weight:600;letter-spacing:.04em}
+.sp .stars{color:var(--gold);font-size:.8rem;letter-spacing:.14em;margin-bottom:10px}
+@media (min-width:900px){
+  .sp .swrap{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible;
+    margin-inline:0;padding:0;gap:18px}
+  .sp .story{flex:auto}
+}
+/* ---- scroll progress ---- */
+.sp .progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:60;background:transparent}
+.sp .progress span{display:block;height:100%;transform:scaleX(0);transform-origin:0 50%;
+  background:linear-gradient(90deg,var(--gold),var(--gold-hi));transition:transform .1s linear}
+/* ---- burger ---- */
+.sp .burger{width:44px;height:44px;flex:none;border:1px solid var(--line);
+  border-radius:12px;background:rgba(255,255,255,.03);display:grid;place-items:center;
+  gap:5px;cursor:pointer;padding:0;transition:border-color .2s ease,background .2s ease}
+.sp .burger i{display:block;width:19px;height:2px;border-radius:2px;background:var(--gold);
+  grid-area:1/1;transition:transform .32s cubic-bezier(.2,.8,.3,1),opacity .2s ease}
+.sp .burger i:nth-child(1){transform:translateY(-6px)}
+.sp .burger i:nth-child(3){transform:translateY(6px)}
+.sp.menu-open .burger{border-color:rgba(251,189,35,.5);background:rgba(251,189,35,.1)}
+.sp.menu-open .burger i:nth-child(1){transform:rotate(45deg)}
+.sp.menu-open .burger i:nth-child(2){opacity:0;transform:scaleX(.2)}
+.sp.menu-open .burger i:nth-child(3){transform:rotate(-45deg)}
+/* ---- slide-in menu ---- */
+.sp .scrim{position:fixed;inset:0;z-index:55;background:rgba(6,6,7,.72);backdrop-filter:blur(3px);
+  opacity:0;visibility:hidden;transition:opacity .32s ease,visibility .32s ease}
+.sp.menu-open .scrim{opacity:1;visibility:visible}
+.sp .menu{position:fixed;top:0;right:0;bottom:0;z-index:56;width:min(82%,330px);
+  background:#101012;border-left:1px solid var(--line);padding:22px 22px calc(26px + env(safe-area-inset-bottom));
+  display:flex;flex-direction:column;transform:translateX(102%);
+  transition:transform .38s cubic-bezier(.22,.8,.28,1);overflow-y:auto}
+.sp.menu-open .menu{transform:translateX(0)}
+.sp .menu .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}
+.sp .menu .head img{height:40px;width:auto}
+.sp .menu .shut{width:38px;height:38px;border:1px solid var(--line);border-radius:10px;
+  background:none;color:var(--muted);font-size:1.1rem;line-height:1;cursor:pointer}
+.sp .menu nav{display:flex;flex-direction:column}
+.sp .menu nav a{padding:15px 2px;border-bottom:1px solid var(--line);font-size:1.02rem;
+  font-weight:700;letter-spacing:-.02em;color:var(--fg);
+  opacity:0;transform:translateX(16px);transition:opacity .3s ease,transform .3s ease,color .2s ease}
+.sp.menu-open .menu nav a{opacity:1;transform:none}
+.sp.menu-open .menu nav a:nth-child(1){transition-delay:.10s}
+.sp.menu-open .menu nav a:nth-child(2){transition-delay:.15s}
+.sp.menu-open .menu nav a:nth-child(3){transition-delay:.20s}
+.sp.menu-open .menu nav a:nth-child(4){transition-delay:.25s}
+.sp.menu-open .menu nav a:nth-child(5){transition-delay:.30s}
+.sp.menu-open .menu nav a:nth-child(6){transition-delay:.35s}
+.sp .menu nav a.on{color:var(--gold)}
+.sp .menu .foot{margin-top:auto;padding-top:24px;display:flex;flex-direction:column;gap:10px}
+.sp .menu .tiny{font-size:.68rem;color:var(--muted);text-align:center;margin-top:6px}
+/* ---- bottom tabs ---- */
+.sp .tabs{position:fixed;left:0;right:0;bottom:0;z-index:50;display:grid;grid-template-columns:repeat(4,1fr);
+  background:rgba(10,10,11,.96);backdrop-filter:blur(16px);border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom)}
+.sp .tabs a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  padding:9px 0 8px;min-height:58px;color:var(--muted);font-size:.57rem;font-weight:700;letter-spacing:.04em}
+.sp .tabs svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.9;
+  stroke-linecap:round;stroke-linejoin:round}
+.sp .tabs a.on,.sp .tabs a.wa{color:var(--gold)}
+@media (min-width:900px){
+  .sp{padding-bottom:0}
+  .sp .wrap{max-width:1060px;padding-inline:36px}
+  .sp section{padding:88px 0}
+  .sp .tabs{display:none}
+  .sp .burger,.sp .menu,.sp .scrim{display:none}
+  .sp .appbar{padding:12px 36px}
+  .sp .hero{padding:70px 0 80px}
+  .sp .hero-ph{width:280px;margin-left:auto;margin-right:auto}
+  .sp .hero h1{font-size:3.4rem}
+  .sp .hero .lede{max-width:36rem;margin-inline:auto}
+  .sp .cta{flex-direction:row;justify-content:center}
+  .sp .btn{width:auto;padding:0 30px}
+  .sp .stats{max-width:760px;margin-inline:auto;gap:16px}
+  .sp .stat .n{font-size:2.4rem}
+  .sp .stat .k{font-size:.63rem}
+  .sp .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .sp .card .ic,.sp .step .ic{width:76px;height:76px}
+  .sp .card .ic svg,.sp .step .ic svg{width:36px;height:36px}
+  .sp .about .av{width:190px}
+  .sp .about .wrap{max-width:760px}
+  .sp .doors{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .sp h2{font-size:2.5rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .sp .rv{opacity:1;transform:none;transition:none}
+  .sp .btn{transition:none}
+}
+</style>
+<div class="progress"><span></span></div>
+<div class="appbar">
+  <img src="https://shashipallava.com/wp-content/uploads/2026/09/sp-logo-mark.png" alt="Shashi Pallava">
+  <button class="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
+</div>
+<div class="scrim"></div>
+<aside class="menu" aria-hidden="true">
+  <div class="head">
+    <img src="https://shashipallava.com/wp-content/uploads/2026/09/sp-logo-mark.png" alt="Shashi Pallava">
+    <button class="shut" aria-label="Close">&#10005;</button>
+  </div>
+  <nav>
+    <a href="#home" data-t="home">Home</a>
+    <a href="#help">How I Help</a>
+    <a href="#about" data-t="about">About</a>
+    <a href="#work" data-t="work">Programs</a>
+    <a href="#faq">Questions</a>
+    <a href="#community">Community</a>
+  </nav>
+  <div class="foot">
+    <a class="btn" href="https://wa.me/919876732099">WhatsApp</a>
+    <p class="tiny">shashipallava@gmail.com</p>
+  </div>
+</aside>
+<header class="hero" id="home">
+  <div class="wrap">
+    <div class="hero-ph rv">
+      <img src="https://shashipallava.com/wp-content/uploads/2026/09/shashi-pallava-hero.jpg" alt="Shashi Pallava" width="1088" height="1445">
+    </div>
+    <p class="name rv">Shashi Pallava</p>
+    <p class="role rv">Life &amp; Relationship Coach · Mindset Mentor</p>
+    <h1 class="rv">Become the <span>Unshakeable You</span></h1>
+    <p class="lede rv">Understand yourself better, build healthier relationships, and look at your life from a new perspective. Jab aap khud ko samajhne lagti hain — you start responding to life differently.</p>
+    <div class="cta rv">
+      <a class="btn" href="https://wa.me/919876732099">Join Free Webinar</a>
+      <a class="btn btn-ghost" href="#work">Explore Programs</a>
+    </div>
+    <p class="hnote rv">Live sessions · English &amp; Hinglish · No obligation</p>
+    <div class="stats">
+      <div class="stat rv"><div class="n" data-to="1200" data-suffix="+">0</div><div class="k">Women<br>Coached</div></div>
+      <div class="stat rv"><div class="n" data-to="400" data-suffix="+">0</div><div class="k">Community<br>Members</div></div>
+      <div class="stat rv"><div class="n" data-to="4" data-suffix="+">0</div><div class="k">Years<br>Experience</div></div>
+    </div>
+  </div>
+</header>
+<section id="help">
+  <div class="wrap center">
+    <p class="eyebrow rv">What Changes</p>
+    <h2 class="rv">Three shifts that change everything</h2>
+    <p class="sec-lede rv">Not a course to finish. Three shifts that hold — in whatever order your life brings them up.</p>
+    <div class="cards">
+      <div class="card rv">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M18.8 12.3l1.7-1.7a5 5 0 0 0-7-7l-1.8 1.7"/><path d="M5.2 11.8l-1.7 1.7a5 5 0 0 0 7 7l1.7-1.7"/><path d="M8 2v3M2 8h3M16 22v-3M22 16h-3"/></svg></div>
+        <h3>Break Your Limiting Beliefs</h3>
+        <p>“Main aise react kyun karti hoon?” Awareness creates choice, and conscious choices create change.</p>
+      </div>
+      <div class="card rv">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M11 14h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 16"/><path d="m7 20 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.8-2.9l-4.2 3.9"/><path d="m2 15 6 6"/><path d="M19.5 8.5c.7-.7 1.5-1.6 1.5-2.7A2.7 2.7 0 0 0 16 4a2.8 2.8 0 0 0-5 1.8c0 1.2.8 2 1.5 2.8L16 12Z"/></svg></div>
+        <h3>Take Charge of Your Emotions</h3>
+        <p>Learn to respond instead of react. And rest is not something you have to earn first.</p>
+      </div>
+      <div class="card rv">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg></div>
+        <h3>Communicate With Respect</h3>
+        <p>A boundary is not a punishment. It is a doorway that tells people how to love you well.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="about" class="about">
+  <div class="wrap center">
+    <p class="eyebrow rv">About the Coach</p>
+    <div class="av rv"><img src="https://shashipallava.com/wp-content/uploads/2026/09/shashi-pallava-headshot.jpg" alt="Shashi Pallava" width="982" height="977"></div>
+    <h2 class="rv">Shashi Pallava</h2>
+    <p class="rl rv">Life &amp; Relationship Coach · Mindset Mentor</p>
+    <p class="rv" style="margin-top:16px">Coaching is not me telling you “aapko kya karna chahiye.” It is a safe space where you can see for yourself what you are feeling, why you react the way you do, and what you actually want.</p>
+    <p class="rv">I work with women who want to grow without losing themselves in the process. Sessions combine coaching conversations, practical mindset tools, communication techniques and NLP-based approaches.</p>
+    <p class="pull rv">“Main sabke liye kar rahi hoon — but mere liye kaun?”</p>
+    <ul class="creds rv">
+      <li>4+ Years Practice</li>
+      <li>NLP-Based Approach</li>
+      <li>Life Coaching Certified — Alison</li>
+    </ul>
+  </div>
+</section>
+<section id="work">
+  <div class="wrap center">
+    <p class="eyebrow rv">Programs</p>
+    <h2 class="rv">Two ways to begin</h2>
+    <p class="sec-lede rv">Start free with a live webinar, or go all in with three months of one-to-one work.</p>
+    <div class="doors">
+      <div class="door rv">
+        <p class="kick">Start Free</p>
+        <h3>Live Webinar</h3>
+        <p class="sub">A free live session — the easiest way to see if this way of working is for you.</p>
+        <p class="price">Free</p>
+        <ul>
+          <li>A real session, not a sales pitch</li>
+          <li>Practical tools you can use the same week</li>
+          <li>Your questions answered live</li>
+          <li>No obligation to continue</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://wa.me/919876732099">Join Free Webinar</a>
+      </div>
+      <div class="door paid rv">
+        <p class="kick">Go All In</p>
+        <h3>Revive Your Life</h3>
+        <p class="sub">Three months of one-to-one work. Ek naya perspective, one week at a time.</p>
+        <p class="price">₹999 <small>· 3 months</small></p>
+        <ul>
+          <li>1:1 sessions for 3 months</li>
+          <li>One session every week</li>
+          <li>“Revive the Relationship” included</li>
+          <li>WhatsApp support between sessions</li>
+        </ul>
+        <a class="btn" href="https://wa.me/919876732099">Join The Program</a>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="how">
+  <div class="wrap center">
+    <p class="eyebrow rv">How It Works</p>
+    <h2 class="rv">Getting started is simple</h2>
+    <p class="sec-lede rv">No forms, no long process. It starts with one message.</p>
+    <div class="steps">
+      <div class="step rv">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></div>
+<div class="no"></div>
+<h3>Message on WhatsApp</h3>
+        <p>Just tell me what feels heaviest right now. We will find a time that works for you.</p>
+      </div>
+      <div class="step rv">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="m22 8-6 4 6 4Z"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg></div>
+<div class="no"></div>
+<h3>Join the free webinar</h3>
+        <p>A live session, open to everyone. The point is not to sell you anything — it is to see whether this way of working fits you.</p>
+      </div>
+      <div class="step rv">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><path d="m9 11 3 3L22 4"/></svg></div>
+<div class="no"></div>
+<h3>You decide</h3>
+        <p>If it feels right, we begin the three-month 1:1 program. If not, koi baat nahi — no follow-up pressure.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="faq">
+  <div class="wrap center">
+    <p class="eyebrow rv">Questions</p>
+    <h2 class="rv">Questions people usually ask</h2>
+    <div class="faq">
+      <details class="rv"><summary>What language are the sessions in?</summary>
+        <p>English, Hindi or Hinglish — whichever you are most comfortable in. Zyadatar log Hinglish mein hi khulte hain.</p></details>
+      <details class="rv"><summary>Is this therapy?</summary>
+        <p>No. Coaching and therapy are different things. Here we work on your present thoughts, beliefs, communication and relationships, and choose the way forward. If you need clinical support, main aapko saaf bata dungi.</p></details>
+      <details class="rv"><summary>What happens in the free webinar?</summary>
+        <p>A live session with practical tools and real questions answered. There is no obligation to continue afterwards.</p></details>
+      <details class="rv"><summary>How long is the program?</summary>
+        <p>Revive Your Life runs for 3 months, with one 1:1 session every week. “Revive the Relationship” is included.</p></details>
+      <details class="rv"><summary>Are sessions online or in person?</summary>
+        <p>Sessions are one-to-one and scheduled around you. We can sort out the details over WhatsApp.</p></details>
+      <details class="rv"><summary>Is this only for married women?</summary>
+        <p>Not at all. Homemaker, working professional, entrepreneur, mother, daughter — or simply a woman standing at a new turning point in life.</p></details>
+    </div>
+  </div>
+</section>
+<section id="stories" class="stories" hidden>
+  <div class="wrap center">
+    <p class="eyebrow rv">Success Stories</p>
+    <h2 class="rv">In their own words</h2>
+    <p class="sec-lede rv">From the women who have walked this road.</p>
+    <div class="swrap">
+      <div class="story">
+        <div class="qm">&ldquo;</div>
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>CLIENT KI ASLI LINE YAHAN AAYEGI — 2 se 4 line, unke apne shabdon mein.</p>
+        <div class="who"><div class="init">?</div>
+          <div><div class="nm">Pehla naam</div><div class="mt">Program ka naam</div></div></div>
+      </div>
+      <div class="story">
+        <div class="qm">&ldquo;</div>
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>CLIENT KI ASLI LINE YAHAN AAYEGI — 2 se 4 line, unke apne shabdon mein.</p>
+        <div class="who"><div class="init">?</div>
+          <div><div class="nm">Pehla naam</div><div class="mt">Program ka naam</div></div></div>
+      </div>
+      <div class="story">
+        <div class="qm">&ldquo;</div>
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>CLIENT KI ASLI LINE YAHAN AAYEGI — 2 se 4 line, unke apne shabdon mein.</p>
+        <div class="who"><div class="init">?</div>
+          <div><div class="nm">Pehla naam</div><div class="mt">Program ka naam</div></div></div>
+      </div>
+    </div>
+    <p class="swipe" style="font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:10px">&larr; swipe &rarr;</p>
+  </div>
+</section>
+<section id="community" class="comm">
+  <div class="wrap">
+    <div class="panel rv">
+      <p class="eyebrow">Join the Community</p>
+      <h2>400+ women, on the same journey</h2>
+      <p class="sec-lede">One thought every morning on Facebook and Instagram — and a community where personal development is something you practise, not just something you read.</p>
+      <div class="cta">
+        <a class="btn" href="https://wa.me/919876732099">WhatsApp +91 98767 32099</a>
+        <a class="btn btn-ghost" href="https://www.instagram.com/ShashiPallava">Follow on Instagram</a>
+      </div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="wrap">
+    <img class="mark" src="https://shashipallava.com/wp-content/uploads/2026/09/sp-logo-full.png" alt="Shashi Pallava">
+    <div class="flinks">
+      <a href="https://www.facebook.com/ShashiPallava">Facebook</a>
+      <a href="https://www.instagram.com/ShashiPallava">Instagram</a>
+      <a href="https://wa.me/919876732099">WhatsApp</a>
+      <a href="mailto:shashipallava@gmail.com">Email</a>
+    </div>
+    <p>India · © 2026 Shashi Pallava</p>
+  </div>
+</footer>
+<nav class="tabs">
+  <a href="#home" data-t="home" class="on"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.6V21h14V9.6"/></svg>Home</a>
+  <a href="#work" data-t="work"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg>Programs</a>
+  <a href="#about" data-t="about"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg>About</a>
+  <a class="wa" href="https://wa.me/919876732099"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.9-.9L3 20.5l1.6-4.6A8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4z"/></svg>Chat</a>
+</nav>
+<script>
+(function(){
+  // Written without ampersands, pipes or angle brackets: WordPress escapes
+  // those inside post content and it silently breaks the whole file.
+  var root = document.querySelector('.sp');
+  if (!root) { return; }
+  window.__spAlive = true;
+  var reduce = false;
+  if (window.matchMedia) {
+    reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+  var hasIO = false;
+  if ('IntersectionObserver' in window) { hasIO = true; }
+  /* ---------- reveal on scroll ---------- */
+  var items = document.querySelectorAll('.sp .rv');
+  function showAll(){
+    for (var i = 0; i !== items.length; i++) { items[i].classList.add('in'); }
+  }
+  if (reduce) { showAll(); }
+  else if (!hasIO) { showAll(); }
+  else {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (!e.isIntersecting) { return; }
+        var el = e.target;
+        var sibs = [];
+        var kids = el.parentNode.children;
+        for (var i = 0; i !== kids.length; i++) {
+          if (kids[i].classList.contains('rv')) { sibs.push(kids[i]); }
+        }
+        el.style.transitionDelay = Math.min(sibs.indexOf(el), 5) * 70 + 'ms';
+        el.classList.add('in');
+        io.unobserve(el);
+      });
+    }, {rootMargin: '0px 0px -6% 0px', threshold: 0.06});
+    items.forEach(function(el){ io.observe(el); });
+    setTimeout(showAll, 2200);
+  }
+  /* ---------- counters ---------- */
+  var nums = document.querySelectorAll('.sp .stat .n');
+  function fill(el){
+    var sfx = el.dataset.suffix;
+    if (!sfx) { sfx = ''; }
+    el.textContent = el.dataset.to + sfx;
+  }
+  if (!hasIO) { nums.forEach(fill); }
+  else {
+    var nio = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (!e.isIntersecting) { return; }
+        var el = e.target;
+        nio.unobserve(el);
+        if (reduce) { fill(el); return; }
+        var to = parseInt(el.dataset.to, 10);
+        var sfx = el.dataset.suffix;
+        if (!sfx) { sfx = ''; }
+        var t0 = null;
+        var step = function(t){
+          if (!t0) { t0 = t; }
+          var p = Math.min((t - t0) / 1100, 1);
+          el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))) + sfx;
+          if (p !== 1) { requestAnimationFrame(step); }
+        };
+        requestAnimationFrame(step);
+      });
+    }, {threshold: 0.5});
+    nums.forEach(function(el){ nio.observe(el); });
+    setTimeout(function(){
+      nums.forEach(function(el){ if (el.textContent === '0') { fill(el); } });
+    }, 2500);
+  }
+  /* ---------- slide-in menu ---------- */
+  var burger = document.querySelector('.sp .burger');
+  var panel = document.querySelector('.sp .menu');
+  var scrim = document.querySelector('.sp .scrim');
+  function openMenu(){
+    root.classList.add('menu-open');
+    burger.setAttribute('aria-expanded', 'true');
+    panel.removeAttribute('aria-hidden');
+  }
+  function closeMenu(){
+    root.classList.remove('menu-open');
+    burger.setAttribute('aria-expanded', 'false');
+    panel.setAttribute('aria-hidden', 'true');
+  }
+  if (burger) {
+    burger.addEventListener('click', function(){
+      if (root.classList.contains('menu-open')) { closeMenu(); } else { openMenu(); }
+    });
+  }
+  if (scrim) { scrim.addEventListener('click', closeMenu); }
+  var shut = document.querySelector('.sp .menu .shut');
+  if (shut) { shut.addEventListener('click', closeMenu); }
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') { closeMenu(); }
+  });
+  /* ---------- smooth scroll for every in-page link ---------- */
+  var jumps = document.querySelectorAll('.sp a[href^="#"]');
+  jumps.forEach(function(a){
+    a.addEventListener('click', function(ev){
+      var id = a.getAttribute('href').slice(1);
+      var target = document.getElementById(id);
+      if (!target) { return; }
+      ev.preventDefault();
+      closeMenu();
+      var top = target.getBoundingClientRect().top + window.pageYOffset - 64;
+      if (reduce) { window.scrollTo(0, top); }
+      else { window.scrollTo({top: top, behavior: 'smooth'}); }
+    });
+  });
+  /* ---------- scroll progress bar, and a denser app bar once you move ---------- */
+  var bar = document.querySelector('.sp .progress span');
+  var appbar = document.querySelector('.sp .appbar');
+  var ticking = false;
+  function onScroll(){
+    if (ticking) { return; }
+    ticking = true;
+    requestAnimationFrame(function(){
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      var p = 0;
+      if (h) { p = window.pageYOffset / h; }
+      if (bar) { bar.style.transform = 'scaleX(' + Math.min(Math.max(p, 0), 1) + ')'; }
+      if (appbar) { appbar.classList.toggle('tight', window.pageYOffset ? true : false); }
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive: true});
+  onScroll();
+  /* ---------- tab bar follows the section on screen ---------- */
+  var tabs = document.querySelectorAll('.sp .tabs a[data-t]');
+  var links = document.querySelectorAll('.sp .menu a[data-t]');
+  var secs = [];
+  ['home', 'work', 'about'].forEach(function(id){
+    var n = document.getElementById(id);
+    if (n) { secs.push(n); }
+  });
+  if (hasIO) {
+    if (secs.length) {
+      var sio = new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if (!e.isIntersecting) { return; }
+          tabs.forEach(function(a){
+            a.classList.toggle('on', a.dataset.t === e.target.id);
+          });
+          links.forEach(function(a){
+            a.classList.toggle('on', a.dataset.t === e.target.id);
+          });
+        });
+      }, {rootMargin: '-45% 0px -45% 0px'});
+      secs.forEach(function(s){ sio.observe(s); });
+    }
+  }
+})();
+</script>
+</div>

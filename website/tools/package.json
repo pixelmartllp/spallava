@@ -1,0 +1,12 @@
+{
+  "name": "shashipallava-tools",
+  "private": true,
+  "description": "Screenshot and layout checks for shashipallava.com",
+  "scripts": {
+    "shot": "node shot.js https://shashipallava.com/ phone.png 390",
+    "sticky": "node sticky.js"
+  },
+  "dependencies": {
+    "puppeteer-core": "^24.0.0"
+  }
+}

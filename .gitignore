@@ -18,3 +18,11 @@ assets/logo_transparent.png
 
 __pycache__/
 *.pyc
+
+# Website: the WordPress application password, never committed.
+website/.wp-auth.json
+website/tools/node_modules/
+website/tools/*.png
+
+# Handover bundle - rebuilt on demand, too big for git
+shashipallava-website.zip
