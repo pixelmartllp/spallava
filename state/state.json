@@ -1578,6 +1578,27 @@
       "ok": true,
       "media_id": "18223183906334856",
       "recorded_at": "2026-09-03T10:05:57+00:00"
+    },
+    {
+      "platform": "facebook",
+      "date": "2026-09-04",
+      "index": 1,
+      "image_path": "2026-09-04-01-q108.jpg",
+      "content_id": "q108",
+      "ok": true,
+      "post_id": "1102415836299269_122118637029378470",
+      "photo_id": "122118637005378470",
+      "recorded_at": "2026-09-04T09:56:51+00:00"
+    },
+    {
+      "platform": "instagram",
+      "date": "2026-09-04",
+      "index": 1,
+      "image_path": "2026-09-04-01-q108.jpg",
+      "content_id": "q108",
+      "ok": true,
+      "media_id": "18111504701128435",
+      "recorded_at": "2026-09-04T09:56:51+00:00"
     }
   ]
 }
