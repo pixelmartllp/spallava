@@ -185,8 +185,26 @@ Voice: mostly English with occasional Hinglish where it lands — his instructio
 was "English and Hinglish mix, zyadatar English". The strongest line on the
 page is his own: *"Main sabke liye kar rahi hoon — but mere liye kaun?"*
 
-See `MEMORY.md` → `shashi-brand-facts` for the numbers, programs and contacts
-that are allowed.
+**`FAQ.txt` in the repo root is the authority on what the programs actually
+are.** He wrote it himself and confirmed it on 05 Sep 2026 over an earlier
+description that contradicted it. When anything on the page disagrees with that
+file, the file wins — and the page needs fixing, not the file.
+
+See `MEMORY.md` → `shashi-brand-facts` for the numbers and contacts.
+
+### What is being sold
+
+- **Live Webinar** — free, online, open to everyone. The way in.
+- **Revive, Rise & Relive** — ₹999, a **6-month** transformation program.
+  100% online: a private WhatsApp community, interactive live webinars,
+  practical challenges and missions on **Mentie Go**, and **one** personal 1:1
+  session with Shashi. For women aged 18 to 55.
+
+This replaced an earlier "Revive Your Life, 3 months, weekly 1:1" description.
+Both were live on the same page for a while, a few hundred pixels apart —
+the Programs card said one thing and the FAQ said another. If you change one,
+walk the whole page: the section lede and the third How It Works step named the
+program too.
 
 ## 7. Blog
 
@@ -207,11 +225,13 @@ WhatsApp caches previews hard. To retest, add a query string
 
 ## 9. Still open
 
-- **₹999 is unconfirmed.** Three months of weekly 1:1 works out to about ₹83 a
-  session, so it may be a typo for ₹999/month or ₹9,999. It is live in large
-  gold type; get it confirmed.
+The ₹999 price used to look like a typo and is not one. It read wrong only
+while the page described twelve weekly 1:1 sessions; for a six-month group
+program it is an ordinary number. Settled — do not raise it again.
+
 - **City is unknown** — the footer says only "India".
-- **Testimonials** — see §6.
+- **Testimonials** — see §6. The section is built and hidden; three real
+  client lines are all it needs.
 - The daily creatives still carry only "Life & Relationship Coach"
   (`BRAND_TAGLINE` in `shashi_social/brand.py`), while the site now says
   "Life & Relationship Coach | Mindset Mentor". He has been told; do not change
