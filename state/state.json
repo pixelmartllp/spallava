@@ -1666,6 +1666,27 @@
       "ok": true,
       "media_id": "17991959294843104",
       "recorded_at": "2026-09-07T10:44:11+00:00"
+    },
+    {
+      "platform": "facebook",
+      "date": "2026-09-08",
+      "index": 1,
+      "image_path": "2026-09-08-01-q086.jpg",
+      "content_id": "q086",
+      "ok": true,
+      "post_id": "1102415836299269_122119351917378470",
+      "photo_id": "122119351893378470",
+      "recorded_at": "2026-09-08T10:05:56+00:00"
+    },
+    {
+      "platform": "instagram",
+      "date": "2026-09-08",
+      "index": 1,
+      "image_path": "2026-09-08-01-q086.jpg",
+      "content_id": "q086",
+      "ok": true,
+      "media_id": "18009362507763139",
+      "recorded_at": "2026-09-08T10:05:56+00:00"
     }
   ]
 }
