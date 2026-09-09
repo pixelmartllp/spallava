@@ -1,11 +1,3 @@
 {
-  "mcpServers": {
-    "shashi-social": {
-      "command": "D:\\Shi\\.venv\\Scripts\\python.exe",
-      "args": ["-m", "shashi_social.server"],
-      "env": {
-        "PYTHONPATH": "D:\\Shi"
-      }
-    }
-  }
+  "mcpServers": {}
 }
