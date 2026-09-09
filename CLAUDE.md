@@ -409,3 +409,49 @@ Facts, so a later session does not have to re-derive them:
   scratchpad, not the repo — `fetch_commons.py` (Commons + PD filter),
   `sheet.py` (contact sheet), `install_bg.py` (resize, rename, write
   SOURCES.md). Worth rewriting rather than hunting for.
+
+---
+
+## 8. Meta posting is switched OFF (09 Sep 2026)
+
+The owner asked for the Facebook / Instagram automation to be stopped
+completely: *"abhi jo automation h meta par post karne ka use complete band kar
+do."* Do not turn any of it back on without him asking.
+
+**Nothing runs on a schedule any more.** All three workflows are
+`workflow_dispatch` only — the `schedule:` blocks were removed and the exact
+cron lines are preserved in a comment at the top of each file, so restoring
+them is copy-and-paste.
+
+`generate-review.yml` was stopped too, even though it only generates and never
+posts. Left running it would quietly build a backlog in Drive `Pending`, and
+the publish job's cutoff runs post *everything* sitting there — so re-enabling
+posting one day later would fire the whole backlog at once. **Before ever
+resuming, empty `Pending` first.**
+
+**The kill switch is `state/POSTING_DISABLED`.** While that file exists,
+`meta_api._refuse_if_disabled()` raises `PostingDisabled` inside
+`post_facebook_photo` and `post_instagram_photo` — the two methods every route
+funnels through. That covers the cloud workflows, `daily_run.py`, and the
+`shashi-social` MCP tools in one place, including a manual `workflow_dispatch`.
+`daily_run.py` also checks the flag up front so a run exits with one clear line
+instead of crashing after it has already pulled files from Drive.
+
+The flag is committed on purpose — note the `!state/POSTING_DISABLED` negation
+in `.gitignore`, because `state/*` is otherwise ignored and the cloud runner
+would never see it.
+
+Verified with the switch on: `publish`, `publish-approved` and `auto` all stop
+cleanly even with `--confirm`, and calling the two Graph methods directly
+raises before any network request.
+
+**To resume posting**, all four of these:
+
+1. delete `state/POSTING_DISABLED`
+2. restore the `schedule:` blocks from the comments in the two workflows
+3. empty Drive `Pending` (see above)
+4. re-check the `META_ACCESS_TOKEN` secret — it had gone stale before, and a
+   long pause is exactly when a token quietly expires
+
+The Windows scheduled task `ShashiPallava-DailyCreatives` on the owner's PC was
+already `Disabled` before any of this, so it was never a live route.

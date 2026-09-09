@@ -1,0 +1,15 @@
+Meta posting is switched off.
+
+The owner asked on 09 Sep 2026 to stop the Facebook / Instagram automation
+completely. While this file exists, shashi_social/meta_api.py refuses every
+post - from the GitHub workflows, from daily_run.py, and from the MCP tools.
+
+The scheduled crons were removed from .github/workflows/ as well, so nothing
+is even attempting to run.
+
+To start posting again:
+  1. delete this file
+  2. put the `schedule:` blocks back in generate-review.yml and
+     publish-approved.yml (see CLAUDE.md section 8 for exactly what they were)
+  3. before re-enabling, empty the Drive `Pending` folder - a cutoff run posts
+     everything sitting in it, so a backlog would all go out at once

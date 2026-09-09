@@ -13,13 +13,22 @@ name: Shashi - Generate for review
 # twice.
 #
 # Times are UTC; India is UTC+5:30.
+# ---------------------------------------------------------------------------
+# STOPPED 09 Sep 2026, alongside publish-approved.yml.
+#
+# This job only generates and uploads to Drive 'Pending' - it never posts. It
+# is stopped anyway because leaving it running would quietly build a backlog
+# in 'Pending', and the publish job's cutoff runs post *everything* sitting
+# there. Re-enabling posting one day later would then fire the whole backlog
+# at once. Stopping both keeps that from being possible.
+#
+# To resume, restore:
+#
+#   schedule:
+#     - cron: '37 2 * * *'    # 08:07 IST - odd minute on purpose; the on-the-
+#                             # hour slots are contended and get dropped
+# ---------------------------------------------------------------------------
 on:
-  schedule:
-    # 08:07 IST, not 08:00. GitHub queues every repo's cron on the same
-    # minute, and the on-the-hour and half-hour slots are the most contended -
-    # runs there get delayed by hours or dropped. An odd minute is the
-    # documented way to actually land near the time you asked for.
-    - cron: '37 2 * * *'    # 08:07 IST - ready to review over breakfast
   workflow_dispatch:
     inputs:
       count:

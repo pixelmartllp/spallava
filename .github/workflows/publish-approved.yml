@@ -17,20 +17,25 @@ name: Shashi - Publish approved
 # post most days.
 #
 # Times are UTC; India is UTC+5:30.
+# ---------------------------------------------------------------------------
+# STOPPED 09 Sep 2026, at the owner's request: "meta par post karne ka
+# automation complete band kar do."
+#
+# The schedule is removed, so nothing runs on its own. Belt and braces, the
+# kill switch at state/POSTING_DISABLED makes shashi_social/meta_api.py refuse
+# every post even if this workflow is triggered by hand.
+#
+# To start posting again, restore this block verbatim and delete that file -
+# but empty Drive 'Pending' first, because a cutoff run posts everything in it:
+#
+#   schedule:
+#     - cron: '38 4 * * *'    # 10:08 IST - post what is already Approved
+#     - cron: '39 5 * * *'    # 11:09 IST - CUTOFF: Approved + whatever is in Pending
+#     - cron: '11 6 * * *'    # 11:41 IST - retry pass
+#     - cron: '23 8 * * *'    # 13:53 IST - late sweep
+#     - cron: '17 11 * * *'   # 16:47 IST - late sweep
+# ---------------------------------------------------------------------------
 on:
-  schedule:
-    # Odd minutes on purpose - see the note in generate-review.yml. The
-    # on-the-hour slots are the most contended on GitHub's scheduler and get
-    # delayed or dropped.
-    - cron: '38 4 * * *'    # 10:08 IST - post what is already Approved
-    - cron: '39 5 * * *'    # 11:09 IST - CUTOFF: Approved + whatever is left in Pending
-    - cron: '11 6 * * *'    # 11:41 IST - retry pass, see below
-    # Late sweeps. The 08:07 generate is regularly delayed by GitHub's queue -
-    # on 08 Aug it landed at 10:54 - and if it ever slips past 11:41 the day
-    # would simply never go out. These cost nothing on a normal day: anything
-    # already published has been moved to Posted, so they find an empty queue.
-    - cron: '23 8 * * *'    # 13:53 IST
-    - cron: '17 11 * * *'   # 16:47 IST
   workflow_dispatch:
     inputs:
       include_pending:

@@ -55,6 +55,21 @@ def log(message: str) -> None:
         handle.write(line + "\n")
 
 
+def _stopped() -> bool:
+    """Report the kill switch and stop, without looking like a failure.
+
+    meta_api refuses at the point of the call regardless; checking here as well
+    means a run exits cleanly with one clear line instead of crashing halfway
+    through, after it has already downloaded files from Drive.
+    """
+    if not brand.posting_disabled():
+        return False
+    log("Meta posting is switched OFF - nothing was sent. "
+        f"Delete {brand.POSTING_DISABLED_FLAG} to allow posting again "
+        "(see CLAUDE.md section 8).")
+    return True
+
+
 def cmd_generate(args: argparse.Namespace) -> int:
     day = args.date or pipeline.today()
     try:
@@ -74,6 +89,8 @@ def cmd_generate(args: argparse.Namespace) -> int:
 
 
 def cmd_publish(args: argparse.Namespace) -> int:
+    if _stopped():
+        return 0
     day = args.date or pipeline.today()
     platforms = tuple(p.strip() for p in args.platforms.split(",") if p.strip())
 
@@ -104,6 +121,8 @@ def cmd_publish(args: argparse.Namespace) -> int:
 
 
 def cmd_auto(args: argparse.Namespace) -> int:
+    if _stopped():
+        return 0
     day = args.date or pipeline.today()
     if args.skip_if_posted and posted_today(day):
         log(f"Already published for {day} - nothing to do.")
@@ -177,6 +196,8 @@ def _post_one(client: meta_api.GraphClient, image: Path, caption_fb: str,
 
 def cmd_publish_approved(args: argparse.Namespace) -> int:
     """Post everything sitting in Drive 'Approved', then move it to 'Posted'."""
+    if _stopped():
+        return 0
     platforms = tuple(p.strip() for p in args.platforms.split(",") if p.strip())
     review = drive.Review()
     review.probe()          # an unreachable remote lists as "empty" - catch it here

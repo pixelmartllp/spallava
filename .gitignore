@@ -12,6 +12,8 @@ output/
 # other memory of what it already posted); the log is not.
 state/*
 !state/state.json
+# The kill switch has to reach the cloud runner, so it is committed too.
+!state/POSTING_DISABLED
 
 # Rebuilt from assets/logo.png on demand
 assets/logo_transparent.png

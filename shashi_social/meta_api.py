@@ -19,6 +19,24 @@ import requests
 
 from . import brand
 
+
+class PostingDisabled(RuntimeError):
+    """Raised when the kill switch is on. Not a failure - a deliberate stop."""
+
+
+def _refuse_if_disabled(where: str) -> None:
+    """The single place posting can be stopped, whoever is calling.
+
+    Guarding here rather than in the CLI or the workflows is the point: the
+    cloud runs, `daily_run.py`, and the MCP tools all funnel through these two
+    methods, so one file on disk switches every one of them off at once.
+    """
+    if brand.posting_disabled():
+        raise PostingDisabled(
+            f"Posting to {where} is switched off. The owner stopped the Meta "
+            f"automation on 09 Sep 2026. Delete {brand.POSTING_DISABLED_FLAG} "
+            f"to allow posting again - and see CLAUDE.md section 8.")
+
 CONFIG_FILE = brand.ROOT / "config.json"
 DEFAULT_API_VERSION = "v25.0"
 GRAPH = "https://graph.facebook.com"
@@ -269,6 +287,7 @@ class GraphClient:
                             published: bool = True,
                             temporary: bool = False) -> dict[str, Any]:
         """Upload a photo to the Page. Returns the Graph response."""
+        _refuse_if_disabled("Facebook")
         image_path = Path(image_path)
         if not image_path.is_file():
             raise MetaAPIError(f"Image not found: {image_path}")
@@ -321,6 +340,7 @@ class GraphClient:
                              image_path: Path | None = None,
                              image_url: str | None = None) -> dict[str, Any]:
         """Create an Instagram container and publish it."""
+        _refuse_if_disabled("Instagram")
         if not self.ig_user_id:
             raise ConfigError(
                 "ig_user_id is not configured - cannot post to Instagram. "

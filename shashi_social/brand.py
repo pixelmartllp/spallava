@@ -22,6 +22,17 @@ ARTWORK_DIR = ASSETS / "artwork"
 OUTPUT_DIR = ROOT / "output"
 STATE_DIR = ROOT / "state"
 
+# Kill switch. While this file exists, nothing can post to Facebook or
+# Instagram - meta_api refuses at the point of the call, so every route is
+# covered: the cloud workflows, the local CLI and the MCP tools alike.
+# Delete the file to allow posting again.
+POSTING_DISABLED_FLAG = STATE_DIR / "POSTING_DISABLED"
+
+
+def posting_disabled() -> bool:
+    return POSTING_DISABLED_FLAG.is_file()
+
+
 LOGO_SOURCE = ASSETS / "logo.png"
 LOGO_TRANSPARENT = ASSETS / "logo_transparent.png"
 
