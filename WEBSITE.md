@@ -223,7 +223,47 @@ the auto-generated description otherwise scraped the page's own CSS.
 WhatsApp caches previews hard. To retest, add a query string
 (`shashipallava.com/?1`) or use a fresh chat.
 
-## 9. Still open
+## 9. Installable as an app (PWA)
+
+The site installs to a phone's home screen and opens without browser chrome.
+**SuperPWA** (`super-progressive-web-apps`) does the parts that live outside
+page content — it prints `<link rel="manifest">` into `<head>` and serves both
+files from the site root, neither of which the REST API can reach:
+
+```
+https://shashipallava.com/superpwa-manifest.json
+https://shashipallava.com/superpwa-sw.js
+```
+
+Verified directly rather than assumed: manifest returns `application/json`
+with a name, `display: standalone`, `scope: /`, and 192px and 512px icons; the
+service worker returns `text/javascript`; the registration is inline in the
+page. Those are Chrome's install requirements, and they pass.
+
+`website/tools/pwa.js` runs the same check through a real mobile Chrome and
+also confirms the worker takes control of the page. **Hostinger's bot
+protection frequently hangs or blocks headless Chrome**, so that script can
+stall where plain `curl` succeeds — when it does, check the manifest and the
+worker with `curl` instead and read the values, which is what actually matters.
+
+**SuperPWA's settings are not exposed over REST** — no routes, and nothing in
+`/wp/v2/settings`. So the four brand fields have to be set by hand in
+**wp-admin → SuperPWA → Settings**, and until they are the app uses the
+plugin's placeholder logo and a pale blue `#D5E0EB`:
+
+| Field | Value |
+|---|---|
+| Application Icon | `sp-icon-512.png` (media id 65) |
+| Splash Screen Icon | `sp-icon-512-maskable.png` (id 66) |
+| Background Colour | `#0A0A0B` |
+| Theme Colour | `#0A0A0B` |
+
+The icons were cut from the lotus mark onto the brand's near-black, with the
+maskable one held inside the safe zone because launchers crop to a circle.
+`site_icon` is already pointed at id 65, which is what the favicon and the iOS
+`apple-touch-icon` use.
+
+## 10. Still open
 
 The ₹999 price used to look like a typo and is not one. It read wrong only
 while the page described twelve weekly 1:1 sessions; for a six-month group
