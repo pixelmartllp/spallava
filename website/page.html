@@ -251,6 +251,28 @@
 .sp .menu nav a.on{color:var(--gold)}
 .sp .menu .foot{margin-top:auto;padding-top:24px;display:flex;flex-direction:column;gap:10px}
 .sp .menu .tiny{font-size:.68rem;color:var(--muted);text-align:center;margin-top:6px}
+/* ---- install app ---- */
+.sp .install{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(251,189,35,.5);
+  background:rgba(251,189,35,.1);color:var(--gold);border-radius:999px;padding:8px 14px;
+  font-family:inherit;font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;margin-left:auto;margin-right:10px;white-space:nowrap}
+.sp .install svg{width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round}
+.sp .install[hidden]{display:none}
+.sp .menu .install{margin:14px 0 0;width:100%;justify-content:center;padding:14px;font-size:.7rem}
+.sp .iossheet{position:fixed;inset:0;z-index:70;display:none;align-items:flex-end;
+  background:rgba(6,6,7,.72);backdrop-filter:blur(3px)}
+.sp .iossheet.on{display:flex}
+.sp .iossheet .card{width:100%;background:#141416;border-top:1px solid var(--line);
+  border-radius:20px 20px 0 0;padding:26px 22px calc(26px + env(safe-area-inset-bottom));
+  text-align:center}
+.sp .iossheet h3{font-size:1.15rem;margin-bottom:10px}
+.sp .iossheet p{color:var(--muted);font-size:.9rem;margin-bottom:8px}
+.sp .iossheet .step{display:flex;gap:10px;align-items:flex-start;text-align:left;
+  color:var(--dim);font-size:.92rem;margin-top:14px}
+.sp .iossheet .num{width:24px;height:24px;flex:none;border-radius:50%;background:rgba(251,189,35,.14);
+  color:var(--gold);font-size:.72rem;font-weight:800;display:grid;place-items:center}
+.sp .iossheet .btn{margin-top:22px}
 /* ---- bottom tabs ---- */
 .sp .tabs{position:fixed;left:0;right:0;bottom:0;z-index:50;display:grid;grid-template-columns:repeat(4,1fr);
   background:rgba(10,10,11,.96);backdrop-filter:blur(16px);border-top:1px solid var(--line);
@@ -292,9 +314,18 @@
 <div class="progress"><span></span></div>
 <div class="appbar">
   <img src="https://shashipallava.com/wp-content/uploads/2026/09/sp-logo-mark.png" alt="Shashi Pallava">
-  <button class="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
+  <button class="install" type="button" hidden aria-label="Install app"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Install App</button><button class="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
 </div>
 <div class="scrim"></div>
+<div class="iossheet" role="dialog" aria-label="Install on iPhone">
+  <div class="card">
+    <h3>Add to your Home Screen</h3>
+    <p>Safari par do tap me ho jayega.</p>
+    <div class="step"><span class="num">1</span><span>Neeche ka <strong>Share</strong> button dabaiye - jisme upar ki taraf teer hota hai.</span></div>
+    <div class="step"><span class="num">2</span><span>Scroll karke <strong>Add to Home Screen</strong> chuniye, phir <strong>Add</strong>.</span></div>
+    <button class="btn iosclose" type="button">Theek hai</button>
+  </div>
+</div>
 <aside class="menu" aria-hidden="true">
   <div class="head">
     <img src="https://shashipallava.com/wp-content/uploads/2026/09/sp-logo-mark.png" alt="Shashi Pallava">
@@ -309,6 +340,7 @@
     <a href="#community">Community</a>
   </nav>
   <div class="foot">
+    <button class="install" type="button" hidden><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Install App</button>
     <a class="btn" href="https://wa.me/919876732099">WhatsApp</a>
     <p class="tiny">shashipallava@gmail.com</p>
   </div>
@@ -624,6 +656,63 @@
   window.addEventListener('scroll', onScroll, {passive: true});
   onScroll();
   /* ---------- tab bar follows the section on screen ---------- */
+  /* ---- install app ----
+     Chrome no longer pops anything up on its own: the option hides in the
+     browser menu, and Safari has no prompt at all. So the page offers its
+     own button - the real install prompt where the browser gives us one,
+     and the Share-sheet instructions on iPhone where it does not. */
+  var installBtns = document.querySelectorAll('.sp .install');
+  var sheet = document.querySelector('.sp .iossheet');
+  var deferred = null;
+  function setInstall(show){
+    for (var i = 0; i !== installBtns.length; i++) { installBtns[i].hidden = !show; }
+  }
+  var standalone = false;
+  if (window.matchMedia) {
+    if (window.matchMedia('(display-mode: standalone)').matches) { standalone = true; }
+  }
+  if (navigator.standalone === true) { standalone = true; }
+  var ua = navigator.userAgent;
+  var isIos = false;
+  if (ua.indexOf('iPhone') !== -1) { isIos = true; }
+  if (ua.indexOf('iPad') !== -1) { isIos = true; }
+  if (ua.indexOf('iPod') !== -1) { isIos = true; }
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    deferred = e;
+    if (!standalone) { setInstall(true); }
+  });
+  window.addEventListener('appinstalled', function(){
+    deferred = null;
+    setInstall(false);
+  });
+  /* Safari never fires beforeinstallprompt, so show the button there anyway
+     and explain the Share-sheet route when it is tapped. */
+  if (isIos) {
+    if (!standalone) { setInstall(true); }
+  }
+  for (var k = 0; k !== installBtns.length; k++) {
+    installBtns[k].addEventListener('click', function(){
+      if (deferred) {
+        deferred.prompt();
+        deferred.userChoice.then(function(){
+          deferred = null;
+          setInstall(false);
+        });
+        return;
+      }
+      if (sheet) { sheet.classList.add('on'); }
+    });
+  }
+  if (sheet) {
+    sheet.addEventListener('click', function(e){
+      if (e.target === sheet) { sheet.classList.remove('on'); }
+    });
+    var iosClose = sheet.querySelector('.iosclose');
+    if (iosClose) {
+      iosClose.addEventListener('click', function(){ sheet.classList.remove('on'); });
+    }
+  }
   var tabs = document.querySelectorAll('.sp .tabs a[data-t]');
   var links = document.querySelectorAll('.sp .menu a[data-t]');
   var secs = [];
