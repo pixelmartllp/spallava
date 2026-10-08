@@ -273,6 +273,10 @@
 .sp .iossheet .num{width:24px;height:24px;flex:none;border-radius:50%;background:rgba(251,189,35,.14);
   color:var(--gold);font-size:.72rem;font-weight:800;display:grid;place-items:center}
 .sp .iossheet .btn{margin-top:22px}
+.sp .iossheet .lead{margin-bottom:4px}
+.sp .iossheet .ios-only,.sp .iossheet .other-only{display:none}
+.sp.is-ios .iossheet .ios-only{display:block}
+.sp.not-ios .iossheet .other-only{display:block}
 /* ---- bottom tabs ---- */
 .sp .tabs{position:fixed;left:0;right:0;bottom:0;z-index:50;display:grid;grid-template-columns:repeat(4,1fr);
   background:rgba(10,10,11,.96);backdrop-filter:blur(16px);border-top:1px solid var(--line);
@@ -314,15 +318,21 @@
 <div class="progress"><span></span></div>
 <div class="appbar">
   <img src="https://shashipallava.com/wp-content/uploads/2026/09/sp-logo-mark.png" alt="Shashi Pallava">
-  <button class="install" type="button" hidden aria-label="Install app"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Install App</button><button class="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
+  <button class="install bar-install" type="button" hidden aria-label="Install app"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Install</button><button class="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
 </div>
 <div class="scrim"></div>
-<div class="iossheet" role="dialog" aria-label="Install on iPhone">
+<div class="iossheet" role="dialog" aria-label="Install the app">
   <div class="card">
-    <h3>Add to your Home Screen</h3>
-    <p>Safari par do tap me ho jayega.</p>
-    <div class="step"><span class="num">1</span><span>Neeche ka <strong>Share</strong> button dabaiye - jisme upar ki taraf teer hota hai.</span></div>
-    <div class="step"><span class="num">2</span><span>Scroll karke <strong>Add to Home Screen</strong> chuniye, phir <strong>Add</strong>.</span></div>
+    <h3>Install on your phone</h3>
+    <p class="lead">Home screen par app ki tarah khul jayegi.</p>
+    <div class="ios-only">
+      <div class="step"><span class="num">1</span><span>Neeche ka <strong>Share</strong> button dabaiye - jisme upar ki taraf teer hota hai.</span></div>
+      <div class="step"><span class="num">2</span><span>Scroll karke <strong>Add to Home Screen</strong> chuniye, phir <strong>Add</strong>.</span></div>
+    </div>
+    <div class="other-only">
+      <div class="step"><span class="num">1</span><span>Browser ka menu kholiye - upar daayein <strong>teen dot</strong>.</span></div>
+      <div class="step"><span class="num">2</span><span><strong>Install app</strong> ya <strong>Add to Home screen</strong> chuniye.</span></div>
+    </div>
     <button class="btn iosclose" type="button">Theek hai</button>
   </div>
 </div>
@@ -340,7 +350,7 @@
     <a href="#community">Community</a>
   </nav>
   <div class="foot">
-    <button class="install" type="button" hidden><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Install App</button>
+    <button class="install menu-install" type="button"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Download App</button>
     <a class="btn" href="https://wa.me/919876732099">WhatsApp</a>
     <p class="tiny">shashipallava@gmail.com</p>
   </div>
@@ -662,10 +672,13 @@
      own button - the real install prompt where the browser gives us one,
      and the Share-sheet instructions on iPhone where it does not. */
   var installBtns = document.querySelectorAll('.sp .install');
+  var barBtns = document.querySelectorAll('.sp .bar-install');
   var sheet = document.querySelector('.sp .iossheet');
   var deferred = null;
+  /* Only the app-bar button is conditional. The menu row is permanent, so
+     there is always somewhere to tap, whatever the browser decides to fire. */
   function setInstall(show){
-    for (var i = 0; i !== installBtns.length; i++) { installBtns[i].hidden = !show; }
+    for (var i = 0; i !== barBtns.length; i++) { barBtns[i].hidden = !show; }
   }
   var standalone = false;
   if (window.matchMedia) {
@@ -684,12 +697,19 @@
   });
   window.addEventListener('appinstalled', function(){
     deferred = null;
-    setInstall(false);
+    for (var q = 0; q !== installBtns.length; q++) { installBtns[q].hidden = true; }
   });
   /* Safari never fires beforeinstallprompt, so show the button there anyway
      and explain the Share-sheet route when it is tapped. */
   if (isIos) {
+    root.classList.add('is-ios');
     if (!standalone) { setInstall(true); }
+  } else {
+    root.classList.add('not-ios');
+  }
+  /* already running as an installed app - nothing left to offer */
+  if (standalone) {
+    for (var q = 0; q !== installBtns.length; q++) { installBtns[q].hidden = true; }
   }
   for (var k = 0; k !== installBtns.length; k++) {
     installBtns[k].addEventListener('click', function(){
