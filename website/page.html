@@ -277,6 +277,32 @@
 .sp .iossheet .ios-only,.sp .iossheet .other-only{display:none}
 .sp.is-ios .iossheet .ios-only{display:block}
 .sp.not-ios .iossheet .other-only{display:block}
+/* ---- webinar registration ---- */
+.sp .reg{background:var(--card);border-block:1px solid var(--line)}
+.sp .regform{margin-top:26px;display:flex;flex-direction:column;gap:12px;text-align:left}
+.sp .regform label{display:block;font-size:.66rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.sp .regform input{width:100%;min-height:52px;padding:0 16px;border-radius:12px;
+  background:#0E0E10;border:1px solid var(--line);color:var(--fg);
+  font-family:inherit;font-size:1rem}
+.sp .regform input:focus{outline:none;border-color:var(--gold)}
+.sp .regform input::placeholder{color:#6A6A72}
+.sp .regform .err{color:var(--gold-hi);font-size:.78rem;margin-top:7px;display:none}
+.sp .regform .bad input{border-color:var(--gold-hi)}
+.sp .regform .bad .err{display:block}
+.sp .regform .btn{margin-top:6px}
+.sp .regnote{font-size:.74rem;color:var(--muted);margin-top:14px;text-align:center}
+.sp .regdone{display:none;text-align:center;padding:26px 18px;border:1px solid rgba(251,189,35,.4);
+  border-radius:16px;margin-top:26px;background:linear-gradient(160deg,#1C1810,#111113)}
+.sp .regdone h3{font-size:1.2rem;margin-bottom:8px}
+.sp .regdone p{color:var(--dim);font-size:.93rem}
+.sp .regdone .btn{margin-top:18px}
+.sp .reg.sent .regform{display:none}
+.sp .reg.sent .regdone{display:block}
+@media (min-width:900px){
+  .sp .regform{max-width:520px;margin-inline:auto}
+  .sp .regnote{max-width:520px;margin-inline:auto}
+}
 /* ---- bottom tabs ---- */
 .sp .tabs{position:fixed;left:0;right:0;bottom:0;z-index:50;display:grid;grid-template-columns:repeat(4,1fr);
   background:rgba(10,10,11,.96);backdrop-filter:blur(16px);border-top:1px solid var(--line);
@@ -351,7 +377,7 @@
   </nav>
   <div class="foot">
     <button class="install menu-install" type="button"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Download App</button>
-    <a class="btn" href="https://wa.me/919876732099">WhatsApp</a>
+    <a class="btn" href="https://chat.whatsapp.com/C2tCs8KDwiYCEmvj9CLXNy">Join the Community</a><a class="btn btn-ghost" href="https://wa.me/919876732099">Message Shashi</a>
     <p class="tiny">shashipallava@gmail.com</p>
   </div>
 </aside>
@@ -365,7 +391,7 @@
     <h1 class="rv">Become the <span>Unshakeable You</span></h1>
     <p class="lede rv">Understand yourself better, build healthier relationships, and look at your life from a new perspective. Jab aap khud ko samajhne lagti hain — you start responding to life differently.</p>
     <div class="cta rv">
-      <a class="btn" href="https://wa.me/919876732099">Join Free Webinar</a>
+      <a class="btn" href="#register">Join Free Webinar</a>
       <a class="btn btn-ghost" href="#work">Explore Programs</a>
     </div>
     <p class="hnote rv">Live sessions · English &amp; Hinglish · No obligation</p>
@@ -433,11 +459,42 @@
           <li>Your questions answered live</li>
           <li>No obligation to continue</li>
         </ul>
-        <a class="btn btn-ghost" href="https://wa.me/919876732099">Join Free Webinar</a>
+        <a class="btn btn-ghost" href="#register">Join Free Webinar</a>
       </div>
       <div class="door paid rv">
         <p class="kick">Go All In</p><h3>Revive, Rise &amp; Relive</h3><p class="sub">A 6-month transformation program for your mindset, confidence, emotional well-being and relationships.</p><p class="price">₹999 <small>· 6 months</small></p><ul><li>A private WhatsApp community</li><li>Interactive live webinars</li><li>Practical challenges and missions on Mentie Go</li><li>One personal 1:1 session with Shashi</li><li>100% online — for women aged 18 to 55</li></ul><a class="btn" href="https://wa.me/919876732099">Join The Program</a>
       </div>
+    </div>
+  </div>
+</section>
+<section id="register" class="reg">
+  <div class="wrap center">
+    <p class="eyebrow rv">Free Webinar</p>
+    <h2 class="rv">Register for the next one</h2>
+    <p class="sec-lede rv">Fill this in and the details go straight to Shashi on WhatsApp. She sends you the joining link herself.</p>
+    <form class="regform rv" novalidate>
+      <div class="row" data-field="name">
+        <label for="reg-name">Full name</label>
+        <input id="reg-name" name="name" type="text" autocomplete="name" placeholder="Your name">
+        <p class="err">Please enter your name.</p>
+      </div>
+      <div class="row" data-field="phone">
+        <label for="reg-phone">WhatsApp number</label>
+        <input id="reg-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10-digit number">
+        <p class="err">Please enter a valid 10-digit number.</p>
+      </div>
+      <div class="row" data-field="city">
+        <label for="reg-city">City <span style="text-transform:none;letter-spacing:0;font-weight:500">(optional)</span></label>
+        <input id="reg-city" name="city" type="text" autocomplete="address-level2" placeholder="Where are you joining from?">
+        <p class="err"></p>
+      </div>
+      <button class="btn" type="submit">Register on WhatsApp</button>
+    </form>
+    <p class="regnote rv">Your number is only used to send you the webinar link. Nothing else.</p>
+    <div class="regdone">
+      <h3>Almost there</h3>
+      <p>WhatsApp should have opened with your details. Press send and you are registered.</p>
+      <a class="btn regretry" href="#">Open WhatsApp again</a>
     </div>
   </div>
 </section>
@@ -513,7 +570,7 @@
       <h2>400+ women, on the same journey</h2>
       <p class="sec-lede">One thought every morning on Facebook and Instagram — and a community where personal development is something you practise, not just something you read.</p>
       <div class="cta">
-        <a class="btn" href="https://wa.me/919876732099">WhatsApp +91 98767 32099</a>
+        <a class="btn" href="https://chat.whatsapp.com/C2tCs8KDwiYCEmvj9CLXNy">Join the Community</a>
         <a class="btn btn-ghost" href="https://www.instagram.com/ShashiPallava">Follow on Instagram</a>
       </div>
     </div>
@@ -731,6 +788,46 @@
     var iosClose = sheet.querySelector('.iosclose');
     if (iosClose) {
       iosClose.addEventListener('click', function(){ sheet.classList.remove('on'); });
+    }
+  }
+  /* ---- webinar registration ----
+     No backend: the form builds a WhatsApp message and hands it to Shashi,
+     which is where every other enquiry on this site already goes. */
+  var regSection = document.getElementById('register');
+  if (regSection) {
+    var regForm = regSection.querySelector('.regform');
+    var lastLink = '';
+    function digitsOnly(v){ return v.replace(/[^0-9]/g, ''); }
+    function fieldRow(name){ return regSection.querySelector('[data-field="' + name + '"]'); }
+    function markBad(name, bad){
+      var row = fieldRow(name);
+      if (!row) { return; }
+      if (bad) { row.classList.add('bad'); } else { row.classList.remove('bad'); }
+    }
+    regForm.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var name = regForm.elements.name.value.trim();
+      var phone = digitsOnly(regForm.elements.phone.value);
+      var city = regForm.elements.city.value.trim();
+      var ok = true;
+      if (name.length === 0) { markBad('name', true); ok = false; }
+      else { markBad('name', false); }
+      if (phone.length !== 10) { markBad('phone', true); ok = false; }
+      else { markBad('phone', false); }
+      if (!ok) { return; }
+      var lines = ['Hi Shashi, I would like to register for the free webinar.',
+                   '', 'Name: ' + name, 'WhatsApp: ' + phone];
+      if (city.length !== 0) { lines.push('City: ' + city); }
+      lastLink = 'https://wa.me/919876732099?text=' + encodeURIComponent(lines.join('\n'));
+      regSection.classList.add('sent');
+      window.open(lastLink, '_blank');
+    });
+    var retry = regSection.querySelector('.regretry');
+    if (retry) {
+      retry.addEventListener('click', function(ev){
+        ev.preventDefault();
+        if (lastLink.length !== 0) { window.open(lastLink, '_blank'); }
+      });
     }
   }
   var tabs = document.querySelectorAll('.sp .tabs a[data-t]');
