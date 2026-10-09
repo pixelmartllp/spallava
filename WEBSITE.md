@@ -225,6 +225,16 @@ footer (Events, Shop, Patterns, Themes) and **"Written by
 pixelmartllp@gmail.com" on every post**. The same script closes comments - no
 one moderates them. Undo: Appearance → Editor → Templates → Reset.
 
+**Posts carry the Instagram creatives** (since 09 Oct 2026, owner approved).
+`website/blog/posts.json` ties each post to an Instagram media id: the six
+original posts got the creative that says the same thing, and six more were
+written from the 1–9 Oct creatives - title and bold lead from the creative and
+its caption, three short Hinglish paragraphs, a link back to the Instagram
+post, dated to when it went up there. `website/tools/blog_sync.py --confirm`
+uploads each creative once as `ig-<id>-full.jpg` and sets it as the featured
+image; re-running is safe. New entries need writing, so this is not in the
+daily workflow - add to `posts.json`, show him the words, then publish.
+
 ## 7a. Instagram grid
 
 `#insta` on the homepage shows the latest Instagram posts and stays `hidden`
