@@ -21,6 +21,15 @@
   --on-gold:#0A0A0B;
   --glow:0 0 60px -12px rgba(251,189,35,.4);
   --r:12px;
+  /* surfaces that used to be hardcoded, so a light theme can swap them */
+  --panel-a:#1C1810; --panel-b:#111113;
+  --comm-a:#16150F; --comm-b:#0D0D0E;
+  --menu-bg:#101012; --sheet-bg:#141416;
+  --input-bg:#0E0E10; --input-ph:#6A6A72;
+  --bar-bg:rgba(10,10,11,.88); --tabs-bg:rgba(10,10,11,.96);
+  --scrim-bg:rgba(6,6,7,.72);
+  --gold-soft:rgba(251,189,35,.10); --gold-line:rgba(251,189,35,.35);
+  --bar-shadow:0 6px 24px -18px #000;
   background:var(--bg);color:var(--fg);
   font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
   font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip;
@@ -62,10 +71,10 @@
 .sp.js .rv.in{opacity:1;transform:none}
 /* ---- app bar ---- */
 .sp .appbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:10px;
-  padding:10px 18px;background:rgba(10,10,11,.88);backdrop-filter:blur(16px);
+  padding:10px 18px;background:var(--bar-bg);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--line)}
 .sp .appbar img{height:44px;width:auto;transition:height .25s ease}
-.sp .appbar.tight{padding-top:6px;padding-bottom:6px;box-shadow:0 6px 24px -18px #000}
+.sp .appbar.tight{padding-top:6px;padding-bottom:6px;box-shadow:var(--bar-shadow)}
 .sp .appbar.tight img{height:36px}
 .sp .appbar .nm{font-size:.85rem;font-weight:700;line-height:1.15}
 .sp .appbar .rl{font-size:.56rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
@@ -128,7 +137,7 @@
 .sp .doors{text-align:left}
 .sp .door{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 20px;position:relative}
 .sp .door.paid{border-color:rgba(251,189,35,.55);box-shadow:var(--glow);
-  background:linear-gradient(160deg,#1C1810,#111113)}
+  background:linear-gradient(160deg,var(--panel-a),var(--panel-b))}
 .sp .door.paid::after{content:"Most chosen";position:absolute;top:-10px;right:18px;
   background:linear-gradient(135deg,var(--gold-hi),var(--gold));color:var(--on-gold);
   font-size:.54rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
@@ -150,7 +159,7 @@
 .sp .comm::before{content:"";position:absolute;left:50%;bottom:-40%;width:150vw;height:80%;
   transform:translateX(-50%);background:radial-gradient(ellipse 40% 50% at 50% 50%,rgba(251,189,35,.13),transparent 70%)}
 .sp .comm .panel{position:relative;border:1px solid rgba(251,189,35,.3);border-radius:20px;
-  padding:30px 22px;background:linear-gradient(160deg,#16150F,#0D0D0E)}
+  padding:30px 22px;background:linear-gradient(160deg,var(--comm-a),var(--comm-b))}
 .sp footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-size:.76rem;text-align:center}
 .sp footer .mark{height:104px;width:auto;margin:0 auto 18px;opacity:.95}
 .sp .flinks{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-bottom:12px}
@@ -225,11 +234,11 @@
 .sp.menu-open .burger i:nth-child(2){opacity:0;transform:scaleX(.2)}
 .sp.menu-open .burger i:nth-child(3){transform:rotate(-45deg)}
 /* ---- slide-in menu ---- */
-.sp .scrim{position:fixed;inset:0;z-index:55;background:rgba(6,6,7,.72);backdrop-filter:blur(3px);
+.sp .scrim{position:fixed;inset:0;z-index:55;background:var(--scrim-bg);backdrop-filter:blur(3px);
   opacity:0;visibility:hidden;transition:opacity .32s ease,visibility .32s ease}
 .sp.menu-open .scrim{opacity:1;visibility:visible}
 .sp .menu{position:fixed;top:0;right:0;bottom:0;z-index:56;width:min(82%,330px);
-  background:#101012;border-left:1px solid var(--line);padding:22px 22px calc(26px + env(safe-area-inset-bottom));
+  background:var(--menu-bg);border-left:1px solid var(--line);padding:22px 22px calc(26px + env(safe-area-inset-bottom));
   display:flex;flex-direction:column;transform:translateX(102%);
   transition:transform .38s cubic-bezier(.22,.8,.28,1);overflow-y:auto}
 .sp.menu-open .menu{transform:translateX(0)}
@@ -263,7 +272,7 @@
 .sp .iossheet{position:fixed;inset:0;z-index:70;display:none;align-items:flex-end;
   background:rgba(6,6,7,.72);backdrop-filter:blur(3px)}
 .sp .iossheet.on{display:flex}
-.sp .iossheet .card{width:100%;background:#141416;border-top:1px solid var(--line);
+.sp .iossheet .card{width:100%;background:var(--sheet-bg);border-top:1px solid var(--line);
   border-radius:20px 20px 0 0;padding:26px 22px calc(26px + env(safe-area-inset-bottom));
   text-align:center}
 .sp .iossheet h3{font-size:1.15rem;margin-bottom:10px}
@@ -283,17 +292,17 @@
 .sp .regform label{display:block;font-size:.66rem;font-weight:700;letter-spacing:.12em;
   text-transform:uppercase;color:var(--muted);margin-bottom:7px}
 .sp .regform input{width:100%;min-height:52px;padding:0 16px;border-radius:12px;
-  background:#0E0E10;border:1px solid var(--line);color:var(--fg);
+  background:var(--input-bg);border:1px solid var(--line);color:var(--fg);
   font-family:inherit;font-size:1rem}
 .sp .regform input:focus{outline:none;border-color:var(--gold)}
-.sp .regform input::placeholder{color:#6A6A72}
+.sp .regform input::placeholder{color:var(--input-ph)}
 .sp .regform .err{color:var(--gold-hi);font-size:.78rem;margin-top:7px;display:none}
 .sp .regform .bad input{border-color:var(--gold-hi)}
 .sp .regform .bad .err{display:block}
 .sp .regform .btn{margin-top:6px}
 .sp .regnote{font-size:.74rem;color:var(--muted);margin-top:14px;text-align:center}
 .sp .regdone{display:none;text-align:center;padding:26px 18px;border:1px solid rgba(251,189,35,.4);
-  border-radius:16px;margin-top:26px;background:linear-gradient(160deg,#1C1810,#111113)}
+  border-radius:16px;margin-top:26px;background:linear-gradient(160deg,var(--panel-a),var(--panel-b))}
 .sp .regdone h3{font-size:1.2rem;margin-bottom:8px}
 .sp .regdone p{color:var(--dim);font-size:.93rem}
 .sp .regdone .btn{margin-top:18px}
@@ -303,9 +312,59 @@
   .sp .regform{max-width:520px;margin-inline:auto}
   .sp .regnote{max-width:520px;margin-inline:auto}
 }
+/* ---- light theme ---- */
+.sp.light{
+  --bg:#FAF7F2; --card:#FFFFFF; --card-2:#F3EEE6;
+  --line:#E4DCD0;
+  --fg:#17120F; --dim:#4A423A; --muted:#7A7068;
+  --gold:#9A6B06; --gold-hi:#B98309; --gold-dk:#7A5405;
+  --on-gold:#FFFFFF;
+  --glow:0 10px 30px -16px rgba(154,107,6,.5);
+  --panel-a:#FFFDF8; --panel-b:#F6EFE2;
+  --comm-a:#FFFDF8; --comm-b:#F6EFE2;
+  --menu-bg:#FFFFFF; --sheet-bg:#FFFFFF;
+  --input-bg:#FFFFFF; --input-ph:#A49A90;
+  --bar-bg:rgba(250,247,242,.9); --tabs-bg:rgba(255,255,255,.96);
+  --scrim-bg:rgba(23,18,15,.42);
+  --gold-soft:rgba(154,107,6,.08); --gold-line:rgba(154,107,6,.3);
+  --bar-shadow:0 6px 24px -18px rgba(23,18,15,.5);
+}
+/* the gold tints were written as literal rgba, so restate them per theme */
+.sp.light .eyebrow{border-color:var(--gold-line);background:var(--gold-soft)}
+.sp.light .card .ic,.sp.light .step .ic{
+  background:radial-gradient(circle at 50% 35%,rgba(154,107,6,.14),rgba(154,107,6,.05));
+  border-color:var(--gold-line);box-shadow:0 0 30px -16px rgba(154,107,6,.5)}
+.sp.light .hero::before{background:radial-gradient(ellipse 40% 46% at 50% 45%,rgba(154,107,6,.10),transparent 70%)}
+.sp.light .hero-ph{border-color:var(--gold-line);box-shadow:0 14px 40px -22px rgba(23,18,15,.45)}
+.sp.light .about .av{border-color:var(--gold-line);box-shadow:0 10px 30px -18px rgba(23,18,15,.4)}
+.sp.light .comm::before{background:radial-gradient(ellipse 40% 50% at 50% 50%,rgba(154,107,6,.10),transparent 70%)}
+.sp.light .comm .panel,.sp.light .door.paid,.sp.light .regdone{border-color:var(--gold-line)}
+.sp.light .creds li,.sp.light .install{border-color:var(--gold-line);background:var(--gold-soft)}
+.sp.light .appbar .call{background:var(--gold-soft)}
+.sp.light .door li::before{background:rgba(154,107,6,.14)}
+.sp.light .door.paid li{color:var(--dim)}
+.sp.light .door.paid h3,.sp.light .door.paid .price{color:var(--fg)}
+.sp.light .door.paid .eyebrow{color:var(--gold)}
+.sp.light .door.paid .tag{color:var(--muted)}
+.sp.light .btn{box-shadow:var(--glow)}
+.sp.light footer{color:var(--muted)}
+.sp.light .flinks a{color:var(--dim)}
+.sp.light .pull{color:var(--fg)}
+.sp.light .q small{color:var(--gold)}
+/* ---- theme toggle ---- */
+.sp .themer{width:40px;height:40px;flex:none;border:1px solid var(--line);border-radius:50%;
+  background:var(--gold-soft);display:grid;place-items:center;cursor:pointer;padding:0;margin-right:8px}
+.sp .themer svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:1.9;
+  stroke-linecap:round;stroke-linejoin:round;grid-area:1/1}
+.sp .themer .moon{display:none}
+.sp.light .themer .moon{display:block}
+.sp.light .themer .sun{display:none}
+.sp .menu .themer{width:100%;border-radius:12px;height:48px;margin:0 0 10px;
+  grid-auto-flow:column;gap:9px;font-family:inherit;font-size:.72rem;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--gold)}
 /* ---- bottom tabs ---- */
 .sp .tabs{position:fixed;left:0;right:0;bottom:0;z-index:50;display:grid;grid-template-columns:repeat(4,1fr);
-  background:rgba(10,10,11,.96);backdrop-filter:blur(16px);border-top:1px solid var(--line);
+  background:var(--tabs-bg);backdrop-filter:blur(16px);border-top:1px solid var(--line);
   padding-bottom:env(safe-area-inset-bottom)}
 .sp .tabs a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
   padding:9px 0 8px;min-height:58px;color:var(--muted);font-size:.57rem;font-weight:700;letter-spacing:.04em}
@@ -344,7 +403,7 @@
 <div class="progress"><span></span></div>
 <div class="appbar">
   <img src="https://shashipallava.com/wp-content/uploads/2026/09/sp-logo-mark.png" alt="Shashi Pallava">
-  <button class="install bar-install" type="button" hidden aria-label="Install app"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Install</button><button class="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
+  <button class="themer" type="button" aria-label="Switch theme"><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button><button class="install bar-install" type="button" hidden aria-label="Install app"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Install</button><button class="burger" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
 </div>
 <div class="scrim"></div>
 <div class="iossheet" role="dialog" aria-label="Install the app">
@@ -376,6 +435,7 @@
     <a href="#community">Community</a>
   </nav>
   <div class="foot">
+    <button class="themer" type="button" aria-label="Switch theme"><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><span class="tlabel">Light mode</span></button>
     <button class="install menu-install" type="button"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Download App</button>
     <a class="btn" href="https://chat.whatsapp.com/C2tCs8KDwiYCEmvj9CLXNy">Join the Community</a><a class="btn btn-ghost" href="https://wa.me/919876732099">Message Shashi</a>
     <p class="tiny">shashipallava@gmail.com</p>
@@ -482,6 +542,11 @@
         <label for="reg-phone">WhatsApp number</label>
         <input id="reg-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10-digit number">
         <p class="err">Please enter a valid 10-digit number.</p>
+      </div>
+      <div class="row" data-field="email">
+        <label for="reg-email">Email</label>
+        <input id="reg-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com">
+        <p class="err">Please enter a valid email address.</p>
       </div>
       <div class="row" data-field="city">
         <label for="reg-city">City <span style="text-transform:none;letter-spacing:0;font-weight:500">(optional)</span></label>
@@ -808,15 +873,22 @@
       ev.preventDefault();
       var name = regForm.elements.name.value.trim();
       var phone = digitsOnly(regForm.elements.phone.value);
+      var email = regForm.elements.email.value.trim();
       var city = regForm.elements.city.value.trim();
       var ok = true;
       if (name.length === 0) { markBad('name', true); ok = false; }
       else { markBad('name', false); }
       if (phone.length !== 10) { markBad('phone', true); ok = false; }
       else { markBad('phone', false); }
+      var emailOk = true;
+      if (email.length === 0) { emailOk = false; }
+      else if (email.indexOf('@') === -1) { emailOk = false; }
+      else if (email.indexOf('.') === -1) { emailOk = false; }
+      if (!emailOk) { markBad('email', true); ok = false; }
+      else { markBad('email', false); }
       if (!ok) { return; }
       var lines = ['Hi Shashi, I would like to register for the free webinar.',
-                   '', 'Name: ' + name, 'WhatsApp: ' + phone];
+                   '', 'Name: ' + name, 'WhatsApp: ' + phone, 'Email: ' + email];
       if (city.length !== 0) { lines.push('City: ' + city); }
       lastLink = 'https://wa.me/919876732099?text=' + encodeURIComponent(lines.join('\n'));
       regSection.classList.add('sent');
@@ -829,6 +901,39 @@
         if (lastLink.length !== 0) { window.open(lastLink, '_blank'); }
       });
     }
+  }
+  /* ---- light / dark ----
+     Dark is the default and stays the default; the choice is remembered per
+     browser. The address-bar colour is updated too, otherwise the phone's
+     chrome keeps the old theme and the switch looks half done. */
+  var themers = document.querySelectorAll('.sp .themer');
+  var metaTheme = document.querySelector('meta[name="theme-color"]');
+  function applyTheme(mode){
+    if (mode === 'light') { root.classList.add('light'); }
+    else { root.classList.remove('light'); }
+    if (metaTheme) {
+      if (mode === 'light') { metaTheme.setAttribute('content', '#FAF7F2'); }
+      else { metaTheme.setAttribute('content', '#0A0A0B'); }
+    }
+    for (var t = 0; t !== themers.length; t++) {
+      var lab = themers[t].querySelector('.tlabel');
+      if (lab) {
+        if (mode === 'light') { lab.textContent = 'Dark mode'; }
+        else { lab.textContent = 'Light mode'; }
+      }
+    }
+  }
+  var saved = null;
+  try { saved = window.localStorage.getItem('sp-theme'); } catch (e) { saved = null; }
+  if (saved === 'light') { applyTheme('light'); } else { applyTheme('dark'); }
+  for (var ti = 0; ti !== themers.length; ti++) {
+    themers[ti].addEventListener('click', function(){
+      var nowLight = root.classList.contains('light');
+      var next = 'light';
+      if (nowLight) { next = 'dark'; }
+      applyTheme(next);
+      try { window.localStorage.setItem('sp-theme', next); } catch (e) {}
+    });
   }
   var tabs = document.querySelectorAll('.sp .tabs a[data-t]');
   var links = document.querySelectorAll('.sp .menu a[data-t]');
