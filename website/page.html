@@ -277,7 +277,7 @@
   text-align:center}
 .sp .iossheet h3{font-size:1.15rem;margin-bottom:10px}
 .sp .iossheet p{color:var(--muted);font-size:.9rem;margin-bottom:8px}
-.sp .iossheet .step{display:flex;gap:10px;align-items:flex-start;text-align:left;
+.sp .iossheet .step{background:none;border:none;border-radius:0;padding:0;counter-increment:none;display:flex;gap:10px;align-items:flex-start;text-align:left;
   color:var(--dim);font-size:.92rem;margin-top:14px}
 .sp .iossheet .num{width:24px;height:24px;flex:none;border-radius:50%;background:rgba(251,189,35,.14);
   color:var(--gold);font-size:.72rem;font-weight:800;display:grid;place-items:center}
@@ -362,6 +362,36 @@
 .sp .menu .themer{width:100%;border-radius:12px;height:48px;margin:0 0 10px;
   grid-auto-flow:column;gap:9px;font-family:inherit;font-size:.72rem;font-weight:700;
   letter-spacing:.09em;text-transform:uppercase;color:var(--gold)}
+/* ---- webinar details, pulled from the editable page ---- */
+.sp .wdet{display:none;margin:22px auto 0;max-width:460px;text-align:left;
+  background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.sp .wdet.on{display:block}
+.sp .wdet .wrow{display:flex;gap:14px;padding:9px 0;border-bottom:1px solid var(--line)}
+.sp .wdet .wrow:last-child{border-bottom:none}
+.sp .wdet .wk{flex:none;width:86px;font-size:.64rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);padding-top:3px}
+.sp .wdet .wv{color:var(--fg);font-size:.95rem;font-weight:600}
+/* ---- payment ---- */
+.sp .pay{background:var(--card-2);border-block:1px solid var(--line)}
+.sp .paycard{margin:26px auto 0;max-width:420px;background:var(--card);
+  border:1px solid var(--gold-line);border-radius:20px;padding:24px 22px;text-align:center}
+.sp .payamt{font-size:2.1rem;font-weight:900;letter-spacing:-.04em;color:var(--gold);line-height:1.05}
+.sp .payfor{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-top:6px}
+.sp .qrbox{background:#FFFFFF;border-radius:16px;padding:12px;margin:20px auto 0;max-width:260px}
+.sp .qrbox img{width:100%;height:auto;display:block;border-radius:8px}
+.sp .vpa{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:18px;
+  background:var(--input-bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.sp .vpa code{font-family:inherit;font-size:.95rem;font-weight:700;color:var(--fg);letter-spacing:.01em}
+.sp .vpacopy{border:none;background:none;color:var(--gold);cursor:pointer;padding:4px;
+  font-family:inherit;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sp .paysteps{margin-top:20px;text-align:left}
+.sp .pstep{display:flex;gap:10px;align-items:flex-start;margin-top:13px;
+  color:var(--dim);font-size:.92rem;line-height:1.5}
+.sp .pnum{width:24px;height:24px;flex:none;border-radius:50%;background:var(--gold-soft);
+  color:var(--gold);font-size:.72rem;font-weight:800;display:grid;place-items:center}
+.sp .paycta{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.sp .paynote{font-size:.74rem;color:var(--muted);margin-top:16px}
 /* ---- bottom tabs ---- */
 .sp .tabs{position:fixed;left:0;right:0;bottom:0;z-index:50;display:grid;grid-template-columns:repeat(4,1fr);
   background:var(--tabs-bg);backdrop-filter:blur(16px);border-top:1px solid var(--line);
@@ -522,8 +552,31 @@
         <a class="btn btn-ghost" href="#register">Join Free Webinar</a>
       </div>
       <div class="door paid rv">
-        <p class="kick">Go All In</p><h3>Revive, Rise &amp; Relive</h3><p class="sub">A 6-month transformation program for your mindset, confidence, emotional well-being and relationships.</p><p class="price">₹999 <small>· 6 months</small></p><ul><li>A private WhatsApp community</li><li>Interactive live webinars</li><li>Practical challenges and missions on Mentie Go</li><li>One personal 1:1 session with Shashi</li><li>100% online — for women aged 18 to 55</li></ul><a class="btn" href="https://wa.me/919876732099">Join The Program</a>
+        <p class="kick">Go All In</p><h3>Revive, Rise &amp; Relive</h3><p class="sub">A 6-month transformation program for your mindset, confidence, emotional well-being and relationships.</p><p class="price">₹999 <small>· 6 months</small></p><ul><li>A private WhatsApp community</li><li>Interactive live webinars</li><li>Practical challenges and missions on Mentie Go</li><li>One personal 1:1 session with Shashi</li><li>100% online — for women aged 18 to 55</li></ul><a class="btn" href="#pay">Join The Program</a>
       </div>
+    </div>
+  </div>
+</section>
+<section id="pay" class="pay">
+  <div class="wrap center">
+    <p class="eyebrow rv">Payment</p>
+    <h2 class="rv">Join Revive, Rise &amp; Relive</h2>
+    <p class="sec-lede rv">Scan, pay, and send the screenshot. Shashi adds you to the group herself.</p>
+    <div class="paycard rv">
+      <div class="payamt">&#8377;999</div>
+      <div class="payfor">6-month program</div>
+      <div class="qrbox"><img src="https://shashipallava.com/wp-content/uploads/2026/10/upi-qr-999.png" alt="UPI QR code to pay 999 rupees to Shashi Pallava" width="1000" height="1000" loading="lazy"></div>
+      <div class="vpa"><code>shashipallav@ybl</code><button class="vpacopy" type="button">Copy</button></div>
+      <div class="paysteps">
+        <div class="pstep"><span class="pnum">1</span><span>Scan the code with any UPI app, or tap the button below on your phone.</span></div>
+        <div class="pstep"><span class="pnum">2</span><span>The amount and note are already filled in. Just confirm with your PIN.</span></div>
+        <div class="pstep"><span class="pnum">3</span><span>Send the screenshot on WhatsApp so Shashi can add you.</span></div>
+      </div>
+      <div class="paycta">
+        <a class="btn" href="upi://pay?pa=shashipallav@ybl&amp;pn=Shashi%20Pallava&amp;am=999&amp;cu=INR&amp;tn=Revive%20Rise%20and%20Relive">Pay &#8377;999 in your UPI app</a>
+        <a class="btn btn-ghost paydone" href="https://wa.me/919876732099">I have paid, send screenshot</a>
+      </div>
+      <p class="paynote">Card and netbanking coming soon.</p>
     </div>
   </div>
 </section>
@@ -532,6 +585,7 @@
     <p class="eyebrow rv">Free Webinar</p>
     <h2 class="rv">Register for the next one</h2>
     <p class="sec-lede rv">Fill this in and the details go straight to Shashi on WhatsApp. She sends you the joining link herself.</p>
+    <div class="wdet rv" id="wdet"></div>
     <form class="regform rv" novalidate>
       <div class="row" data-field="name">
         <label for="reg-name">Full name</label>
@@ -934,6 +988,67 @@
       applyTheme(next);
       try { window.localStorage.setItem('sp-theme', next); } catch (e) {}
     });
+  }
+  /* ---- webinar details ----
+     Read from a normal WordPress page so he can edit the date and time in
+     wp-admin without opening this file. One query parameter only: an
+     ampersand in a URL here would be escaped and break the script. */
+  var wdet = document.getElementById('wdet');
+  if (wdet) {
+    fetch('/wp-json/wp/v2/pages?slug=webinar-details').then(function(r){
+      return r.json();
+    }).then(function(list){
+      if (!list) { return; }
+      if (!list.length) { return; }
+      var holder = document.createElement('div');
+      holder.innerHTML = list[0].content.rendered;
+      var paras = holder.querySelectorAll('p');
+      var shown = 0;
+      for (var i = 0; i !== paras.length; i++) {
+        var line = paras[i].textContent.trim();
+        var at = line.indexOf(':');
+        if (at === -1) { continue; }
+        var key = line.slice(0, at).trim();
+        var val = line.slice(at + 1).trim();
+        if (val.length === 0) { continue; }
+        if (key.toLowerCase() === 'note') { continue; }
+        /* built with DOM calls, not markup strings: angle brackets cannot
+           appear in this file at all. */
+        var row = document.createElement('div');
+        row.className = 'wrow';
+        var kEl = document.createElement('span');
+        kEl.className = 'wk';
+        kEl.textContent = key;
+        var vEl = document.createElement('span');
+        vEl.className = 'wv';
+        vEl.textContent = val;
+        row.appendChild(kEl);
+        row.appendChild(vEl);
+        wdet.appendChild(row);
+        shown = shown + 1;
+      }
+      if (shown === 0) { return; }
+      wdet.classList.add('on');
+    }).catch(function(){ });
+  }
+  /* ---- copy the UPI id ---- */
+  var vpaCopy = document.querySelector('.sp .vpacopy');
+  if (vpaCopy) {
+    vpaCopy.addEventListener('click', function(){
+      var code = document.querySelector('.sp .vpa code').textContent;
+      var done = function(){
+        vpaCopy.textContent = 'Copied';
+        setTimeout(function(){ vpaCopy.textContent = 'Copy'; }, 1800);
+      };
+      if (navigator.clipboard) { navigator.clipboard.writeText(code).then(done, function(){}); }
+      else { done(); }
+    });
+  }
+  /* ---- paid button carries the programme name ---- */
+  var payDone = document.querySelector('.sp .paydone');
+  if (payDone) {
+    payDone.setAttribute('href', 'https://wa.me/919876732099?text='
+      + encodeURIComponent('Hi Shashi, I have paid 999 for Revive, Rise and Relive. Sending the screenshot now.'));
   }
   var tabs = document.querySelectorAll('.sp .tabs a[data-t]');
   var links = document.querySelectorAll('.sp .menu a[data-t]');
