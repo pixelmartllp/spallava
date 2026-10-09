@@ -42,6 +42,10 @@ body{margin:0;background:var(--bg)!important;color:var(--fg)!important;
   letter-spacing:-.02em!important;line-height:1.2!important;margin:0!important}
 .spb-card h2 a{color:var(--fg)!important;text-decoration:none!important}
 .spb-card h2 a::after{content:"";position:absolute;inset:0}
+.spb-card .wp-block-post-featured-image{margin:0 0 16px!important;border-radius:12px;overflow:hidden;aspect-ratio:1}
+.spb-card .wp-block-post-featured-image img{width:100%!important;height:100%!important;object-fit:cover;object-position:50% 0;display:block}
+.spb-hero{margin:24px 0 0!important;border-radius:16px;overflow:hidden}
+.spb-hero img{width:100%!important;height:auto!important;display:block}
 .spb-card .wp-block-post-excerpt{margin:8px 0 0!important}
 .spb-card .wp-block-post-excerpt p{color:var(--muted);font-size:.92rem;margin:0}
 .spb-card .wp-block-post-date{margin-top:12px!important;font-size:.68rem;font-weight:700;letter-spacing:.1em;
@@ -77,6 +81,8 @@ body{margin:0;background:var(--bg)!important;color:var(--fg)!important;
   .spb-bar{padding:12px 36px}
   .spb-main{padding-top:64px!important}
   .spb-btns{flex-direction:row;justify-content:center}
+  .spb-wide{max-width:1100px}
+  .spb-wide .spb-list{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 }
 </style>
 <header class="spb-bar">

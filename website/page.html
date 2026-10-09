@@ -376,6 +376,8 @@
 .sp .post{display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;
   padding:20px;transition:border-color .2s ease}
 .sp .post:hover{border-color:var(--gold-line)}
+.sp .post .pimg{aspect-ratio:1;border-radius:12px;overflow:hidden;margin-bottom:16px;background:var(--card-2)}
+.sp .post .pimg img{width:100%;height:100%;object-fit:cover;object-position:50% 0}
 .sp .post .pk{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
 .sp .post h3{font-size:1.15rem;margin-top:8px}
 .sp .post .px{color:var(--muted);font-size:.9rem;margin-top:8px}
@@ -1088,18 +1090,35 @@
   };
   var postsBox = document.getElementById('posts');
   if (postsBox) {
-    fetch('/wp-json/wp/v2/posts?per_page=3').then(function(r){
+    /* _embed brings each post's creative along; it is the only parameter
+       because an ampersand cannot appear here, so trim to three below. */
+    fetch('/wp-json/wp/v2/posts?_embed').then(function(r){
       return r.json();
     }).then(function(list){
       if (!list) { return; }
       if (!list.length) { return; }
       postsBox.textContent = '';
-      list.forEach(function(p){
+      list.slice(0, 3).forEach(function(p){
         var body = textOf(p.content.rendered);
         var lead = body.querySelector('strong');
         var a = document.createElement('a');
         a.className = 'post';
         a.href = p.link;
+        var media = null;
+        if (p._embedded) { media = p._embedded['wp:featuredmedia']; }
+        if (media) {
+          var src = media[0].source_url;
+          var sizes = media[0].media_details ? media[0].media_details.sizes : null;
+          if (sizes) { if (sizes.medium_large) { src = sizes.medium_large.source_url; } }
+          var fig = document.createElement('div');
+          fig.className = 'pimg';
+          var im = document.createElement('img');
+          im.src = src;
+          im.alt = '';
+          im.loading = 'lazy';
+          fig.appendChild(im);
+          a.appendChild(fig);
+        }
         if (lead) {
           var pk = document.createElement('p');
           pk.className = 'pk';

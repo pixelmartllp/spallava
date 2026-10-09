@@ -1,0 +1,65 @@
+{
+  "_comment": "Blog posts tied to Instagram creatives, published by website/tools/blog_sync.py. An entry with wp_id only attaches the creative to an existing post. The rest are whole posts: title and lead come from the creative and its caption (his own words), the paragraphs expand them in the blog's existing voice. The post is dated to the Instagram post.",
+  "posts": [
+    {"wp_id": 29, "ig": "18202931791340095", "note": "A boundary is not a punishment <- 'A boundary you do not enforce is just a wish'"},
+    {"wp_id": 30, "ig": "18032591405845663", "note": "You are not a backup plan <- 'You cannot love someone into respecting you'"},
+    {"wp_id": 31, "ig": "18134494279644851", "note": "Your body kept the score <- 'You are not the worst thing that was done to you'"},
+    {"wp_id": 32, "ig": "17958842679232501", "note": "Some people are lessons <- 'Leaving is not failing. Staying is not loyalty.'"},
+    {"wp_id": 33, "ig": "18010411757950501", "note": "Softness is not weakness <- 'Strong women need soft spaces too'"},
+    {"wp_id": 34, "ig": "17981466480088636", "note": "Not responsible for how everyone feels about your honesty <- 'the first No will feel like a crime'"},
+
+    {"ig": "18409718881089856", "slug": "you-dont-have-to-keep-carrying-the-armor",
+     "title": "You don’t have to keep carrying the armor",
+     "lead": "Fear can protect you from getting hurt — and also protect you from being truly alive.",
+     "paras": [
+       "Jo deewar aapne kabhi khud ko bachane ke liye banayi thi, wo galat nahi thi. Us waqt shayad wahi sahi tha — kisi pe zyada bharosa na karna, sab kuch akele sambhalna, har baat pehle se soch lena.",
+       "Lekin jo cheez past mein aapko protect karti thi, wahi aaj aapko rok bhi sakti hai. Armor chot se bachata hai — par kisi ko aapke kareeb bhi nahi aane deta.",
+       "Healing ka matlab armor phenk dena nahi hai. Healing hai ye pehchanna ki kab use utaarna safe hai — aur kis ke saamne."
+     ]},
+
+    {"ig": "18094460846445800", "slug": "change-feels-like-loss-before-it-feels-like-freedom",
+     "title": "Change feels like loss before it feels like freedom",
+     "lead": "Sometimes letting go is not losing yourself — it’s finally choosing yourself.",
+     "paras": [
+       "Expectations, people pleasing, “log kya kahenge” — inhe chhodna aasaan nahi lagta. Kyunki ye sirf aadatein nahi hain, saalon se ye aapki pehchaan ka hissa rahi hain.",
+       "Isliye jab aap badalna shuru karti hain, pehle azaadi nahi, khaali-pan mehsoos hota hai. Lagta hai kuch kho gaya hai.",
+       "Wo ehsaas galat nahi hai — wo bas beech ka raasta hai. Jo jagah khaali hui hai, wahi dheere-dheere aapki apni jagah banegi."
+     ]},
+
+    {"ig": "18099196313453236", "slug": "the-version-of-you-who-survived-deserves-thanks",
+     "title": "The version of you who survived deserves thanks, not judgement",
+     "lead": "Be proud of the woman who kept going.",
+     "paras": [
+       "Hum aksar apne purane version ko judge karte hain — “maine itna kyun saha?”, “pehle kyun nahi samjhi?”",
+       "Par us waqt aapke paas jitni samajh thi, jitni himmat thi, aapne usi se kaam chalaya. Aapne sirf survive nahi kiya — aapne khud ko sambhala, seekha aur grow kiya.",
+       "Aaj jo aap jaanti hain, wo usi ki wajah se jaanti hain. Use thoda credit dijiye. Wo deserve karti hai."
+     ]},
+
+    {"ig": "18594163528066837", "slug": "not-every-silence-needs-an-explanation",
+     "title": "Not every silence needs an explanation",
+     "lead": "Sometimes the healthiest thing you can do is stop assuming.",
+     "paras": [
+       "Message ka reply nahi aaya, aur dimaag kahaniyan banane lagta hai — “kya main enough nahi hoon?”, “kya wo naraz hai?”, “kya maine kuch galat kaha?”",
+       "Zyada tar baar silence ka matlab rejection nahi hota. Saamne wala thaka hua ho sakta hai, busy ho sakta hai, ya bas apne aap mein ho sakta hai.",
+       "Har chuppi ko assumptions se mat bhariye. Logon ko space dijiye — aur khud ko peace."
+     ]},
+
+    {"ig": "18187375057415564", "slug": "you-are-allowed-to-change-the-rules",
+     "title": "You are allowed to change the rules",
+     "lead": "What you believed years ago may not be what you need today.",
+     "paras": [
+       "“Achhi ladki aisa nahi karti.” “Pehle sabka khayal, phir apna.” Kuch rules humne tab maan liye the jab humare paas koi aur option nahi tha.",
+       "Wo rules us waqt survive karne ke liye the. Par jo kabhi zaroori tha, zaroori nahi ki aaj bhi wahi aapke liye sahi ho.",
+       "Aap ab zyada jaanti hain. Aap grow kar chuki hain. Aap dobara choose kar sakti hain — aur alag choose kar sakti hain."
+     ]},
+
+    {"ig": "18047943935815408", "slug": "why-me-keeps-you-stuck",
+     "title": "“Why me?” keeps you stuck. “What now?” moves you forward",
+     "lead": "Life becomes lighter when you stop asking why it happened and start asking what you can do next.",
+     "paras": [
+       "“Mere saath hi kyun?” — ye sawaal bilkul natural hai. Dard mein sabse pehle yahi aata hai.",
+       "Mushkil tab hoti hai jab hum isi sawaal mein ruk jaate hain. Iska koi jawab nahi milta, aur hum wahin khade reh jaate hain.",
+       "“Ab kya?” ek chhota sa shift hai. Ye dard ko chhota nahi karta — bas aapka agla kadam aapke haath mein wapas de deta hai."
+     ]}
+  ]
+}
