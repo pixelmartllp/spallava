@@ -352,9 +352,14 @@
 .sp.light .pull{color:var(--fg)}
 .sp.light .q small{color:var(--gold)}
 /* ---- theme toggle ---- */
-.sp .themer{width:40px;height:40px;flex:none;border:1px solid var(--line);border-radius:50%;
+/* Same 44px rounded square as the menu button, and pushed to the right with
+   it: Install is hidden on desktop and once installed, so the toggle cannot
+   rely on Install's auto margin or it ends up glued to the logo. */
+.sp .themer{width:44px;height:44px;flex:none;border:1px solid var(--gold-line);border-radius:12px;
   background:var(--gold-soft);display:grid;place-items:center;cursor:pointer;padding:0;margin-right:8px}
-.sp .themer svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:1.9;
+.sp .appbar .themer{margin-left:auto}
+.sp .appbar .install{margin-left:0;margin-right:8px;min-height:44px}
+.sp .themer svg{width:21px;height:21px;stroke:var(--gold);fill:none;stroke-width:2;
   stroke-linecap:round;stroke-linejoin:round;grid-area:1/1}
 .sp .themer .moon{display:none}
 .sp.light .themer .moon{display:block}
