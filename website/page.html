@@ -355,18 +355,19 @@
 /* Same 44px rounded square as the menu button, and pushed to the right with
    it: Install is hidden on desktop and once installed, so the toggle cannot
    rely on Install's auto margin or it ends up glued to the logo. */
-.sp .themer{width:44px;height:44px;flex:none;border:1px solid var(--gold-line);border-radius:12px;
-  background:var(--gold-soft);display:grid;place-items:center;cursor:pointer;padding:0;margin-right:8px}
+.sp .themer{width:44px;height:44px;flex:none;border:1px solid var(--fg);border-radius:12px;
+  background:var(--fg);display:grid;place-items:center;cursor:pointer;padding:0;margin-right:8px}
 .sp .appbar .themer{margin-left:auto}
 .sp .appbar .install{margin-left:0;margin-right:8px;min-height:44px}
-.sp .themer svg{width:21px;height:21px;stroke:var(--gold);fill:none;stroke-width:2;
+/* inverted against the page: white on dark, near-black on light */
+.sp .themer svg{width:21px;height:21px;stroke:var(--bg);fill:none;stroke-width:2;
   stroke-linecap:round;stroke-linejoin:round;grid-area:1/1}
 .sp .themer .moon{display:none}
 .sp.light .themer .moon{display:block}
 .sp.light .themer .sun{display:none}
 .sp .menu .themer{width:100%;border-radius:12px;height:48px;margin:0 0 10px;
   grid-auto-flow:column;gap:9px;font-family:inherit;font-size:.72rem;font-weight:700;
-  letter-spacing:.09em;text-transform:uppercase;color:var(--gold)}
+  letter-spacing:.09em;text-transform:uppercase;color:var(--bg)}
 /* ---- webinar details, pulled from the editable page ---- */
 .sp .wdet{display:none;margin:22px auto 0;max-width:460px;text-align:left;
   background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
