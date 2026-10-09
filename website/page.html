@@ -371,6 +371,27 @@
 .sp .wdet .wk{flex:none;width:86px;font-size:.64rem;font-weight:700;letter-spacing:.1em;
   text-transform:uppercase;color:var(--muted);padding-top:3px}
 .sp .wdet .wv{color:var(--fg);font-size:.95rem;font-weight:600}
+/* ---- blog: three latest posts, refreshed live from the posts API ---- */
+.sp .posts{display:flex;flex-direction:column;gap:12px;margin-top:26px;text-align:left}
+.sp .post{display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:20px;transition:border-color .2s ease}
+.sp .post:hover{border-color:var(--gold-line)}
+.sp .post .pk{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.sp .post h3{font-size:1.15rem;margin-top:8px}
+.sp .post .px{color:var(--muted);font-size:.9rem;margin-top:8px}
+.sp .post .pm{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--gold);margin-top:14px}
+.sp .blog .cta{margin-top:20px}
+/* ---- instagram: filled from the insta-feed page, hidden until it has posts ---- */
+.sp .insta[hidden]{display:none}
+.sp .igrid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:26px;
+  border-radius:14px;overflow:hidden}
+.sp .igrid a{position:relative;display:block;aspect-ratio:4/5;background:var(--card)}
+.sp .igrid img{width:100%;height:100%;object-fit:cover;transition:opacity .2s ease}
+.sp .igrid a:hover img{opacity:.82}
+.sp .ighandle{display:inline-flex;align-items:center;gap:8px;margin-top:12px;color:var(--gold);
+  font-size:.85rem;font-weight:700}
+.sp .ighandle svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.9}
 /* ---- payment ---- */
 .sp .pay{background:var(--card-2);border-block:1px solid var(--line)}
 .sp .paycard{margin:26px auto 0;max-width:420px;background:var(--card);
@@ -423,6 +444,9 @@
   .sp .about .av{width:190px}
   .sp .about .wrap{max-width:760px}
   .sp .doors{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .sp .posts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .sp .igrid{grid-template-columns:repeat(6,1fr);gap:6px}
+  .sp .igrid a:nth-child(n+7){display:none}
   .sp h2{font-size:2.5rem}
 }
 @media (prefers-reduced-motion:reduce){
@@ -462,6 +486,7 @@
     <a href="#about" data-t="about">About</a>
     <a href="#work" data-t="work">Programs</a>
     <a href="#faq">Questions</a>
+    <a href="/blog/">Blog</a>
     <a href="#community">Community</a>
   </nav>
   <div class="foot">
@@ -680,6 +705,28 @@
       </div>
     </div>
     <p class="swipe" style="font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:10px">&larr; swipe &rarr;</p>
+  </div>
+</section>
+<section id="blog" class="blog">
+  <div class="wrap center">
+    <p class="eyebrow rv">From the Blog</p>
+    <h2 class="rv">Thoughts to sit with</h2>
+    <p class="sec-lede rv">Short reads on boundaries, self-worth and relationships — two minutes each.</p>
+    <div class="posts" id="posts">
+      <a class="post rv" href="https://shashipallava.com/you-are-not-responsible-for-how-everyone-feels-about-your-honesty/"><p class="pk">Say the true thing kindly</p><h3>You are not responsible for how everyone feels about your honesty</h3><p class="pm">Read &rarr;</p></a>
+      <a class="post rv" href="https://shashipallava.com/softness-is-not-weakness/"><p class="pk">It takes strength to stay open</p><h3>Softness is not weakness</h3><p class="pm">Read &rarr;</p></a>
+      <a class="post rv" href="https://shashipallava.com/some-people-are-lessons/"><p class="pk">Not lifetimes</p><h3>Some people are lessons</h3><p class="pm">Read &rarr;</p></a>
+    </div>
+    <div class="cta rv"><a class="btn btn-ghost" href="/blog/">Read all posts</a></div>
+  </div>
+</section>
+<section id="insta" class="insta" hidden>
+  <div class="wrap center">
+    <p class="eyebrow">On Instagram</p>
+    <h2>One thought, every morning</h2>
+    <a class="ighandle" href="https://www.instagram.com/ShashiPallava"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/></svg>@shashipallava</a>
+    <div class="igrid" id="igrid"></div>
+    <div class="cta"><a class="btn btn-ghost" href="https://www.instagram.com/ShashiPallava">Follow on Instagram</a></div>
   </div>
 </section>
 <section id="community" class="comm">
@@ -1029,6 +1076,80 @@
       }
       if (shown === 0) { return; }
       wdet.classList.add('on');
+    }).catch(function(){ });
+  }
+  /* ---- latest blog posts ----
+     The three cards in the markup are a snapshot so the section is never
+     empty; this swaps in whatever is newest. One query parameter only. */
+  var textOf = function(html){
+    var d = document.createElement('div');
+    d.innerHTML = html;
+    return d;
+  };
+  var postsBox = document.getElementById('posts');
+  if (postsBox) {
+    fetch('/wp-json/wp/v2/posts?per_page=3').then(function(r){
+      return r.json();
+    }).then(function(list){
+      if (!list) { return; }
+      if (!list.length) { return; }
+      postsBox.textContent = '';
+      list.forEach(function(p){
+        var body = textOf(p.content.rendered);
+        var lead = body.querySelector('strong');
+        var a = document.createElement('a');
+        a.className = 'post';
+        a.href = p.link;
+        if (lead) {
+          var pk = document.createElement('p');
+          pk.className = 'pk';
+          pk.textContent = lead.textContent.replace(/[.]$/, '');
+          a.appendChild(pk);
+        }
+        var h = document.createElement('h3');
+        h.textContent = textOf(p.title.rendered).textContent;
+        a.appendChild(h);
+        var pm = document.createElement('p');
+        pm.className = 'pm';
+        pm.textContent = 'Read →';
+        a.appendChild(pm);
+        postsBox.appendChild(a);
+      });
+    }).catch(function(){ });
+  }
+  /* ---- instagram grid ----
+     website/tools/insta_sync.py copies the latest posts into the insta-feed
+     page as plain links around images hosted on this site (Instagram's own
+     image URLs expire within days). The section stays hidden until there is
+     something to show. */
+  var igrid = document.getElementById('igrid');
+  if (igrid) {
+    fetch('/wp-json/wp/v2/pages?slug=insta-feed').then(function(r){
+      return r.json();
+    }).then(function(list){
+      if (!list) { return; }
+      if (!list.length) { return; }
+      var items = textOf(list[0].content.rendered).querySelectorAll('a');
+      var shown = 0;
+      for (var i = 0; i !== items.length; i++) {
+        if (shown === 9) { break; }
+        var img = items[i].querySelector('img');
+        if (!img) { continue; }
+        var a = document.createElement('a');
+        a.href = items[i].getAttribute('href');
+        a.target = '_blank';
+        a.rel = 'noopener';
+        var im = document.createElement('img');
+        im.src = img.getAttribute('src');
+        im.alt = img.getAttribute('alt');
+        if (!im.alt) { im.alt = 'Instagram post'; }
+        im.loading = 'lazy';
+        a.appendChild(im);
+        igrid.appendChild(a);
+        shown = shown + 1;
+      }
+      if (shown === 0) { return; }
+      document.getElementById('insta').hidden = false;
     }).catch(function(){ });
   }
   /* ---- copy the UPI id ---- */

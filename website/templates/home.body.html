@@ -1,0 +1,26 @@
+<!-- wp:group {"tagName":"main","className":"spb-main","layout":{"type":"default"}} -->
+<main class="wp-block-group spb-main">
+<!-- wp:html -->
+<p class="spb-eyebrow">The Blog</p>
+<h1>Thoughts to sit with</h1>
+<p class="spb-lede">Short reads on boundaries, self-worth and relationships — two minutes each.</p>
+<!-- /wp:html -->
+<!-- wp:query {"queryId":1,"query":{"perPage":12,"postType":"post","inherit":true}} -->
+<div class="wp-block-query">
+<!-- wp:post-template {"className":"spb-list"} -->
+<!-- wp:group {"className":"spb-card","layout":{"type":"default"}} -->
+<div class="wp-block-group spb-card">
+<!-- wp:post-title {"isLink":true,"level":2} /-->
+<!-- wp:post-excerpt {"excerptLength":22} /-->
+<!-- wp:post-date /-->
+</div>
+<!-- /wp:group -->
+<!-- /wp:post-template -->
+<!-- wp:query-pagination -->
+<!-- wp:query-pagination-previous /-->
+<!-- wp:query-pagination-next /-->
+<!-- /wp:query-pagination -->
+</div>
+<!-- /wp:query -->
+</main>
+<!-- /wp:group -->

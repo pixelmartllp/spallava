@@ -1,0 +1,18 @@
+<footer class="spb-foot">
+  <img src="https://shashipallava.com/wp-content/uploads/2026/09/sp-logo-full.png" alt="Shashi Pallava">
+  <div class="fl"><a href="https://www.facebook.com/ShashiPallava">Facebook</a><a href="https://www.instagram.com/ShashiPallava">Instagram</a><a href="https://wa.me/919876732099">WhatsApp</a><a href="mailto:shashipallava@gmail.com">Email</a></div>
+  <p>Chandigarh, India · © 2026 Shashi Pallava</p>
+</footer>
+<script>
+(function(){
+  /* same storage key as the homepage toggle, so the choice follows the reader */
+  var b = document.querySelector('.spb-tg');
+  if (!b) { return; }
+  b.addEventListener('click', function(){
+    var on = document.documentElement.classList.toggle('spl');
+    var v = 'dark';
+    if (on) { v = 'light'; }
+    try { window.localStorage.setItem('sp-theme', v); } catch (e) {}
+  });
+})();
+</script>

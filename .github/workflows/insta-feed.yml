@@ -1,0 +1,42 @@
+# Refresh the Instagram grid on shashipallava.com.
+#
+# READ-ONLY on the Meta side: it lists the account's latest posts and copies
+# the images to the website. It never posts anything, so it is not part of the
+# posting automation that was switched off on 09 Sep 2026 (CLAUDE.md section 8).
+#
+# Needs two secrets besides the Meta ones that already exist:
+#   WP_USER  pixelmartllp@gmail.com
+#   WP_APP   a WordPress application password (Users -> Profile)
+# Until both are set every run skips with a notice instead of failing.
+name: Instagram feed for the website
+
+on:
+  schedule:
+    - cron: "30 7 * * *"   # 13:00 IST, after the morning post is up
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install Pillow
+      - name: Copy the latest posts to the site
+        env:
+          META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+          META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
+          META_API_VERSION: v25.0
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP: ${{ secrets.WP_APP }}
+        run: |
+          if [ -z "$WP_USER" ] || [ -z "$WP_APP" ]; then
+            echo "::notice::WP_USER / WP_APP secrets not set - skipping"
+            exit 0
+          fi
+          python website/tools/insta_sync.py --confirm

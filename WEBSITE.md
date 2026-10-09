@@ -210,7 +210,47 @@ program too.
 
 Six posts, drawn from the **real quote bank** in `content_bank.json` (90 unused
 entries remain). Each is a quote plus three short paragraphs in her voice and a
-WhatsApp call to action. `/blog/` is the posts page.
+WhatsApp call to action. `/blog/` is the posts page (page id 5).
+
+The homepage has a **From the Blog** section (`#blog`) and a Blog link in the
+menu. Its three cards are a static snapshot in `page.html`, and the script
+replaces them with the three newest posts from `/wp-json/wp/v2/posts` - so a
+new post shows up on the homepage without touching `page.html`.
+
+`/blog/` and every post render through two **template overrides**, `home` and
+`single`, assembled from `website/templates/` (`head.html` + `<name>.body.html`
++ `foot.html`) and published by `website/tools/push_templates.py`. Before
+them, Twenty Twenty-Five's own templates showed a white page, the theme's demo
+footer (Events, Shop, Patterns, Themes) and **"Written by
+pixelmartllp@gmail.com" on every post**. The same script closes comments - no
+one moderates them. Undo: Appearance → Editor → Templates → Reset.
+
+## 7a. Instagram grid
+
+`#insta` on the homepage shows the latest Instagram posts and stays `hidden`
+until there is something to show. The browser never talks to Instagram: the
+Meta token cannot go in a page every visitor can read, and the image URLs the
+Graph API returns are signed and expire within days.
+
+So `website/tools/insta_sync.py` reads the latest nine posts with the Meta
+token, uploads each image once to the media library as `ig-<media id>.jpg`,
+and rewrites a plain page, slug **`insta-feed`**, as links around those
+images. The homepage script reads that page, exactly like `webinar-details`.
+
+It only *reads* Instagram; it is not part of the posting automation that is
+switched off (CLAUDE.md §8). `.github/workflows/insta-feed.yml` runs it daily
+at 13:00 IST once the `WP_USER` and `WP_APP` secrets exist, and skips with a
+notice until then. Run it by hand any time:
+
+```bash
+python website/tools/insta_sync.py            # dry run: lists the posts
+python website/tools/insta_sync.py --confirm
+```
+
+Trap: this machine's environment carries a `META_IG_USER_ID` for a different
+account. The script takes token and id as a pair - env only if both are set,
+otherwise both from `config.json` - because mixing them fails with "Object
+does not exist".
 
 ## 8. Sharing
 
