@@ -235,6 +235,20 @@ uploads each creative once as `ig-<id>-full.jpg` and sets it as the featured
 image; re-running is safe. New entries need writing, so this is not in the
 daily workflow - add to `posts.json`, show him the words, then publish.
 
+**SEO and GEO layer** (09 Oct 2026, owner asked; keywords around "Shashi
+Pallava - Life, Relationship & Mindset Coach"). `website/blog/seo.json` holds,
+per post, the category, the Slim SEO title and description, three practical
+steps, two question-and-answer pairs and two internal links;
+`website/tools/seo_sync.py --confirm` appends them between `<!-- sp-seo:start -->`
+and `<!-- sp-seo:end -->` (re-runs replace, never stack) and emits the Q&A as
+FAQPage JSON-LD. Slim SEO registers its `slim_seo` post meta for REST, so the
+titles and descriptions are set there directly. Categories: Boundaries,
+Relationships, Healing & Self-Worth, Mindset (the old Uncategorized, renamed).
+The single template carries an author box plus Person JSON-LD with the
+credential he supplied; the `archive` template brands category pages. Tagline
+is now "Life, Relationship & Mindset Coach"; `/blog/` shows 12 per page. A new
+post needs an entry in both JSON files.
+
 ## 7a. Instagram grid
 
 `#insta` on the homepage shows the latest Instagram posts and stays `hidden`
