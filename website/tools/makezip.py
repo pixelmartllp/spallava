@@ -23,6 +23,78 @@ STAGE = STAGE_PARENT / "shashipallava-website"
 SKIP = shutil.ignore_patterns("__pycache__", "*.pyc", "node_modules",
                               "package-lock.json", "*.png.tmp", ".wp-auth.json")
 
+CLAUDE_MD = """# CLAUDE.md — shashipallava.com
+
+**Read `WEBSITE.md` in this folder, in full, before changing anything.** It is
+the real documentation; this file only exists so you load it automatically.
+
+This folder is the complete source of the live website
+**https://shashipallava.com/**. It is not a git repo — it was handed over as a
+zip. `website/page.html` is the only copy of the site outside WordPress itself.
+
+Owner: **Sanjeev** (@axisuv), for the **Shashi Pallava** life and relationship
+coaching brand. He writes in Hinglish; reply in the language he used, and
+report what actually happened rather than what was intended.
+
+## How to change the site
+
+```bash
+set WP_USER=pixelmartllp@gmail.com
+set WP_APP=<application password - ask him, never commit it>
+
+python website/tools/push.py             # validates only; always run first
+python website/tools/push.py --confirm   # publishes to page 4
+```
+
+The whole homepage is raw HTML with an inline `<style>` and `<script>`, living
+inside the content of WordPress page id 4, wrapped in `<!-- wp:html -->`. There
+is no page builder and no theme template to edit.
+
+## Four things that have actually broken this page
+
+`push.py` refuses to publish if it finds any of them, and each guard was tested
+against a deliberately broken copy. Do not work around the guards.
+
+1. **WordPress escapes `&` inside post content.** `a && b` became
+   `a &#038;&#038; b`, a syntax error that killed the whole script and left a
+   blank page. The script therefore contains **no `&`, `|`, `<` or `>` at all** —
+   nested `if`s instead of `&&`, `else if` instead of `||`, `p !== 1` instead of
+   `p < 1`, and DOM calls instead of HTML strings. Keep it that way.
+2. **`wpautop` injects `<p>` and `<br>` into `<style>` and `<script>`.** Avoided
+   by the `wp:html` wrapper and by stripping every blank line before posting.
+3. **`overflow-x:hidden` breaks `position:sticky`.** Use `overflow-x:clip`.
+4. **Reveal animations must be gated behind `.sp.js`**, or a dead script hides
+   the entire page.
+
+Always validate the **delivered** JavaScript, not your local file: fetch the
+live page, pull the inline script out, and run `node --check` on it. Counting
+braces is not enough — that check passed while the file was broken.
+
+## Look before you report
+
+Do not judge layout by reading CSS. `website/tools/shot.js` screenshots at a
+real 390px phone and prints element offsets; `sticky.js` and `pwa.js` check the
+header and installability. A class collision and a broken icon size were both
+found by screenshot and would not have been found any other way.
+
+Hostinger blocks automated requests without a normal browser user agent — you
+get `403 Checking your browser` or an instant `408`. Set one on every request,
+and do not hammer the site.
+
+## Content rules
+
+Only his own facts go on the site. Two things were asked for and declined, and
+the reasons still hold:
+
+- **No invented testimonials.** The Success Stories section is built but carries
+  the `hidden` attribute; it goes live when three real client lines arrive.
+- **No invented certifications.** Only what he supplied.
+
+`FAQ.txt` is his own writing and is the authority on what the programmes are.
+If the page disagrees with that file, the page is what gets fixed.
+"""
+
+
 START_HERE = """SHASHI PALLAVA WEBSITE - shashipallava.com
 ==========================================
 
@@ -31,6 +103,7 @@ liye chahiye.
 
 KYA KYA HAI
 -----------
+CLAUDE.md                  Claude ise khud padh leta hai. Chhedne ki zarurat nahi.
 WEBSITE.md                 Poori documentation. SABSE PEHLE YE PADHIYE.
 FAQ.txt                    Aapka likha hua FAQ - programs ki sahi jaankari.
 website/page.html          Site ka asli source. Homepage ka poora design isi
@@ -114,6 +187,9 @@ def main() -> int:
     STAGE.mkdir(parents=True)
 
     shutil.copy(ROOT / "WEBSITE.md", STAGE / "WEBSITE.md")
+    # Claude Code only auto-loads CLAUDE.md, so the handover needs one of its
+    # own - without it a fresh session in this folder starts blind.
+    (STAGE / "CLAUDE.md").write_text(CLAUDE_MD, encoding="utf-8")
     if (ROOT / "FAQ.txt").is_file():
         shutil.copy(ROOT / "FAQ.txt", STAGE / "FAQ.txt")
 
