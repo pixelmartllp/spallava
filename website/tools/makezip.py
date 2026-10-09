@@ -48,7 +48,17 @@ python website/tools/push.py --confirm   # publishes to page 4
 
 The whole homepage is raw HTML with an inline `<style>` and `<script>`, living
 inside the content of WordPress page id 4, wrapped in `<!-- wp:html -->`. There
-is no page builder and no theme template to edit.
+is no page builder.
+
+The blog (`/blog/`, posts, category pages) is different: it renders through
+three theme template overrides built from `website/templates/` and published
+with `push_templates.py`. Posts and their SEO live in `website/blog/*.json`
+and go out with `blog_sync.py` and `seo_sync.py`; the homepage Instagram grid
+is refreshed by `insta_sync.py`. All of them are dry runs without `--confirm`.
+WEBSITE.md sections 7 to 7c explain each one.
+
+**Never publish blog words he has not read.** New posts are written content;
+show him the text first.
 
 ## Four things that have actually broken this page
 
@@ -109,6 +119,14 @@ FAQ.txt                    Aapka likha hua FAQ - programs ki sahi jaankari.
 website/page.html          Site ka asli source. Homepage ka poora design isi
                            ek file me hai. Ise edit kijiye, wp-admin me nahi.
 website/tools/push.py      File ko check karke site par publish karta hai.
+website/templates/         Blog, post aur category pages ka design.
+website/tools/push_templates.py   Blog ka design publish karta hai.
+website/blog/posts.json    Blog posts aur unke Instagram creatives.
+website/blog/seo.json      Har post ka SEO - title, description, FAQ, links.
+website/tools/blog_sync.py Naye posts aur creatives site par daalta hai.
+website/tools/seo_sync.py  seo.json ko saare posts par lagata hai.
+website/tools/insta_sync.py Homepage ka Instagram grid update karta hai.
+github/insta-feed.yml      Roz Instagram grid update karne wala GitHub job.
 website/tools/shot.js      Asli phone size par screenshot leta hai.
 website/tools/sticky.js    Header sticky hai ya nahi, ye check karta hai.
 website/tools/pwa.js       App ki tarah install ho rahi hai ya nahi, ye check.
@@ -163,6 +181,13 @@ ZAROORI BAATEIN
 
 ABHI KYA BAAKI HAI
 ------------------
+0. INSTAGRAM GRID ROZ UPDATE - GitHub repo -> Settings -> Secrets and
+   variables -> Actions me do secrets daaliye: WP_USER aur WP_APP.
+   Tab tak:  python website/tools/insta_sync.py --confirm
+
+0b. SITE KIT - Search Console ki ek permission baaki hai. Site Kit ->
+   Dashboard me "grant permissions" dabaiye, saare checkbox tick kijiye.
+
 1. APP ICONS - site app ki tarah install to ho jaati hai, par uske icon aur
    rang abhi plugin ke default hain. WP Admin -> SuperPWA -> Settings me
    chaar cheezein set kijiye:
@@ -197,6 +222,12 @@ def main() -> int:
     shutil.copy(WEB / "page.html", STAGE / "website" / "page.html")
     shutil.copytree(WEB / "tools", STAGE / "website" / "tools", ignore=SKIP)
     shutil.copytree(WEB / "assets", STAGE / "website" / "assets", ignore=SKIP)
+    shutil.copytree(WEB / "templates", STAGE / "website" / "templates", ignore=SKIP)
+    shutil.copytree(WEB / "blog", STAGE / "website" / "blog", ignore=SKIP)
+    wf = ROOT / ".github" / "workflows" / "insta-feed.yml"
+    if wf.is_file():
+        (STAGE / "github").mkdir()
+        shutil.copy(wf, STAGE / "github" / "insta-feed.yml")
 
     # his untouched source files, which are not tracked in the repo
     originals = ROOT / "Sample"

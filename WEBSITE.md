@@ -3,7 +3,8 @@
 Read this before touching the website. It is a **separate project from this
 repo** — this repo is only the daily social pipeline (see `CLAUDE.md`). Nothing
 about the site lives in the code here, so none of it is derivable from the
-source or the git history. Built 01–03 Sep 2026.
+source or the git history. Built 01–03 Sep 2026; blog, Instagram grid and
+SEO added 09 Oct 2026.
 
 Owner: **Sanjeev** (@axisuv), for the **Shashi Pallava** life & relationship
 coaching brand. He writes in Hinglish; reply in the language he used, and
@@ -29,11 +30,22 @@ it, and never commit it. He can revoke it at any time under
 Everything needed is in `website/`, so a fresh clone is enough:
 
 ```
-website/page.html        the live homepage source - edit this, not wp-admin
-website/tools/push.py    validate it, then publish it
-website/tools/shot.js    screenshot at a real 390px phone viewport
-website/tools/sticky.js  check the header sticks on phone and desktop
+website/page.html               the live homepage source - edit this, not wp-admin
+website/templates/              blog chrome: head.html + <name>.body.html + foot.html
+website/blog/posts.json         blog posts tied to Instagram creatives
+website/blog/seo.json           per-post SEO titles, descriptions, steps, FAQ, links
+website/tools/push.py           validate page.html, then publish it to page 4
+website/tools/push_templates.py publish the home / single / archive templates
+website/tools/blog_sync.py      upload creatives, create or attach blog posts
+website/tools/seo_sync.py       apply seo.json to every post, categories, tagline
+website/tools/insta_sync.py     copy the latest 9 Instagram posts into the grid
+website/tools/shot.js           screenshot at a real 390px phone viewport
+website/tools/sticky.js         check the header sticks on phone and desktop
+website/tools/pwa.js            check the site installs as an app
+website/tools/makezip.py        rebuild the handover zip
 ```
+
+Every publishing script is a **dry run unless given `--confirm`**.
 
 Set the credentials once, either as environment variables or as a gitignored
 `website/.wp-auth.json` holding `{"user": ..., "app": ...}`:
@@ -94,8 +106,18 @@ one family only). Mobile is the base; desktop is added in a single
 `@media (min-width:900px)` block at the end. He was explicit that **mobile
 matters more than desktop**.
 
-Page order: hero → stats → three shifts → about → programs → how it works →
-FAQ → success stories (hidden) → community → footer.
+Page order: hero → stats → three shifts → about → programs → payment (UPI) →
+webinar registration → how it works → FAQ → success stories (hidden) →
+**from the blog** → **Instagram grid** → community → footer.
+
+**Light theme.** Dark is the default; `.sp.light` restates the colour tokens
+and the choice is remembered per browser in `localStorage` key `sp-theme`.
+The blog templates read the same key, so the choice follows the reader. The
+toggle sits on the right of the app bar next to Install and the menu, a 44px
+rounded square drawn **inverted against the page** (`background:var(--fg)`,
+icon `var(--bg)`): white on dark, near-black on light, at the owner's request.
+It carries its own `margin-left:auto` - when it relied on Install's, it ended
+up glued to the logo whenever Install was hidden.
 
 Phones also get a **bottom tab bar** and a **right-hand slide-in menu**;
 both are hidden on desktop.
@@ -208,53 +230,75 @@ program too.
 
 ## 7. Blog
 
-Six posts, drawn from the **real quote bank** in `content_bank.json` (90 unused
-entries remain). Each is a quote plus three short paragraphs in her voice and a
-WhatsApp call to action. `/blog/` is the posts page (page id 5).
+Twelve posts at `/blog/` (page id 5, the posts page): six from the original
+quote bank and six written from the 1–9 Oct 2026 Instagram creatives. Every
+post carries an Instagram creative as its featured image.
 
-The homepage has a **From the Blog** section (`#blog`) and a Blog link in the
-menu. Its three cards are a static snapshot in `page.html`, and the script
-replaces them with the three newest posts from `/wp-json/wp/v2/posts` - so a
-new post shows up on the homepage without touching `page.html`.
+**Homepage.** A *From the Blog* section (`#blog`) and a Blog link in the menu.
+The three cards in `page.html` are a static snapshot; the script swaps in the
+three newest posts from `/wp-json/wp/v2/posts?_embed` - one query parameter
+only, because an `&` cannot appear in that script - with each post's creative.
 
-`/blog/` and every post render through two **template overrides**, `home` and
-`single`, assembled from `website/templates/` (`head.html` + `<name>.body.html`
-+ `foot.html`) and published by `website/tools/push_templates.py`. Before
-them, Twenty Twenty-Five's own templates showed a white page, the theme's demo
-footer (Events, Shop, Patterns, Themes) and **"Written by
-pixelmartllp@gmail.com" on every post**. The same script closes comments - no
-one moderates them. Undo: Appearance → Editor → Templates → Reset.
+**Templates.** `/blog/`, every post and every category page render through
+three template overrides - `home`, `single`, `archive` - assembled from
+`website/templates/` and published by `push_templates.py`. Before them, Twenty
+Twenty-Five showed a white page, the theme's demo footer (Events, Shop,
+Patterns, Themes) and **"Written by pixelmartllp@gmail.com" on every post**.
+The admin user's display name is now *Shashi Pallava* and its slug
+`shashi-pallava`, because Slim SEO's schema also printed the email. The same
+script closes comments; nobody moderates them. Undo any template from
+Appearance → Editor → Templates → Reset.
 
-**Posts carry the Instagram creatives** (since 09 Oct 2026, owner approved).
-`website/blog/posts.json` ties each post to an Instagram media id: the six
-original posts got the creative that says the same thing, and six more were
-written from the 1–9 Oct creatives - title and bold lead from the creative and
-its caption, three short Hinglish paragraphs, a link back to the Instagram
-post, dated to when it went up there. `website/tools/blog_sync.py --confirm`
-uploads each creative once as `ig-<id>-full.jpg` and sets it as the featured
-image; re-running is safe. New entries need writing, so this is not in the
-daily workflow - add to `posts.json`, show him the words, then publish.
+**Posts and creatives.** `website/blog/posts.json` ties each post to an
+Instagram media id. Entries with `wp_id` only attach a creative to an existing
+post; the rest are whole posts - title and bold lead from the creative and its
+caption (his words), three short Hinglish paragraphs, a link back to the
+Instagram post, dated to when it went up there. `blog_sync.py --confirm`
+uploads each creative once as `ig-<id>-full.jpg`; re-running is safe. New
+posts are **written**, so they are never automatic: add the entry, show him the
+words, publish only after he says yes.
 
-**SEO and GEO layer** (09 Oct 2026, owner asked; keywords around "Shashi
-Pallava - Life, Relationship & Mindset Coach"). `website/blog/seo.json` holds,
-per post, the category, the Slim SEO title and description, three practical
-steps, two question-and-answer pairs and two internal links;
-`website/tools/seo_sync.py --confirm` appends them between `<!-- sp-seo:start -->`
-and `<!-- sp-seo:end -->` (re-runs replace, never stack) and emits the Q&A as
-FAQPage JSON-LD. Slim SEO registers its `slim_seo` post meta for REST, so the
-titles and descriptions are set there directly. Categories: Boundaries,
-Relationships, Healing & Self-Worth, Mindset (the old Uncategorized, renamed).
-The single template carries an author box plus Person JSON-LD with the
-credential he supplied; the `archive` template brands category pages. Tagline
-is now "Life, Relationship & Mindset Coach"; `/blog/` shows 12 per page. A new
-post needs an entry in both JSON files.
+## 7a. SEO and GEO
+
+Asked for on 09 Oct 2026, keywords around **"Shashi Pallava - Life,
+Relationship & Mindset Coach"**. `website/blog/seo.json` holds, per post, the
+category, the Slim SEO title (65 chars at most) and description (160), three
+practical steps, two question-and-answer pairs and two internal links.
+`seo_sync.py --confirm` appends them between `<!-- sp-seo:start -->` and
+`<!-- sp-seo:end -->` - a re-run replaces the block, never stacks a second - and
+emits the Q&A as **FAQPage JSON-LD**. Answer-first, self-contained text is what
+search snippets and AI answers lift.
+
+- Slim SEO registers its `slim_seo` post meta for REST, so titles,
+  descriptions and `noindex` are set directly, no wp-admin trip.
+- Categories: Boundaries, Relationships, Healing & Self-Worth, Mindset (the old
+  Uncategorized, renamed), each with a keyword description.
+- The single template ends every post with an **author box plus Person
+  JSON-LD**: role, the Alison credential, Instagram and Facebook as `sameAs`.
+- Tagline: *Life, Relationship & Mindset Coach*. `/blog/` shows 12 per page.
+- Creative alt texts name the coach and the role.
+
+**A new post needs an entry in both JSON files**, then `blog_sync.py` and
+`seo_sync.py`.
+
+## 7b. Search Console
+
+The owner installed **Site Kit by Google** on 09 Oct 2026: Search Console,
+Analytics 4 (`GT-MQRT32HB`) and PageSpeed Insights are connected, and
+`sitemap.xml` (Slim SEO) was submitted that day. It first showed *Couldn't
+fetch*; fetched as Googlebot, the index and all three child sitemaps return
+200 and valid XML, so that was Google's first-day status, not the site.
 
 `insta-feed` (page 91) and `webinar-details` (page 76) are data pages the
-homepage reads; both carry Slim SEO `noindex`, which also keeps them out of
-`sitemap.xml`. Search Console and Analytics 4 are connected through **Site Kit**
-(installed by the owner 09 Oct 2026); the sitemap was submitted that day.
+homepage reads; both carry Slim SEO `noindex`, which also drops them from the
+sitemap.
 
-## 7a. Instagram grid
+Site Kit's REST data routes answer the app password, but on 09 Oct they
+returned `missing_required_scopes` (`webmasters`) - a permission left unticked
+during setup. Until he re-grants it in Site Kit, search data cannot be read
+from here.
+
+## 7c. Instagram grid
 
 `#insta` on the homepage shows the latest Instagram posts and stays `hidden`
 until there is something to show. The browser never talks to Instagram: the
@@ -338,10 +382,21 @@ The ₹999 price used to look like a typo and is not one. It read wrong only
 while the page described twelve weekly 1:1 sessions; for a six-month group
 program it is an ordinary number. Settled — do not raise it again.
 
-- **City is unknown** — the footer says only "India".
 - **Testimonials** — see §6. The section is built and hidden; three real
   client lines are all it needs.
-- The daily creatives still carry only "Life & Relationship Coach"
-  (`BRAND_TAGLINE` in `shashi_social/brand.py`), while the site now says
-  "Life & Relationship Coach | Mindset Mentor". He has been told; do not change
-  it silently.
+- **Daily Instagram grid refresh** needs the `WP_USER` and `WP_APP` GitHub
+  secrets (repo → Settings → Secrets and variables → Actions). Until then run
+  `insta_sync.py --confirm` by hand.
+- **Rotate the application password** - the current one was pasted into a chat
+  on 09 Oct 2026. Put the new one in the GitHub secret and in the local
+  `website/.wp-auth.json`.
+- **Site Kit permission** - see §7b.
+- **A floating "×" button** overlaps text on the left of the blog pages. It
+  predates the blog work and is not in any file here; most likely a plugin.
+- **Older posts still close with "free demo session"** while the template's
+  call to action says free webinar.
+- **Role lines differ.** The site says *Life, Relationship & Mindset Coach*;
+  the creatives' signature reads *Life and Mindset Coach*; the daily pipeline's
+  `BRAND_TAGLINE` is *Life & Relationship Coach*. He has been told; do not
+  change any of them silently.
+- **SuperPWA brand fields** - see §9, still set by hand.
