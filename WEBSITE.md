@@ -249,6 +249,11 @@ credential he supplied; the `archive` template brands category pages. Tagline
 is now "Life, Relationship & Mindset Coach"; `/blog/` shows 12 per page. A new
 post needs an entry in both JSON files.
 
+`insta-feed` (page 91) and `webinar-details` (page 76) are data pages the
+homepage reads; both carry Slim SEO `noindex`, which also keeps them out of
+`sitemap.xml`. Search Console and Analytics 4 are connected through **Site Kit**
+(installed by the owner 09 Oct 2026); the sitemap was submitted that day.
+
 ## 7a. Instagram grid
 
 `#insta` on the homepage shows the latest Instagram posts and stays `hidden`
