@@ -224,6 +224,7 @@ def main() -> int:
     shutil.copytree(WEB / "assets", STAGE / "website" / "assets", ignore=SKIP)
     shutil.copytree(WEB / "templates", STAGE / "website" / "templates", ignore=SKIP)
     shutil.copytree(WEB / "blog", STAGE / "website" / "blog", ignore=SKIP)
+    shutil.copytree(WEB / "assistant", STAGE / "website" / "assistant", ignore=SKIP)
     wf = ROOT / ".github" / "workflows" / "insta-feed.yml"
     if wf.is_file():
         (STAGE / "github").mkdir()

@@ -1,0 +1,509 @@
+<style>
+/* ============================================================
+   Shashi's Assistant - a floating helper on every page.
+   No AI and no server: answers are written out below from FAQ.txt
+   and the site, matched by keywords. The EQ check is scored here
+   in the browser and sent to Shashi on WhatsApp only if the visitor
+   chooses to. Injected by push.py (homepage) and push_templates.py
+   (blog), so it is edited in this one file.
+   ============================================================ */
+.spa{--a-bg:#121214;--a-card:#1A1A1D;--a-line:#2A2A2E;--a-fg:#FAFAFA;--a-dim:#C4C4CB;--a-muted:#A2A2AB;
+  --a-gold:#FBBD23;--a-gold-hi:#FFD666;--a-on-gold:#0A0A0B;--a-soft:rgba(251,189,35,.10);--a-gline:rgba(251,189,35,.35);
+  --a-me:#2A2416;--a-shadow:0 18px 50px -12px rgba(0,0,0,.7);
+  font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:15px;line-height:1.5}
+.sp.light .spa,.spl .spa{--a-bg:#FFFFFF;--a-card:#FBF7F0;--a-line:#E6DED0;--a-fg:#17120F;--a-dim:#3D3630;--a-muted:#6E655C;
+  --a-gold:#9A6B06;--a-gold-hi:#C9921C;--a-on-gold:#FFFFFF;--a-soft:rgba(154,107,6,.08);--a-gline:rgba(154,107,6,.32);
+  --a-me:#F3E9D2;--a-shadow:0 18px 50px -14px rgba(23,18,15,.35)}
+.spa *{box-sizing:border-box}
+.spa p{margin:0}
+.spa-fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:55;display:flex;align-items:center;gap:8px;
+  height:52px;padding:0 18px 0 14px;border-radius:999px;border:1px solid transparent;cursor:pointer;
+  background:linear-gradient(135deg,var(--a-gold-hi),var(--a-gold));color:var(--a-on-gold);
+  font-family:inherit;font-size:.8rem;font-weight:800;letter-spacing:.02em;box-shadow:0 10px 30px -8px rgba(251,189,35,.55)}
+/* the homepage has a bottom tab bar on phones - sit above it */
+.sp .spa-fab{bottom:calc(84px + env(safe-area-inset-bottom))}
+/* icon only on phones so it covers less of the page */
+.spa-fab{width:56px;height:56px;padding:0;justify-content:center}
+.spa-fab span{display:none}
+.spa-fab svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.spa.open .spa-fab{display:none}
+.spa-panel{position:fixed;left:0;right:0;bottom:0;z-index:80;display:none;flex-direction:column;
+  height:min(88vh,680px);background:var(--a-bg);color:var(--a-fg);border:1px solid var(--a-line);
+  border-radius:20px 20px 0 0;box-shadow:var(--a-shadow);overflow:hidden}
+.spa.open .spa-panel{display:flex}
+.spa-head{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--a-line)}
+.spa-head img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--a-gline)}
+.spa-head .t{font-weight:800;font-size:.95rem;line-height:1.2}
+.spa-head .s{font-size:.68rem;color:var(--a-muted);font-weight:600}
+.spa-x{margin-left:auto;width:38px;height:38px;border-radius:10px;border:1px solid var(--a-line);background:transparent;
+  color:var(--a-fg);font-size:1rem;cursor:pointer}
+.spa-log{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;overscroll-behavior:contain}
+.spa-msg{max-width:88%;padding:10px 13px;border-radius:14px;font-size:.92rem}
+.spa-msg p+p{margin-top:6px}
+.spa-bot{align-self:flex-start;background:var(--a-card);border:1px solid var(--a-line);border-bottom-left-radius:4px;color:var(--a-dim)}
+.spa-bot b{color:var(--a-fg)}
+.spa-me{align-self:flex-end;background:var(--a-me);color:var(--a-fg);border-bottom-right-radius:4px}
+.spa-acts{display:flex;flex-wrap:wrap;gap:8px;align-self:flex-start;max-width:100%}
+.spa-act{display:inline-flex;align-items:center;min-height:38px;padding:7px 14px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--a-gline);background:var(--a-soft);color:var(--a-gold);font-family:inherit;font-size:.8rem;
+  font-weight:700;text-decoration:none;text-align:left}
+.spa-act.main{background:linear-gradient(135deg,var(--a-gold-hi),var(--a-gold));color:var(--a-on-gold);border-color:transparent}
+.spa-form{display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--a-line)}
+.spa-form input{flex:1;min-width:0;height:46px;padding:0 14px;border-radius:12px;border:1px solid var(--a-line);
+  background:var(--a-card);color:var(--a-fg);font-family:inherit;font-size:16px}
+.spa-form button{width:46px;height:46px;flex:none;border-radius:12px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--a-gold-hi),var(--a-gold));color:var(--a-on-gold)}
+.spa-form button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.spa-form[hidden]{display:none}
+/* EQ check */
+.spa-q{align-self:stretch;max-width:none;background:var(--a-card);border:1px solid var(--a-gline)}
+.spa-q .n{font-size:.66rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--a-gold)}
+.spa-q .bar{height:4px;border-radius:4px;background:var(--a-line);margin:8px 0 10px;overflow:hidden}
+.spa-q .bar i{display:block;height:100%;background:var(--a-gold)}
+.spa-q .qt{color:var(--a-fg);font-weight:700;font-size:1rem;line-height:1.4}
+.spa-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.spa-opts button{min-height:44px;border-radius:12px;border:1px solid var(--a-line);background:var(--a-bg);color:var(--a-fg);
+  font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer}
+.spa-res{align-self:stretch;max-width:none;background:var(--a-card);border:1px solid var(--a-gline)}
+.spa-res .big{font-size:2rem;font-weight:900;color:var(--a-gold);line-height:1.1}
+.spa-res .row{margin-top:12px}
+.spa-res .lab{display:flex;justify-content:space-between;font-size:.8rem;font-weight:700;color:var(--a-fg)}
+.spa-res .lab span+span{color:var(--a-gold)}
+.spa-res .track{height:8px;border-radius:8px;background:var(--a-line);margin-top:5px;overflow:hidden}
+.spa-res .track i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,var(--a-gold),var(--a-gold-hi))}
+.spa-res .tip{font-size:.82rem;color:var(--a-dim);margin-top:5px}
+.spa-res .tip a{color:var(--a-gold)}
+.spa-res .fine{font-size:.7rem;color:var(--a-muted);margin-top:12px}
+.spa-lead{align-self:stretch;max-width:none;background:var(--a-card);border:1px solid var(--a-line);display:flex;flex-direction:column;gap:8px}
+.spa-lead input{height:44px;padding:0 12px;border-radius:10px;border:1px solid var(--a-line);background:var(--a-bg);
+  color:var(--a-fg);font-family:inherit;font-size:16px}
+.spa-lead .err{color:#E5484D;font-size:.78rem;min-height:1em}
+.spa-lead button{min-height:46px;border-radius:12px;border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:.85rem;
+  background:linear-gradient(135deg,var(--a-gold-hi),var(--a-gold));color:var(--a-on-gold)}
+@media (min-width:900px){
+  .spa-fab{bottom:24px;right:24px;width:auto;height:52px;padding:0 18px 0 14px}
+  .spa-fab span{display:inline}
+  .spa-panel{left:auto;right:24px;bottom:24px;width:390px;height:min(80vh,640px);border-radius:20px}
+}
+</style>
+<div class="spa" id="spa">
+  <button class="spa-fab" type="button" aria-label="Open Shashi's assistant"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.9-.9L3 20.5l1.6-4.6A8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4z"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/></svg><span>Ask me</span></button>
+  <div class="spa-panel" role="dialog" aria-label="Shashi's assistant">
+    <div class="spa-head">
+      <img src="https://shashipallava.com/wp-content/uploads/2026/09/shashi-pallava-headshot.jpg" alt="">
+      <div><p class="t">Shashi's Assistant</p><p class="s">Programs · Webinar · Free EQ check</p></div>
+      <button class="spa-x" type="button" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="spa-log" aria-live="polite"></div>
+    <form class="spa-form" autocomplete="off">
+      <input type="text" placeholder="Apna sawaal likhiye…" aria-label="Your question">
+      <button type="submit" aria-label="Send"><svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button>
+    </form>
+  </div>
+</div>
+<script>
+(function(){
+  /* No ampersands, pipes or angle brackets anywhere in this script:
+     WordPress escapes them inside post content and the whole file dies.
+     Strings that need an ampersand use \u0026. */
+  var root = document.getElementById('spa');
+  if (!root) { return; }
+  var WA = '919876732099';
+  var COMMUNITY = 'https://chat.whatsapp.com/C2tCs8KDwiYCEmvj9CLXNy';
+  var onHome = document.querySelector('.sp .hero') !== null;
+  var base = '/';
+  if (onHome) { base = ''; }
+  var fab = root.querySelector('.spa-fab');
+  var log = root.querySelector('.spa-log');
+  var form = root.querySelector('.spa-form');
+  var input = form.querySelector('input');
+  var started = false;
+  var testOn = false;
+
+  function el(tag, cls, text){
+    var n = document.createElement(tag);
+    if (cls) { n.className = cls; }
+    if (text) { n.textContent = text; }
+    return n;
+  }
+  function down(){ log.scrollTop = log.scrollHeight; }
+  function wa(text){ return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(text); }
+
+  /* a bot message: lines become paragraphs, **x** becomes bold */
+  function bot(lines, acts){
+    var m = el('div', 'spa-msg spa-bot');
+    lines.forEach(function(line){
+      var p = el('p');
+      var bits = line.split('**');
+      bits.forEach(function(b, i){
+        if (i % 2 === 1) { p.appendChild(el('b', '', b)); }
+        else { p.appendChild(document.createTextNode(b)); }
+      });
+      m.appendChild(p);
+    });
+    log.appendChild(m);
+    if (acts) { buttons(acts); }
+    down();
+  }
+  function me(text){ log.appendChild(el('div', 'spa-msg spa-me', text)); down(); }
+  /* acts: [label, href or function, main?] */
+  function buttons(acts){
+    var row = el('div', 'spa-acts');
+    acts.forEach(function(a){
+      var b;
+      if (typeof a[1] === 'string') {
+        b = el('a', 'spa-act', a[0]);
+        b.href = a[1];
+        if (a[1].indexOf('http') === 0) { b.target = '_blank'; b.rel = 'noopener'; }
+        else { b.addEventListener('click', close); }
+      } else {
+        b = el('button', 'spa-act', a[0]);
+        b.type = 'button';
+        b.addEventListener('click', function(){ me(a[0]); a[1](); });
+      }
+      if (a[2]) { b.className = 'spa-act main'; }
+      row.appendChild(b);
+    });
+    log.appendChild(row);
+    down();
+  }
+
+  /* ---------------- answers ----------------
+     Every fact here is Shashi's own, from FAQ.txt and the site.
+     Do not add anything she has not said. */
+  var A = {};
+  A.menu = function(){
+    bot(['Main aur kya bata sakti hoon?'], [
+      ['Free EQ check', startTest, true], ['Programs \u0026 fees', function(){ A.programs(); }],
+      ['Free webinar', function(){ A.webinar(); }], ['Is this therapy?', function(){ A.therapy(); }],
+      ['Talk to Shashi', function(){ A.contact(); }]]);
+  };
+  A.hello = function(){
+    bot(['Namaste! Main **Shashi Pallava** ki assistant hoon.',
+      'Programs, free webinar, fees ya payment ke baare mein poochhiye — ya 3 minute ka **free EQ check** lijiye aur dekhiye aap apni emotions aur relationships ko kaise sambhalti hain.'], [
+      ['Free EQ check', startTest, true], ['Programs \u0026 fees', function(){ A.programs(); }],
+      ['Free webinar', function(){ A.webinar(); }], ['Is this therapy?', function(){ A.therapy(); }],
+      ['Talk to Shashi', function(){ A.contact(); }]]);
+  };
+  A.programs = function(){
+    bot(['Shashi ke saath shuru karne ke **do raste** hain:',
+      '**1. Live Webinar — Free.** Online, sabke liye. Dekhne ka sabse aasaan tareeka ki ye kaam karne ka tareeka aapke liye hai ya nahi.',
+      '**2. Revive, Rise \u0026 Relive — ₹999, 6 mahine.** Mindset, confidence, emotional well-being aur relationships par kaam: private WhatsApp community, interactive live webinars, Mentie Go par practical challenges aur missions, aur Shashi ke saath **ek personal 1:1 session**. 100% online, women aged 18 to 55 ke liye.'], [
+      ['Join the program', base + '#pay', true], ['Free webinar', base + '#register'], ['How do I pay?', function(){ A.price(); }]]);
+  };
+  A.price = function(){
+    bot(['**Revive, Rise \u0026 Relive: ₹999** — poore 6 mahine ke liye. Webinar bilkul **free** hai.',
+      'Payment UPI se: QR scan kijiye ya UPI ID **shashipallav@ybl** par ₹999 bhejiye, phir screenshot WhatsApp par bhejiye — Shashi khud aapko add karti hain.',
+      'Card aur netbanking jald aa rahe hain.'], [
+      ['Pay ₹999', base + '#pay', true],
+      ['Send screenshot', wa('Hi Shashi, I have paid 999 for Revive, Rise and Relive. Sending the screenshot now.')]]);
+  };
+  A.webinar = function(){
+    var lines = ['**Free live webinar** — un women ke liye jo jaanti hain ki wo aur bhi kar sakti hain, par kahin stuck, overwhelmed ya confused mehsoos karti hain.',
+      'Mindset badalne, confidence badhane, emotions sambhalne aur healthier relationships ke simple, practical tareeke — aur apne sawaal seedhe Shashi se. “Aapko sirf motivation nahi, ek nayi direction milegi.”'];
+    var acts = [['Register free', base + '#register', true]];
+    fetch('/wp-json/wp/v2/pages?slug=webinar-details').then(function(r){ return r.json(); }).then(function(list){
+      if (list) {
+        if (list.length) {
+          var d = el('div');
+          d.innerHTML = list[0].content.rendered;
+          d.querySelectorAll('p').forEach(function(p){
+            var t = p.textContent.trim();
+            var at = t.indexOf(':');
+            if (at === -1) { return; }
+            var k = t.slice(0, at).trim();
+            var v = t.slice(at + 1).trim();
+            if (v.length === 0) { return; }
+            if (k.toLowerCase() === 'note') { return; }
+            lines.push('**' + k + ':** ' + v);
+          });
+        }
+      }
+      bot(lines, acts);
+    }).catch(function(){ bot(lines, acts); });
+  };
+  A.therapy = function(){
+    bot(['**Nahi — coaching aur therapy alag hain.**',
+      'Coaching aapke present par kaam karti hai: thoughts, beliefs, patterns, communication aur relationships — aur sabse zaroori, aap aage kya alag kar sakti hain.',
+      'Ye mental health conditions ko diagnose ya treat karne ki jagah nahi hai, aur professional clinical care ki jagah kabhi nahi le sakti. Agar Shashi ko lage ki aapko clinical ya therapeutic support chahiye, wo aapko saaf-saaf batayengi aur sahi professional ki taraf guide karengi.',
+      '“Har problem ka solution coaching nahi hota — aur sahi help lena weakness nahi, wisdom hai.”']);
+  };
+  A.language = function(){
+    bot(['Sessions **English, Hindi ya Hinglish** mein hote hain — jo aapko sabse natural lage.',
+      'Fluent hona zaroori nahi. Concepts English mein samajh aate hain par emotions Hindi mein nikalte hain? Hinglish bilkul theek hai.',
+      '“Jis bhasha mein dil khul kar baat ho sake, wahi sabse achhi language hai.”']);
+  };
+  A.online = function(){
+    bot(['Poora program **100% online** hai — aap kahin se bhi judh sakti hain.',
+      'WhatsApp community, interactive webinars, aur Mentie Go par practical challenges aur missions. Na travel, na routine badalna.',
+      '“Bas judna hai, seekhna hai, aur khud ko step-by-step upgrade karna hai.”']);
+  };
+  A.who = function(){
+    bot(['Program **women aged 18 to 55** ke liye hai — homemaker, working professional, entrepreneur, student, mother, daughter, married, unmarried — ya bas zindagi ke kisi naye mod par.',
+      'Aapki growth aapke relationship status ya role se tay nahi hoti. “Aapki kahani alag ho sakti hai, par growth ka haq sabka hai.”',
+      'Free webinar sabke liye open hai.']);
+  };
+  A.about = function(){
+    bot(['**Shashi Pallava** — Life, Relationship \u0026 Mindset Coach.',
+      'Wo un women ke saath kaam karti hain jo khud ko khoye bina grow karna chahti hain. Sessions mein coaching conversations, practical mindset tools, communication techniques aur NLP-based approach.',
+      '**4+ years practice · NLP-based approach · Life Coaching Certified (Alison)**',
+      'Coaching ka matlab “aapko kya karna chahiye” batana nahi — ek safe space hai jahan aap khud dekh sakein ki aap kya mehsoos karti hain, kyun react karti hain, aur asal mein kya chahti hain.'], [
+      ['About Shashi', base + '#about']]);
+  };
+  A.contact = function(){
+    bot(['Seedha Shashi se baat kijiye:',
+      '**WhatsApp:** +91 98767 32099', '**Email:** shashipallava@gmail.com',
+      '**Instagram / Facebook:** @ShashiPallava'], [
+      ['WhatsApp Shashi', wa('Hi Shashi, I found you on your website.'), true],
+      ['Instagram', 'https://www.instagram.com/ShashiPallava']]);
+  };
+  A.community = function(){
+    bot(['Shashi ki **WhatsApp community** — women jo personal development ko sirf padhti nahi, practise karti hain. Roz ek thought, aur saath chalne wali women.'], [
+      ['Join the community', COMMUNITY, true]]);
+  };
+  A.blog = function(){
+    bot(['Blog par boundaries, self-worth, healing aur mindset par chhote reads hain — har ek do minute ka, practical steps ke saath.'], [
+      ['Read the blog', '/blog/', true]]);
+  };
+  A.crisis = function(){
+    bot(['Aap jo mehsoos kar rahi hain, wo important hai — aur aapko akele nahi jhelna chahiye.',
+      'Agar aap khud ko nuksaan pahunchane ka soch rahi hain, **abhi kisi se baat kijiye**: India mein **Tele-MANAS 14416** (24x7, free, kai bhashaon mein). Turant khatre mein **112** dial kijiye.',
+      'Coaching is waqt ki sahi madad nahi hai — kisi trained professional ya bharosemand insaan se abhi baat kijiye.']);
+  };
+  A.thanks = function(){ bot(['Aapka swagat hai! Kuch aur poochhna ho to yahin hoon.']); };
+  A.unknown = function(q){
+    bot(['Is sawaal ka pakka jawab mere paas nahi hai — main sirf wahi batati hoon jo Shashi ne khud likha hai.',
+      'Seedha Shashi se poochh lijiye, wo khud reply karti hain.'], [
+      ['Ask Shashi on WhatsApp', wa('Hi Shashi, ' + q), true], ['Show options', function(){ A.menu(); }]]);
+  };
+
+  /* keyword intents - Hinglish and English, matched as whole words.
+     Crisis is checked first and always wins. */
+  var INTENTS = [
+    ['crisis', ['suicide', 'suicidal', 'kill myself', 'end my life', 'self harm', 'khudkushi', 'marna chahti', 'mar jaun', 'jeena nahi']],
+    ['eq', ['eq', 'iq', 'test', 'quiz', 'assessment', 'emotional intelligence', 'check']],
+    ['price', ['price', 'fees', 'fee', 'cost', 'kitna', 'kitne', 'paisa', 'paise', 'charges', 'charge', '999', 'rupees', 'rs', 'pay', 'payment', 'upi', 'paid', 'qr']],
+    ['programs', ['program', 'programme', 'course', 'revive', 'rise', 'relive', 'package', 'plan', 'enroll', 'months', 'month', 'mahine', '1:1', 'one on one', 'session', 'sessions', 'coaching']],
+    ['webinar', ['webinar', 'live', 'free', 'date', 'time', 'kab', 'timing', 'register', 'registration', 'link']],
+    ['therapy', ['therapy', 'therapist', 'counselling', 'counseling', 'counsellor', 'depression', 'anxiety', 'mental', 'doctor', 'psychologist', 'psychiatrist', 'medicine']],
+    ['language', ['language', 'hindi', 'english', 'hinglish', 'bhasha', 'punjabi']],
+    ['online', ['online', 'offline', 'in person', 'location', 'city', 'kahan', 'where', 'travel', 'zoom', 'mentie', 'chandigarh', 'address']],
+    ['who', ['who', 'married', 'unmarried', 'age', 'women', 'woman', 'men', 'man', 'male', 'husband', 'student', 'homemaker', 'housewife', 'mere liye', 'for me', 'eligible']],
+    ['about', ['shashi', 'about', 'coach', 'experience', 'certified', 'certificate', 'qualification', 'nlp', 'alison', 'kaun', 'background']],
+    ['community', ['community', 'group', 'members']],
+    ['contact', ['contact', 'whatsapp', 'number', 'call', 'email', 'phone', 'baat', 'talk', 'message', 'instagram', 'facebook']],
+    ['blog', ['blog', 'article', 'articles', 'read', 'post', 'posts']],
+    ['thanks', ['thanks', 'thank', 'shukriya', 'dhanyavad', 'ok', 'okay', 'great']],
+    ['hello', ['hi', 'hello', 'hey', 'namaste', 'namaskar', 'hii', 'helo']]
+  ];
+  function answer(q){
+    var t = ' ' + q.toLowerCase().replace(/[^a-z0-9: ]+/g, ' ').replace(/ +/g, ' ').trim() + ' ';
+    var scores = INTENTS.map(function(it){
+      var s = 0;
+      it[1].forEach(function(k){ if (t.indexOf(' ' + k + ' ') !== -1) { s = s + 1; } });
+      return s;
+    });
+    if (scores[0] !== 0) { A.crisis(); return; }
+    var best = Math.max.apply(null, scores);
+    if (best === 0) { A.unknown(q); return; }
+    var name = INTENTS[scores.indexOf(best)][0];
+    if (name === 'eq') { startTest(); return; }
+    A[name]();
+  }
+
+  /* ---------------- EQ check ----------------
+     16 statements, four areas of four. r marks a reverse-scored item.
+     Answers 1-4; an area scores 4-16. A self-reflection, not a
+     psychological assessment - the result says so. */
+  var AREAS = [
+    {n: 'Self-awareness', post: 'your-body-kept-the-score', tips: [
+      'Apni feelings ko naam dena shuru kijiye — din mein do baar ruk kar poochhiye “main abhi kya mehsoos kar rahi hoon?”',
+      'Aap apne aap ko kaafi pehchanti hain. Ab dhyan dijiye ki kaunsi situations aapko baar-baar trigger karti hain.',
+      'Aap apni feelings ko achhe se pehchanti hain — yahi baaki sab ki neenv hai.']},
+    {n: 'Managing emotions', post: 'why-me-keeps-you-stuck', tips: [
+      'React karne se pehle ek saans ka pause — bas itna sa gap bahut kuch badal deta hai. Shuruaat yahin se.',
+      'Aap aksar khud ko sambhal leti hain. Tough moments ke baad jaldi wapas aane ka ek apna tareeka banaiye.',
+      'Mushkil waqt mein bhi aap khud ko sambhal leti hain — ye ek badi taakat hai.']},
+    {n: 'Empathy', post: 'not-every-silence-needs-an-explanation', tips: [
+      'Agli baatcheet mein jawab dene ke liye nahi, samajhne ke liye suniye — aur ek sawaal zyada poochhiye.',
+      'Aap dusron ko samajhti hain. Assumptions ki jagah seedha poochhna aapke rishton ko aur halka karega.',
+      'Aap logon ko gehrai se samajhti hain. Dhyan rakhiye ki unka bojh aapka bojh na ban jaye.']},
+    {n: 'Relationships \u0026 boundaries', post: 'a-boundary-is-not-a-punishment', tips: [
+      'Ek chhoti si boundary se shuruaat kijiye — ek shaant sentence, bina lambi explanation ke.',
+      'Aap apni baat rakh leti hain. Ab koshish kijiye ki “nahi” kehne ke baad guilt kam ho.',
+      'Aap apni zaroorat saaf aur izzat se keh paati hain — healthy rishton ki yahi pehchaan hai.']}
+  ];
+  var QS = [
+    [0, 'I can name what I am feeling — not just “good” or “bad”.', 0],
+    [1, 'When I am angry, I can pause before I respond.', 0],
+    [2, 'I can tell when someone is upset, even if they say they are fine.', 0],
+    [3, 'I can say “no” without feeling guilty for days.', 0],
+    [0, 'I notice how my mood changes the way I talk to people.', 0],
+    [1, 'Small things can ruin my whole day.', 1],
+    [2, 'I listen to understand, not just to reply.', 0],
+    [3, 'I can express hurt calmly, instead of going silent or exploding.', 0],
+    [0, 'I know which situations trigger me.', 0],
+    [1, 'I keep replaying an upsetting conversation for days.', 1],
+    [2, 'I can see the other person’s side, even when I disagree.', 0],
+    [3, 'I avoid difficult conversations just to keep the peace.', 1],
+    [0, 'I often realise only later why I was upset.', 1],
+    [1, 'I can calm myself down after a stressful moment.', 0],
+    [2, 'I find it hard to stay patient when someone shares their worries.', 1],
+    [3, 'I can ask for what I need in a relationship.', 0]
+  ];
+  var OPTS = ['Rarely', 'Sometimes', 'Often', 'Almost always'];
+  /* score 4..16 to band 0/1/2 without comparison operators */
+  var BAND = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2];
+  var BAND_NAME = ['Needs care', 'Growing', 'Strong'];
+  var answers = [];
+
+  function startTest(){
+    testOn = true;
+    answers = [];
+    form.hidden = true;
+    bot(['**Free EQ check** — 16 chhote statements, lagbhag 3 minute.',
+      'Har ek ke liye chuniye ki ye aap par **kitni baar** sach hota hai. Sahi ya galat jawab nahi hai — jo sach hai wahi chuniye.']);
+    ask(0);
+  }
+  function ask(i){
+    var q = QS[i];
+    var card = el('div', 'spa-msg spa-q');
+    card.appendChild(el('p', 'n', 'Question ' + (i + 1) + ' of ' + QS.length + ' · ' + AREAS[q[0]].n));
+    var bar = el('div', 'bar');
+    var fill = el('i');
+    fill.style.width = Math.round(i * 100 / QS.length) + '%';
+    bar.appendChild(fill);
+    card.appendChild(bar);
+    card.appendChild(el('p', 'qt', q[1]));
+    var opts = el('div', 'spa-opts');
+    OPTS.forEach(function(label, k){
+      var b = el('button', '', label);
+      b.type = 'button';
+      b.addEventListener('click', function(){
+        if (card.dataset.done) { return; }
+        card.dataset.done = '1';
+        opts.querySelectorAll('button').forEach(function(x){ x.disabled = true; });
+        b.style.borderColor = 'var(--a-gold)';
+        b.style.color = 'var(--a-gold)';
+        var v = k + 1;
+        if (q[2]) { v = 5 - v; }
+        answers.push(v);
+        if (answers.length === QS.length) { result(); }
+        else { ask(answers.length); }
+      });
+      opts.appendChild(b);
+    });
+    card.appendChild(opts);
+    log.appendChild(card);
+    down();
+  }
+  function result(){
+    testOn = false;
+    form.hidden = false;
+    var area = [0, 0, 0, 0];
+    QS.forEach(function(q, i){ area[q[0]] = area[q[0]] + answers[i]; });
+    var total = area[0] + area[1] + area[2] + area[3];
+    var pct = Math.round((total - 16) * 100 / 48);
+    var card = el('div', 'spa-msg spa-res');
+    card.appendChild(el('p', 'n', 'Your EQ check'));
+    card.appendChild(el('p', 'big', pct + '%'));
+    var summary = [];
+    AREAS.forEach(function(a, i){
+      var band = BAND[area[i]];
+      var row = el('div', 'row');
+      var lab = el('div', 'lab');
+      lab.appendChild(el('span', '', a.n));
+      lab.appendChild(el('span', '', BAND_NAME[band]));
+      row.appendChild(lab);
+      var tr = el('div', 'track');
+      var f = el('i');
+      f.style.width = Math.round((area[i] - 4) * 100 / 12) + '%';
+      tr.appendChild(f);
+      row.appendChild(tr);
+      var tip = el('p', 'tip', a.tips[band] + ' ');
+      var link = el('a', '', 'Read →');
+      link.href = '/' + a.post + '/';
+      tip.appendChild(link);
+      row.appendChild(tip);
+      card.appendChild(row);
+      summary.push(a.n + ': ' + area[i] + '/16 (' + BAND_NAME[band] + ')');
+    });
+    card.appendChild(el('p', 'fine', 'Ye ek self-reflection hai, psychological test ya diagnosis nahi. Aaj ka score bas ek shuruaat ka point hai — EQ practice se badhta hai.'));
+    log.appendChild(card);
+    down();
+    bot(['Apna result **Shashi ko WhatsApp par bhejiye** — aur free webinar mein in par kaam shuru kijiye.']);
+    lead(pct, summary);
+  }
+  function lead(pct, summary){
+    var box = el('div', 'spa-msg spa-lead');
+    var name = el('input');
+    name.placeholder = 'Your name';
+    name.autocomplete = 'name';
+    var phone = el('input');
+    phone.placeholder = 'WhatsApp number (10 digits)';
+    phone.type = 'tel';
+    phone.inputMode = 'numeric';
+    phone.autocomplete = 'tel';
+    var err = el('p', 'err');
+    var send = el('button', '', 'Send my result on WhatsApp');
+    send.type = 'button';
+    send.addEventListener('click', function(){
+      var n = name.value.trim();
+      var p = phone.value.replace(/[^0-9]/g, '');
+      if (p.length === 12) { if (p.indexOf('91') === 0) { p = p.slice(2); } }
+      if (n.length === 0) { err.textContent = 'Please enter your name.'; return; }
+      if (!/^[6-9][0-9]{9}$/.test(p)) { err.textContent = 'Please enter a valid 10-digit number.'; return; }
+      err.textContent = '';
+      var msg = ['Hi Shashi, maine website par free EQ check kiya.', '', 'Name: ' + n, 'WhatsApp: +91 ' + p,
+        'Overall: ' + pct + '%'].concat(summary).concat(['', 'Mujhe free webinar ke baare mein bataiye.']).join('\n');
+      window.open(wa(msg), '_blank');
+      bot(['WhatsApp khul gaya hoga — bas **Send** dabaiye. Shashi aapko khud reply karengi.'], [
+        ['Register for the free webinar', base + '#register', true], ['Ask something else', function(){ A.menu(); }]]);
+    });
+    box.appendChild(name);
+    box.appendChild(phone);
+    box.appendChild(err);
+    box.appendChild(send);
+    log.appendChild(box);
+    buttons([['Skip', function(){ A.menu(); }], ['Take it again', startTest]]);
+  }
+
+  /* ---------------- open / close ---------------- */
+  function open(){
+    root.classList.add('open');
+    if (!started) { started = true; A.hello(); }
+    if (!testOn) { setTimeout(function(){ input.focus({preventScroll: true}); }, 60); }
+  }
+  function close(){ root.classList.remove('open'); }
+  fab.addEventListener('click', open);
+  root.querySelector('.spa-x').addEventListener('click', close);
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') { close(); } });
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var q = input.value.trim();
+    if (q.length === 0) { return; }
+    input.value = '';
+    me(q);
+    setTimeout(function(){ answer(q); }, 250);
+  });
+  /* any link to #eq-test opens the assistant straight into the check */
+  function fromHash(){
+    if (location.hash === '#eq-test') {
+      open();
+      if (!testOn) { startTest(); }
+      history.replaceState(null, '', location.pathname);
+    }
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href$="#eq-test"]');
+    if (!a) { return; }
+    e.preventDefault();
+    var menuOpen = document.querySelector('.sp.menu-open .burger');
+    if (menuOpen) { menuOpen.click(); }
+    open();
+    if (!testOn) { startTest(); }
+  });
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+})();
+</script>

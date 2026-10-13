@@ -28,6 +28,9 @@ import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PAGE = ROOT / "page.html"
+# the floating assistant lives in its own file, shared with the blog templates
+ASSISTANT = ROOT / "assistant" / "assistant.html"
+MARKER = "<!--SP-ASSISTANT-->"
 SITE = "https://shashipallava.com"
 PAGE_ID = 4
 
@@ -87,6 +90,9 @@ def main() -> int:
     args = ap.parse_args()
 
     html = PAGE.read_text(encoding="utf-8")
+    if MARKER in html:
+        widget = "\n".join(l for l in ASSISTANT.read_text(encoding="utf-8").splitlines() if l.strip())
+        html = html.replace(MARKER, widget)
     problems = check(html)
     for p in problems:
         print("  PROBLEM:", p)

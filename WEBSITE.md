@@ -325,7 +325,37 @@ account. The script takes token and id as a pair - env only if both are set,
 otherwise both from `config.json` - because mixing them fails with "Object
 does not exist".
 
-## 8. Sharing
+## 7d. Assistant and EQ check
+
+A floating **"Ask me"** button on every page (13 Oct 2026): an icon on phones,
+sitting above the bottom tab bar on the homepage, a labelled pill on desktop.
+It opens *Shashi's Assistant*. The owner chose **no AI** - there is no API key
+and no server. Everything is `website/assistant/assistant.html` (style, markup
+and script), injected at `<!--SP-ASSISTANT-->` in `page.html` by `push.py` and
+appended after the footer by `push_templates.py`, so it is edited once.
+
+- **Answers** are written out in that file from `FAQ.txt` and the site, and
+  matched by Hinglish and English keywords as whole words. Anything else gets
+  "is sawaal ka pakka jawab mere paas nahi hai" and a WhatsApp button carrying
+  the visitor's question. **Never add an answer she has not given** - no
+  refunds, discounts or results it cannot back.
+- **Crisis words** (suicide, khudkushi, self harm…) always win and return
+  Tele-MANAS **14416** and **112**, not coaching.
+- Webinar answers read the same `webinar-details` page the homepage does, so
+  date and time stay current.
+- The **EQ check** is 16 statements, four areas of four (self-awareness,
+  managing emotions, empathy, relationships and boundaries), five
+  reverse-scored. Each area scores 4-16 and maps to Needs care / Growing /
+  Strong through a lookup array, because the script cannot contain `<` or `>`.
+  The result says it is a self-reflection, not a psychological test. The
+  visitor can then send name, number and scores to Shashi on WhatsApp (number
+  validated as a 10-digit Indian mobile). Nothing is stored anywhere.
+- Any link to `#eq-test` opens straight into the check - the menu carries one.
+- The script follows §4's rule: **no `&`, `|`, `<` or `>`**. Ampersands in
+  strings are written `\u0026`. Writing a literal `&` there is the easy
+  mistake; both publish scripts refuse it.
+
+
 
 There were **no Open Graph tags at all**, which is why WhatsApp showed no
 preview. **Slim SEO** is installed and active for that single purpose — it is

@@ -45,6 +45,7 @@ def assemble(name: str) -> str:
     head = (TPL / "head.html").read_text(encoding="utf-8").strip()
     body = (TPL / f"{name}.body.html").read_text(encoding="utf-8").strip()
     foot = (TPL / "foot.html").read_text(encoding="utf-8").strip()
+    foot += "\n" + (TPL.parent / "assistant" / "assistant.html").read_text(encoding="utf-8").strip()
     out = (f"<!-- wp:html -->\n{head}\n<!-- /wp:html -->\n{body}\n"
            f"<!-- wp:html -->\n{foot}\n<!-- /wp:html -->")
     return "\n".join(line for line in out.splitlines() if line.strip())
