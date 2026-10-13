@@ -564,8 +564,27 @@ def build() -> dict:
     return bank
 
 
+MIND = pathlib.Path(__file__).resolve().parent / "mindset.json"
+
+
+def add_mindset(bank: dict) -> None:
+    """The Mindset Challenge: hand-written scenarios from her own posts,
+    captions, chapters and FAQ. Track 'mind', ids M<level>Q<n>."""
+    count = {}
+    for item in json.loads(MIND.read_text(encoding="utf-8")):
+        lvl = item["l"]
+        count[lvl] = count.get(lvl, 0) + 1
+        ans = item["o"][item["a"]]
+        q = finish({"k": "mindset", "q": item["q"], "e": item["e"]}, list(item["o"]), ans)
+        q.update({"l": lvl, "t": "text", "tr": "mind"})
+        bank[f"M{lvl:02d}Q{count[lvl]:03d}"] = q
+
+
 def main() -> None:
     bank = build()
+    for q in bank.values():
+        q["tr"] = "iq"
+    add_mindset(bank)
     for qid, q in bank.items():
         assert len(q["o"]) == 4 and 0 <= q["a"] < 4, qid
     OUT.write_text(json.dumps(bank, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")

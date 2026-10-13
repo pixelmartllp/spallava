@@ -31,7 +31,11 @@ function sp_g_conf() {
 		'round'        => 10,
 		'signup_bonus' => 10,
 		'mission_max'  => 100,  // cap on any single mission's points, whatever the page says
-		'min_redeem'   => 50,
+		'min_redeem'   => 100,
+		'mind_points'  => 2,    // every first right answer in the Mindset Challenge
+		'mind_unlock'  => 8,    // of 12 per Mindset level
+		'mind_levels'  => 5,
+		'mind_guest'   => 1,
 		'items'        => array( '1:1 session', 'Silver membership', 'Gold membership', 'Platinum membership' ),
 	);
 }
@@ -68,32 +72,45 @@ function sp_g_award( $uid, $delta, $note ) {
 	return $points;
 }
 
-/** distinct correct answers per level, and the highest level open */
-function sp_g_progress( $uid ) {
+/** the track a question belongs to: "iq" (Brain Game) or "mind" (Mindset Challenge) */
+function sp_g_track( $q ) {
+	return ( isset( $q['tr'] ) && 'mind' === $q['tr'] ) ? 'mind' : 'iq';
+}
+
+/** distinct correct answers per level of one track, and the highest level open */
+function sp_g_progress( $uid, $track = 'iq' ) {
 	$conf    = sp_g_conf();
+	$mind    = ( 'mind' === $track );
+	$levels  = $mind ? $conf['mind_levels'] : 10;
+	$unlock  = $mind ? $conf['mind_unlock'] : $conf['unlock'];
+	$bank    = sp_g_bank();
 	$correct = $uid ? sp_g_meta( $uid, 'sp_correct', array() ) : array();
-	$per     = array_fill( 1, 10, 0 );
-	foreach ( $correct as $qid => $one ) {
-		$lvl = (int) substr( $qid, 1, 2 );
-		if ( $lvl >= 1 && $lvl <= 10 ) {
+	$per     = array_fill( 1, $levels, 0 );
+	$size    = array_fill( 1, $levels, 0 );
+	foreach ( $bank as $qid => $q ) {
+		if ( sp_g_track( $q ) !== $track ) {
+			continue;
+		}
+		$lvl = (int) $q['l'];
+		if ( $lvl < 1 || $lvl > $levels ) {
+			continue;
+		}
+		$size[ $lvl ]++;
+		if ( isset( $correct[ $qid ] ) ) {
 			$per[ $lvl ]++;
 		}
 	}
-	$open = $uid ? 1 : $conf['guest_levels'];
+	$open = $uid ? 1 : ( $mind ? $conf['mind_guest'] : $conf['guest_levels'] );
 	if ( $uid ) {
-		for ( $l = 1; $l < 10; $l++ ) {
-			if ( $per[ $l ] >= $conf['unlock'] ) {
+		for ( $l = 1; $l < $levels; $l++ ) {
+			if ( $per[ $l ] >= $unlock ) {
 				$open = $l + 1;
 			} else {
 				break;
 			}
 		}
 	}
-	$size = array_fill( 1, 10, 0 );
-	foreach ( sp_g_bank() as $q ) {
-		$size[ (int) $q['l'] ]++;
-	}
-	return array( 'correct' => $per, 'size' => $size, 'open' => $open );
+	return array( 'correct' => $per, 'size' => $size, 'open' => $open, 'levels' => $levels, 'unlock' => $unlock );
 }
 
 function sp_g_day_left( $uid ) {
@@ -113,13 +130,17 @@ function sp_g_me() {
 	$out = array(
 		'logged_in' => (bool) $uid,
 		'is_admin'  => sp_g_is_admin(),
-		'conf'      => array_intersect_key( sp_g_conf(), array_flip( array( 'per_level', 'daily_cap', 'unlock', 'guest_levels', 'min_redeem', 'items', 'signup_bonus' ) ) ),
+		'conf'      => array_intersect_key( sp_g_conf(), array_flip( array( 'per_level', 'daily_cap', 'unlock', 'guest_levels', 'min_redeem', 'items', 'signup_bonus', 'mind_points', 'mind_unlock', 'mind_levels' ) ) ),
 		'progress'  => sp_g_progress( $uid ),
+		'progress_mind' => sp_g_progress( $uid, 'mind' ),
 	);
 	if ( $uid ) {
 		$u                = wp_get_current_user();
 		$out['name']      = $u->display_name;
 		$out['email']     = $u->user_email;
+		$out['joined']    = strtotime( $u->user_registered );
+		$out['phone']     = sp_g_meta( $uid, 'sp_phone', '' );
+		$out['missions_done'] = count( sp_g_meta( $uid, 'sp_missions', array() ) );
 		$out['points']    = (int) sp_g_meta( $uid, 'sp_points', 0 );
 		$out['day_left']  = sp_g_day_left( $uid );
 		$out['ledger']    = array_slice( sp_g_meta( $uid, 'sp_ledger', array() ), 0, 40 );
@@ -294,9 +315,10 @@ add_action( 'rest_api_init', function () {
 	/* ten questions of a level, without answers */
 	register_rest_route( $ns, '/quiz', array( 'methods' => 'GET', 'permission_callback' => $open, 'callback' => function ( $req ) {
 		$conf  = sp_g_conf();
-		$level = max( 1, min( 10, (int) $req->get_param( 'level' ) ) );
+		$track = ( 'mind' === $req->get_param( 'track' ) ) ? 'mind' : 'iq';
+		$level = max( 1, min( 'mind' === $track ? $conf['mind_levels'] : 10, (int) $req->get_param( 'level' ) ) );
 		$uid   = get_current_user_id();
-		$prog  = sp_g_progress( $uid );
+		$prog  = sp_g_progress( $uid, $track );
 		if ( $level > $prog['open'] ) {
 			return sp_g_err( 'sp_locked', $uid ? 'This level is still locked.' : 'Create a free account to play this level.', 403 );
 		}
@@ -304,7 +326,7 @@ add_action( 'rest_api_init', function () {
 		$fresh = array();
 		$old   = array();
 		foreach ( sp_g_bank() as $qid => $q ) {
-			if ( (int) $q['l'] !== $level ) {
+			if ( (int) $q['l'] !== $level || sp_g_track( $q ) !== $track ) {
 				continue;
 			}
 			if ( isset( $tried[ $qid ] ) ) {
@@ -329,7 +351,8 @@ add_action( 'rest_api_init', function () {
 				'fresh' => ! isset( $tried[ $qid ] ),
 			);
 		}
-		return array( 'level' => $level, 'questions' => $out, 'points_each' => $conf['per_level'][ $level ] );
+		return array( 'level' => $level, 'track' => $track, 'questions' => $out,
+			'points_each' => 'mind' === $track ? $conf['mind_points'] : $conf['per_level'][ $level ] );
 	} ) );
 
 	/* check one answer; points only for a first attempt that is right */
@@ -349,7 +372,8 @@ add_action( 'rest_api_init', function () {
 		}
 		$conf  = sp_g_conf();
 		$level = (int) $q['l'];
-		if ( $level > sp_g_progress( $uid )['open'] ) {
+		$track = sp_g_track( $q );
+		if ( $level > sp_g_progress( $uid, $track )['open'] ) {
 			return sp_g_err( 'sp_locked', 'This level is still locked.', 403 );
 		}
 		$tried = sp_g_meta( $uid, 'sp_tried', array() );
@@ -363,13 +387,13 @@ add_action( 'rest_api_init', function () {
 			$correct[ $qid ] = 1;
 			update_user_meta( $uid, 'sp_correct', $correct );
 			$left = sp_g_day_left( $uid );
-			$give = min( $left, $conf['per_level'][ $level ] );
+			$give = min( $left, 'mind' === $track ? $conf['mind_points'] : $conf['per_level'][ $level ] );
 			if ( $give > 0 ) {
 				$today = sp_g_today();
 				$used  = ( sp_g_meta( $uid, 'sp_day', '' ) === $today ) ? (int) sp_g_meta( $uid, 'sp_day_pts', 0 ) : 0;
 				update_user_meta( $uid, 'sp_day', $today );
 				update_user_meta( $uid, 'sp_day_pts', $used + $give );
-				sp_g_award( $uid, $give, 'Brain Game - level ' . $level );
+				sp_g_award( $uid, $give, ( 'mind' === $track ? 'Mindset Challenge' : 'Brain Game' ) . ' - level ' . $level );
 				$out['awarded'] = $give;
 			}
 		}
@@ -377,6 +401,7 @@ add_action( 'rest_api_init', function () {
 		$out['points']   = (int) sp_g_meta( $uid, 'sp_points', 0 );
 		$out['day_left'] = sp_g_day_left( $uid );
 		$out['progress'] = sp_g_progress( $uid );
+		$out['progress_mind'] = sp_g_progress( $uid, 'mind' );
 		return $out;
 	} ) );
 

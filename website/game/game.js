@@ -8,7 +8,7 @@
   var API = window.SPG_API || '/wp-json/sp/v1/';
   var WA = '919876732099';
   var LOGO = 'https://shashipallava.com/wp-content/uploads/2026/09/sp-logo-mark.png';
-  var state = { me: null, nonce: '', tab: 'game', round: null };
+  var state = { me: null, nonce: '', tab: null, round: null, track: 'iq' };
 
   /* ---------------- dom helpers ---------------- */
   function h(tag, attrs, kids) {
@@ -68,16 +68,21 @@
   }
   function paintTabs() {
     tabsBox.textContent = '';
-    var list = [['game', '🧠 Game'], ['missions', '🎯 Missions'], ['wallet', '★ Wallet'], ['account', state.me && state.me.logged_in ? '👤 Account' : '👤 Login']];
-    if (state.me && state.me.is_admin) list.push(['admin', '⚙ Admin']);
+    var inn = state.me && state.me.logged_in;
+    var list = inn
+      ? [['home', '🏠', 'Dashboard'], ['game', '🧠', 'Game'], ['missions', '🎯', 'Missions'], ['wallet', '★', 'Wallet'], ['account', '👤', 'Account']]
+      : [['game', '🧠', 'Game'], ['missions', '🎯', 'Missions'], ['wallet', '★', 'Wallet'], ['account', '👤', 'Login']];
+    if (state.me && state.me.is_admin) list.push(['admin', '⚙', 'Admin']);
     list.forEach(function (t) {
-      tabsBox.appendChild(h('button', { type: 'button', class: state.tab === t[0] ? 'on' : null, text: t[1], onclick: function () { show(t[0]); } }));
+      tabsBox.appendChild(h('button', { type: 'button', class: state.tab === t[0] ? 'on' : null, onclick: function () { show(t[0]); } },
+        [h('span', { class: 'ic', text: t[1] }), h('span', { text: t[2] })]));
     });
   }
   function paintPoints(bump) {
     var p = state.me && state.me.logged_in ? state.me.points : 0;
     pts.style.display = state.me && state.me.logged_in ? '' : 'none';
     pts.lastChild.textContent = p;
+    mountPill();
     if (bump) { pts.classList.add('bump'); setTimeout(function () { pts.classList.remove('bump'); }, 250); }
   }
   function pop(text) {
@@ -93,9 +98,13 @@
     state.tab = tab;
     state.round = null;
     paintTabs();
-    if (tab === 'game' || tab === 'wallet' || tab === 'account') {
+    if (tab === 'home' || tab === 'game' || tab === 'wallet' || tab === 'account') {
       loading();
-      return loadMe().then(function () { paintTabs(); if (tab === 'game') viewLevels(); else if (tab === 'wallet') viewWallet(); else viewAccount(); }).catch(failed);
+      return loadMe().then(function () {
+        if (tab === 'home' && !state.me.logged_in) tab = state.tab = 'account';
+        paintTabs();
+        if (tab === 'home') viewHome(); else if (tab === 'game') viewLevels(); else if (tab === 'wallet') viewWallet(); else viewAccount();
+      }).catch(failed);
     }
     if (tab === 'missions') return viewMissions();
     if (tab === 'wallet') return viewWallet();
@@ -111,13 +120,15 @@
     root.classList.add('on');
     document.documentElement.style.overflow = 'hidden';
     loading();
-    getNonce().then(loadMe).then(function () { show(tab || state.tab || 'game'); }).catch(failed);
+    getNonce().then(loadMe).then(function () {
+      show(tab || state.tab || (state.me.logged_in ? 'home' : 'game'));
+    }).catch(failed);
   }
   function close() {
     if (!root) return;
     root.classList.remove('on');
     document.documentElement.style.overflow = '';
-    if (location.hash === '#play' || location.hash === '#missions' || location.hash === '#wallet') history.replaceState(null, '', location.pathname + location.search);
+    if (HASH[location.hash]) history.replaceState(null, '', location.pathname + location.search);
   }
   function needAccount(msg) {
     return h('div', { class: 'spg-note' }, [
@@ -127,46 +138,58 @@
   }
 
   /* ---------------- Brain Game ---------------- */
+  function trackProg(track) { return track === 'mind' ? state.me.progress_mind : state.me.progress; }
+  function pointsFor(track, l) { return track === 'mind' ? state.me.conf.mind_points : state.me.conf.per_level[l]; }
   function viewLevels() {
-    var me = state.me, prog = me.progress, conf = me.conf;
-    var grid = h('div', { class: 'spg-levels' });
-    for (var l = 1; l <= 10; l++) (function (l) {
+    var me = state.me, conf = me.conf, track = state.track, prog = trackProg(track);
+    var grid = h('div', { class: 'spg-levels' + (track === 'mind' ? ' five' : '') });
+    for (var l = 1; l <= prog.levels; l++) (function (l) {
       var locked = l > prog.open;
       var c = prog.correct[l] || 0, size = prog.size[l] || 0;
       var pct = size ? Math.round(c * 100 / size) : 0;
       var hint = locked
-        ? (me.logged_in ? conf.unlock + ' right in Level ' + (l - 1) + ' to open' : 'Free account to play')
-        : (me.logged_in ? c + '/' + size + ' solved · +' + conf.per_level[l] + ' each' : 'Practice · no points');
+        ? (me.logged_in ? prog.unlock + ' right in Level ' + (l - 1) + ' to open' : 'Free account to play')
+        : (me.logged_in ? c + '/' + size + ' solved · +' + pointsFor(track, l) + ' each' : 'Practice · no points');
       grid.appendChild(h('button', { type: 'button', class: 'spg-lv' + (locked ? ' lock' : ''), onclick: function () {
         if (locked) { if (!me.logged_in) show('account'); return; }
-        startRound(l);
+        startRound(l, track);
       } }, [
-        h('span', { class: 'n', text: String(l) }), h('span', { class: 'g', text: 'Grade ' + l }),
+        h('span', { class: 'n', text: String(l) }), h('span', { class: 'g', text: track === 'mind' ? 'Mindset ' + l : 'Grade ' + l }),
         h('span', { class: 'bar' }, [h('i', { style: 'width:' + pct + '%' })]), h('span', { class: 'p', text: hint })
       ]));
     })(l);
-    var top = [h('p', { class: 'eyebrow', text: 'Brain Game' }), h('h2', { text: 'Train your mind, one level at a time' }),
-      h('p', { class: 'lede', text: 'Puzzles, patterns, numbers and words - Grade 1 to Grade 10. Every level is ' + (prog.size[1] || 60) + ' questions; get ' + conf.unlock + ' right to open the next.' })];
+    var sw = h('div', { class: 'spg-switch' }, [
+      h('button', { type: 'button', class: track === 'iq' ? 'on' : null, text: '🧠 IQ Levels', onclick: function () { state.track = 'iq'; viewLevels(); } }),
+      h('button', { type: 'button', class: track === 'mind' ? 'on' : null, text: '🌱 Mindset Challenge', onclick: function () { state.track = 'mind'; viewLevels(); } })]);
+    var top = [h('p', { class: 'eyebrow', text: track === 'mind' ? 'Mindset Challenge' : 'Brain Game' }),
+      h('h2', { text: track === 'mind' ? 'Think it through, the healthy way' : 'Train your mind, one level at a time' }),
+      h('p', { class: 'lede', text: track === 'mind'
+        ? 'Real-life situations - anger, boundaries, self-worth, relationships. Pick the response that helps you grow. ' + prog.levels + ' levels of ' + (prog.size[1] || 12) + '; get ' + prog.unlock + ' right to open the next.'
+        : 'Puzzles, patterns, numbers and words - Grade 1 to Grade 10. Every level is ' + (prog.size[1] || 60) + ' questions; get ' + prog.unlock + ' right to open the next.' }),
+      sw];
     if (me.logged_in) {
-      top.push(h('div', { class: 'spg-note', html: 'Each <b>first</b> right answer earns points: more for higher levels. Today you can still win <b>' + me.day_left + ' of ' + conf.daily_cap + '</b> points. <b>1 point = ₹1</b> towards a 1:1 session or a membership.' }));
+      top.push(h('div', { class: 'spg-note', html: 'Each <b>first</b> right answer earns points. Today you can still win <b>' + me.day_left + ' of ' + conf.daily_cap + '</b> points. <b>1 point = ₹1</b> towards a 1:1 session or a membership.' }));
     } else {
-      top.push(needAccount('Levels 1 and 2 are free to practise. Create a free account to unlock all 10 levels and win points - 1 point = ₹1.'));
+      top.push(needAccount((track === 'mind' ? 'Level 1 is' : 'Levels 1 and 2 are') + ' free to practise. Create a free account to unlock every level and win points - 1 point = ₹1.'));
     }
     top.push(grid);
     wrap(top);
   }
 
-  function startRound(level) {
+  function startRound(level, track) {
+    track = track || 'iq';
+    state.track = track;
     loading();
-    api('quiz?level=' + level).then(function (r) {
-      state.round = { level: level, qs: r.questions, i: 0, right: 0, won: 0, each: r.points_each };
+    api('quiz?level=' + level + '&track=' + track).then(function (r) {
+      state.round = { level: level, track: track, qs: r.questions, i: 0, right: 0, won: 0, each: r.points_each };
       askQ();
     }).catch(failed);
   }
   function askQ() {
     var R = state.round, q = R.qs[R.i];
     var isPic = q.o[0].indexOf('<svg') === 0;
-    var opts = h('div', { class: 'spg-opts' + (isPic ? ' pics' : '') });
+    var isLong = !isPic && q.o.some(function (o) { return o.length > 22; });
+    var opts = h('div', { class: 'spg-opts' + (isPic ? ' pics' : '') + (isLong ? ' long' : '') });
     var fb = h('div', { class: 'spg-fb' });
     var next = h('button', { class: 'spg-btn', type: 'button', text: R.i + 1 === R.qs.length ? 'See result' : 'Next question →', onclick: function () {
       R.i++;
@@ -187,6 +210,7 @@
           var line = res.correct ? 'Sahi jawab! 🎉' : 'Not quite.';
           if (res.awarded) { R.won += res.awarded; state.me.points = res.points; state.me.day_left = res.day_left; paintPoints(true); pop('+' + res.awarded + ' ★'); }
           if (res.progress) state.me.progress = res.progress;
+          if (res.progress_mind) state.me.progress_mind = res.progress_mind;
           var extra = '';
           if (state.me.logged_in && res.correct && !res.awarded) extra = res.first === false ? ' (Already solved before - no new points.)' : ' (Daily points limit reached - keep practising!)';
           fb.textContent = '';
@@ -200,7 +224,7 @@
       opts.appendChild(b);
     });
     wrap([
-      h('div', { class: 'spg-qh' }, [h('span', { text: 'Level ' + R.level + ' · Question ' + (R.i + 1) + ' of ' + R.qs.length }),
+      h('div', { class: 'spg-qh' }, [h('span', { text: (R.track === 'mind' ? 'Mindset ' : 'Level ') + R.level + ' · Question ' + (R.i + 1) + ' of ' + R.qs.length }),
         h('span', { text: state.me.logged_in ? (q.fresh ? '+' + R.each + ' ★ if right' : 'practice') : 'practice' })]),
       h('div', { class: 'spg-qbar' }, [h('i', { style: 'width:' + Math.round(R.i * 100 / R.qs.length) + '%' })]),
       h('p', { class: 'spg-q', text: q.q }),
@@ -211,20 +235,86 @@
   function endRound() {
     var R = state.round, n = R.qs.length;
     var stars = R.right >= n * 0.9 ? 3 : R.right >= n * 0.6 ? 2 : R.right >= n * 0.3 ? 1 : 0;
-    var prog = state.me.progress, conf = state.me.conf;
+    var prog = trackProg(R.track);
     var nextOpen = prog.open > R.level;
+    var last = R.level === prog.levels;
     wrap([h('div', { class: 'spg-end' }, [
       h('p', { class: 'eyebrow', text: 'Level ' + R.level + ' · round complete' }),
       h('p', { class: 'big', text: R.right + '/' + n }),
       h('p', { class: 'spg-stars', text: '★★★'.slice(0, stars) + '☆☆☆'.slice(0, 3 - stars) }),
       h('p', { class: 'lede', text: state.me.logged_in ? (R.won ? 'You won ' + R.won + ' points this round.' : 'No new points this round.') : 'Create a free account to keep score and win points.' }),
-      state.me.logged_in && R.level < 10 ? h('p', { class: 'lede', text: nextOpen ? 'Level ' + (R.level + 1) + ' is open!' : (prog.correct[R.level] || 0) + ' of ' + conf.unlock + ' right answers needed to open Level ' + (R.level + 1) + '.' }) : null,
+      state.me.logged_in && !last ? h('p', { class: 'lede', text: nextOpen ? 'Level ' + (R.level + 1) + ' is open!' : (prog.correct[R.level] || 0) + ' of ' + prog.unlock + ' right answers needed to open Level ' + (R.level + 1) + '.' }) : null,
       h('div', { class: 'spg-row', style: 'justify-content:center' }, [
-        h('button', { class: 'spg-btn', type: 'button', text: 'Play again', onclick: function () { startRound(R.level); } }),
-        nextOpen && R.level < 10 ? h('button', { class: 'spg-btn ghost', type: 'button', text: 'Level ' + (R.level + 1) + ' →', onclick: function () { startRound(R.level + 1); } }) : null,
+        h('button', { class: 'spg-btn', type: 'button', text: 'Play again', onclick: function () { startRound(R.level, R.track); } }),
+        nextOpen && !last ? h('button', { class: 'spg-btn ghost', type: 'button', text: 'Level ' + (R.level + 1) + ' →', onclick: function () { startRound(R.level + 1, R.track); } }) : null,
         h('button', { class: 'spg-btn ghost', type: 'button', text: 'All levels', onclick: function () { show('game'); } })
       ])
     ])]);
+  }
+
+  /* ---------------- Dashboard ---------------- */
+  function viewHome() {
+    var me = state.me;
+    var iq = me.progress, mind = me.progress_mind;
+    var solved = function (pr) { var n = 0; for (var k in pr.correct) n += pr.correct[k]; return n; };
+    var since = me.joined ? new Date(me.joined * 1000).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }) : '';
+    var missionBox = h('div', { class: 'spg-card' }, [h('p', { class: 'lede', text: 'Loading this month’s missions…' })]);
+    var pending = (me.requests || []).filter(function (r) { return r.status === 'pending'; });
+    var trackCard = function (title, pr, track, emoji) {
+      return h('div', { class: 'spg-card spg-dc' }, [
+        h('p', { class: 'eyebrow', text: emoji + ' ' + title }),
+        h('p', { class: 'num', text: 'Level ' + pr.open + ' of ' + pr.levels }),
+        h('p', { class: 'lede', text: solved(pr) + ' questions solved' }),
+        h('div', { class: 'spg-row' }, [h('button', { class: 'spg-btn', type: 'button', text: 'Continue', onclick: function () { startRound(pr.open, track); } })])
+      ]);
+    };
+    wrap([
+      h('p', { class: 'eyebrow', text: 'My Dashboard' }),
+      h('h2', { text: 'Namaste, ' + me.name.split(' ')[0] + ' 🌸' }),
+      h('p', { class: 'lede', text: since ? 'Member since ' + since : '' }),
+      h('div', { class: 'spg-bal spg-sec' }, [
+        h('p', { class: 'eyebrow', text: 'Wallet balance' }), h('p', { class: 'big', text: '★ ' + me.points }), h('p', { class: 'rs', text: '= ₹' + me.points }),
+        h('p', { class: 'lede', style: 'margin-top:8px', text: me.points >= me.conf.min_redeem ? 'You can redeem now.' : (me.conf.min_redeem - me.points) + ' more points to your first redeem (from ' + me.conf.min_redeem + ').' }),
+        h('div', { class: 'spg-row', style: 'justify-content:center' }, [
+          h('button', { class: 'spg-btn', type: 'button', text: 'Open wallet', onclick: function () { show('wallet'); } }),
+          h('a', { class: 'spg-btn ghost', href: '/membership/', text: 'Memberships' })])
+      ]),
+      h('div', { class: 'spg-dash spg-sec' }, [trackCard('Brain Game', iq, 'iq', '🧠'), trackCard('Mindset Challenge', mind, 'mind', '🌱')]),
+      h('div', { class: 'spg-note', html: 'Today you can still win <b>' + me.day_left + ' of ' + me.conf.daily_cap + '</b> points from the games.' }),
+      h('div', { class: 'spg-sec' }, [h('h3', { text: '🎯 This month' }), missionBox]),
+      pending.length ? h('div', { class: 'spg-sec' }, [h('h3', { text: 'Waiting for Shashi' }), h('div', { class: 'spg-list' }, pending.map(function (r) {
+        return h('div', { class: 'spg-li' }, [h('div', null, [h('p', { text: r.item + ' · ' + r.id }), h('p', { class: 'w', text: when(r.at) })]), h('b', { text: String(r.points) })]);
+      }))]) : null,
+      h('div', { class: 'spg-sec' }, [h('h3', { text: 'Recent activity' }), h('div', { class: 'spg-list' }, (me.ledger || []).slice(0, 5).map(function (l) {
+        return h('div', { class: 'spg-li' }, [h('div', null, [h('p', { text: l.n }), h('p', { class: 'w', text: when(l.t) })]),
+          h('span', { class: 'v ' + (l.d < 0 ? 'minus' : 'plus'), text: (l.d < 0 ? '' : '+') + l.d })]);
+      }))])
+    ]);
+    api('missions').then(function (m) {
+      missionBox.textContent = '';
+      var done = m.weeks.filter(function (w) { return w.done; }).length;
+      var next = m.weeks.filter(function (w) { return w.open && !w.done; })[0];
+      missionBox.appendChild(h('p', null, [h('b', { text: (m.theme || 'Missions') + (m.month ? ' · ' + m.month : '') })]));
+      missionBox.appendChild(h('p', { class: 'lede', text: done + ' of ' + m.weeks.length + ' missions done' }));
+      missionBox.appendChild(h('div', { class: 'spg-row' }, [h('button', { class: next ? 'spg-btn' : 'spg-btn ghost', type: 'button',
+        text: next ? 'Next: ' + next.title + ' · +' + next.points + ' ★' : 'See missions', onclick: function () { show('missions'); } })]));
+    }).catch(function () { missionBox.textContent = ''; });
+  }
+
+  /* ---------------- app-bar pill: the wallet, on every page ---------------- */
+  function mountPill() {
+    var inn = state.me && state.me.logged_in;
+    var pill = document.querySelector('.spg-pill');
+    if (!inn) { if (pill) pill.remove(); return; }
+    if (!pill) {
+      pill = h('a', { class: 'spg-pill', href: '#dashboard', title: 'My Dashboard · 1 point = ₹1' });
+      var bar = document.querySelector('.sp .appbar');
+      var nav = document.querySelector('.spb-bar nav');
+      if (bar) bar.insertBefore(pill, bar.querySelector('.themer'));
+      else if (nav) nav.insertBefore(pill, nav.firstChild);
+      else return;
+    }
+    pill.textContent = '★ ' + state.me.points;
   }
 
   /* ---------------- Missions ---------------- */
@@ -378,7 +468,7 @@
   }
 
   /* ---------------- entry points ---------------- */
-  var HASH = { '#play': 'game', '#missions': 'missions', '#wallet': 'wallet' };
+  var HASH = { '#play': 'game', '#missions': 'missions', '#wallet': 'wallet', '#dashboard': 'home' };
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href]');
     if (!a) return;
@@ -394,5 +484,12 @@
   function fromHash() { if (HASH[location.hash]) open(HASH[location.hash]); }
   window.addEventListener('hashchange', fromHash);
   window.SPGame = { open: open, close: close };
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fromHash); else fromHash();
+  function boot() {
+    fromHash();
+    if (document.body.classList.contains('logged-in')) {
+      if (!root) build();
+      getNonce().then(loadMe).catch(function () {});
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();

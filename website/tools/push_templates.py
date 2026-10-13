@@ -38,7 +38,7 @@ from push import SITE, UA, credentials  # noqa: E402
 
 TPL = pathlib.Path(__file__).resolve().parent.parent / "templates"
 THEME = "twentytwentyfive"
-NAMES = {"home": "Blog Home", "single": "Single Posts", "archive": "All Archives"}
+NAMES = {"home": "Blog Home", "single": "Single Posts", "archive": "All Archives", "page": "Pages"}
 
 
 def assemble(name: str) -> str:

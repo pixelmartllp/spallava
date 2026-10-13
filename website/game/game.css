@@ -19,10 +19,11 @@
   border:1px solid var(--g-gl);color:var(--g-gold);font-weight:800;font-size:.85rem;transition:transform .2s ease}
 .spg-pts.bump{transform:scale(1.18)}
 .spg-x{width:38px;height:38px;border-radius:10px;border:1px solid var(--g-line);background:transparent;color:var(--g-fg);cursor:pointer;font-size:1rem}
-.spg-tabs{display:flex;gap:4px;padding:8px 10px;border-bottom:1px solid var(--g-line);overflow-x:auto;scrollbar-width:none}
+.spg-tabs{display:flex;gap:2px;padding:6px 6px;border-bottom:1px solid var(--g-line);overflow-x:auto;scrollbar-width:none}
 .spg-tabs::-webkit-scrollbar{display:none}
-.spg-tabs button{flex:none;padding:9px 14px;border-radius:999px;border:1px solid transparent;background:transparent;
-  color:var(--g-muted);font-weight:700;font-size:.82rem;cursor:pointer}
+.spg-tabs button{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 4px;border-radius:12px;
+  border:1px solid transparent;background:transparent;color:var(--g-muted);font-weight:700;font-size:.66rem;cursor:pointer;white-space:nowrap}
+.spg-tabs button .ic{font-size:1.15rem;line-height:1}
 .spg-tabs button.on{background:var(--g-soft);border-color:var(--g-gl);color:var(--g-gold)}
 .spg-main{flex:1;overflow-y:auto;padding:18px 16px 40px}
 .spg-wrap{max-width:760px;margin:0 auto}
@@ -62,6 +63,8 @@
 .spg-opts button{min-height:56px;padding:10px;border-radius:14px;border:2px solid var(--g-line);background:var(--g-card);color:var(--g-fg);
   font-weight:800;font-size:1rem;cursor:pointer;transition:transform .1s ease,border-color .2s ease}
 .spg-opts button:active{transform:scale(.97)}
+.spg-opts.long{grid-template-columns:1fr}
+.spg-opts.long button{text-align:left;font-size:.95rem;font-weight:700;min-height:52px;padding:12px 16px}
 .spg-opts.pics button{padding:8px;aspect-ratio:1;display:grid;place-items:center}
 .spg-opts.pics svg{width:100%;height:100%;max-width:150px}
 .spg-opts button.ok{border-color:var(--g-ok);background:rgba(59,165,92,.12)}
@@ -115,7 +118,23 @@
 .spg-switch button.on{background:var(--g-soft);color:var(--g-gold);border-color:var(--g-gl)}
 .spg .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .spg-sec{margin-top:24px}
+/* dashboard */
+.spg-dash{display:grid;grid-template-columns:1fr;gap:10px}
+.spg-dc .num{font-size:1.5rem;font-weight:900;color:var(--g-fg)}
+.spg-levels.five{grid-template-columns:1fr 1fr}
+/* the wallet pill in the site's own header */
+.spg-pill{display:inline-flex;align-items:center;height:38px;padding:0 12px;border-radius:999px;flex:none;white-space:nowrap;
+  border:1px solid rgba(251,189,35,.5);background:rgba(251,189,35,.12);color:#FBBD23;font-family:"Archivo",Arial,sans-serif;
+  font-size:.8rem;font-weight:800;text-decoration:none;margin-right:8px}
+.sp.light .spg-pill,.spl .spg-pill{color:#9A6B06;border-color:rgba(154,107,6,.4);background:rgba(154,107,6,.08)}
+.sp .appbar .spg-pill{margin-left:auto;color:#FBBD23}
+.sp.light .appbar .spg-pill{color:#9A6B06}
+.sp .appbar .spg-pill + .themer{margin-left:0}
 @media (min-width:700px){
+  .spg-tabs button{flex-direction:row;justify-content:center;gap:6px;font-size:.82rem;padding:9px 12px}
+  .spg-tabs button .ic{font-size:1rem}
+  .spg-dash{grid-template-columns:1fr 1fr}
+  .spg-levels.five{grid-template-columns:repeat(5,1fr)}
   .spg-levels{grid-template-columns:repeat(5,1fr)}
   .spg-opts.pics{grid-template-columns:repeat(4,1fr)}
   .spg-main{padding:28px 24px 48px}

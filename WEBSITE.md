@@ -421,8 +421,9 @@ member also removes their reflections and requests (`deleted_user` hook).
 | Unlock the next level | 15 distinct right answers in this one |
 | Visitors without an account | Levels 1-2, practice only |
 | Sign-up bonus | 10 |
-| Minimum redeem | 50 |
+| Minimum redeem | 100 (owner, 13 Oct 2026) |
 | Any single mission | capped at 100 whatever the page says |
+| Mindset Challenge | 2 points each, 5 levels of 12, 8 right to unlock, 1 level for visitors |
 
 **Question bank.** `website/game/bank_gen.py` builds 600 questions - 10
 levels x 60 - from generators that know their answers: number and letter
@@ -435,6 +436,28 @@ ids rather than rebuilding old ones. Two traps were found by looking at a
 contact sheet, not by the asserts: a square and a diamond are the same shape
 turned (never count one beside the other), and a triangle repeats every 120
 degrees so a 135-degree turn reads as 15 (rotation puzzles use arrows only).
+
+**Mindset Challenge.** A second track beside the IQ levels:
+`website/game/mindset.json`, 60 hand-written situations (anger, boundaries,
+self-worth, relationships, change) whose right answers come from her own blog
+posts, Instagram captions, Emotion chapters and FAQ. Ids `M<level>Q<n>`, bank
+field `tr: "mind"`; progress, unlocking and points are per track and share the
+daily cap. `website/game/test_backend.php` runs the money rules offline with
+WordPress stubbed - **run it after any change to sp-game.php** (expects ALL PASS).
+
+**Dashboard and the wallet pill.** Logged-in members get a **Dashboard** tab
+(balance in Rs, distance to the first redeem, both tracks with Continue, the
+month's missions, pending requests, recent activity), and a gold **★ points**
+pill in the site's own header - homepage app bar and blog/page header -
+linking to `#dashboard`. The homepage menu has *My Dashboard* and *Membership*.
+
+**Membership page** (id 165, `/membership/`, from `website/pages/membership.html`,
+created once and then hers to edit in the block editor): Silver ₹9,999, Gold
+₹49,999, Platinum ₹4,99,999 at the owner's prices. **What each includes was
+not given**, so every card says "Benefits: details coming soon" - do not invent
+benefits. Joining is by WhatsApp because ₹4,99,999 is beyond a UPI transfer.
+It renders through a new **`page` template** (all plain pages now get the
+dark-and-gold chrome).
 
 **Missions.** The page **Missions** (id 155, slug `missions`, noindex) holds
 the month as plain lines she edits in wp-admin:
