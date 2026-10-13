@@ -325,37 +325,71 @@ account. The script takes token and id as a pair - env only if both are set,
 otherwise both from `config.json` - because mixing them fails with "Object
 does not exist".
 
-## 7d. Assistant and EQ check
+## 7d. Assistant, knowledge base and EQ check
 
-A floating **"Ask me"** button on every page (13 Oct 2026): an icon on phones,
-sitting above the bottom tab bar on the homepage, a labelled pill on desktop.
-It opens *Shashi's Assistant*. The owner chose **no AI** - there is no API key
-and no server. Everything is `website/assistant/assistant.html` (style, markup
-and script), injected at `<!--SP-ASSISTANT-->` in `page.html` by `push.py` and
-appended after the footer by `push_templates.py`, so it is edited once.
+A floating button on every page (an icon on phones, above the homepage's tab
+bar; "Ask me" on desktop) opens *Shashi's Assistant*. The owner chose **no
+AI** - no API key, no server, no plugin. It is all
+`website/assistant/assistant.html`, injected at `<!--SP-ASSISTANT-->` in
+`page.html` by `push.py` and appended after the footer by `push_templates.py`.
 
-- **Answers** are written out in that file from `FAQ.txt` and the site, and
-  matched by Hinglish and English keywords as whole words. Anything else gets
-  "is sawaal ka pakka jawab mere paas nahi hai" and a WhatsApp button carrying
-  the visitor's question. **Never add an answer she has not given** - no
-  refunds, discounts or results it cannot back.
-- **Crisis words** (suicide, khudkushi, self harm…) always win and return
-  Tele-MANAS **14416** and **112**, not coaching.
-- Webinar answers read the same `webinar-details` page the homepage does, so
-  date and time stay current.
-- The **EQ check** is 16 statements, four areas of four (self-awareness,
-  managing emotions, empathy, relationships and boundaries), five
-  reverse-scored. Each area scores 4-16 and maps to Needs care / Growing /
-  Strong through a lookup array, because the script cannot contain `<` or `>`.
-  The result says it is a self-reflection, not a psychological test. The
-  visitor can then send name, number and scores to Shashi on WhatsApp (number
-  validated as a 10-digit Indian mobile). Nothing is stored anywhere.
-- Any link to `#eq-test` opens straight into the check - the menu carries one.
-- The script follows §4's rule: **no `&`, `|`, `<` or `>`**. Ampersands in
-  strings are written `\u0026`. Writing a literal `&` there is the easy
-  mistake; both publish scripts refuse it.
+**Where answers come from**, in order:
 
+1. **Crisis words** (suicide, khudkushi, self harm…) always win: Tele-MANAS
+   **14416** and **112**, never coaching.
+2. **Built-in answers** written from `FAQ.txt` and the site - programs, fees,
+   payment, webinar (date and time read live from `webinar-details`), therapy,
+   language, online, who it is for, about, contact, community, blog.
+3. **The knowledge base she teaches it** (below). A strong match there beats a
+   built-in answer.
+4. Otherwise "pakka jawab mere paas nahi" plus a WhatsApp button carrying the
+   visitor's question. **Never add an answer she has not given.**
 
+**Knowledge base** (13 Oct 2026). Every child page of the private page
+**"Assistant Knowledge" (id 141, slug `assistant-kb`)** is one chapter:
+
+- Title `Topic: Headline`, e.g. `Emotion: Gussa kaise sambhalein`. The topic is
+  the shortcut she types during a webinar.
+- Optional first paragraph `Keywords: gussa, anger` - hidden from readers,
+  weighted like the headline in matching.
+- **Published** = visitors get it too. **Private** = admin mode only
+  (webinar notes). Checked: an anonymous REST call lists no private child, and
+  asking for `status=private` is refused.
+- Matching is word overlap: headline or keyword hit +3, topic +2, body +1,
+  and a chapter needs 3 to count.
+- New chapters are saved with Slim SEO `noindex`. Pages she makes by hand in
+  wp-admin are not - tick Slim SEO's noindex box there, or they can reach the
+  sitemap.
+- Page 142, *Guide: Assistant ko kaise sikhayein*, is a private how-to.
+
+**Admin mode.** When the WordPress toolbar is present, the assistant asks
+core's `admin-ajax.php?action=rest-nonce` (no plugin) for a REST nonce;
+logged-out it answers `0`. With a nonce it reads private chapters and can
+create pages, shows an ADMIN badge, and the quick bar becomes
+**＋ Teach** plus one button per topic. Typing a topic lists its headlines;
+clicking one opens the chapter over the whole panel with **Present** (full
+screen, large type - for screen-sharing in a webinar) and **Edit** (opens it in
+wp-admin). **＋ Teach** is a form - topic, headline, keywords, text, public or
+only me - that saves a child page of 141. Admin mode cannot be tested from
+here: the application password cannot log into wp-admin, so it was tested
+against a local copy that proxies REST with the app password.
+
+**Always visible:** the five quick questions sit in a scrolling bar above the
+input, and **End chat** in the header clears the conversation.
+
+**EQ check** - 16 statements, four areas of four, five reverse-scored, each
+area 4-16 mapped to Needs care / Growing / Strong through a lookup array
+(the script cannot contain `<` or `>`). The result says it is a
+self-reflection, not a psychological test, and can be sent with name and
+number to Shashi on WhatsApp. Nothing is stored. Any link to `#eq-test` opens
+straight into it.
+
+**Script rule.** Same as §4: no `&`, `|`, `<` or `>`. `AMP`, `LT` and `GT` are
+built with `String.fromCharCode`. Do **not** write `\u0026` in that file
+through an editor that unescapes it - that is how a literal `&` slipped in
+once; both publish scripts refuse it.
+
+## 8. Sharing
 
 There were **no Open Graph tags at all**, which is why WhatsApp showed no
 preview. **Slim SEO** is installed and active for that single purpose — it is
