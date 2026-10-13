@@ -42,6 +42,8 @@ website/tools/insta_sync.py     copy the latest 9 Instagram posts into the grid
 website/tools/shot.js           screenshot at a real 390px phone viewport
 website/tools/sticky.js         check the header sticks on phone and desktop
 website/tools/pwa.js            check the site installs as an app
+website/tools/push_game.py      publish Play & Grow: snippet, question bank, game script
+website/game/                   Play & Grow source - sp-game.php, game.js/.css, bank_gen.py
 website/tools/makezip.py        rebuild the handover zip
 ```
 
@@ -377,17 +379,93 @@ against a local copy that proxies REST with the app password.
 **Always visible:** the five quick questions sit in a scrolling bar above the
 input, and **End chat** in the header clears the conversation.
 
-**EQ check** - 16 statements, four areas of four, five reverse-scored, each
-area 4-16 mapped to Needs care / Growing / Strong through a lookup array
-(the script cannot contain `<` or `>`). The result says it is a
-self-reflection, not a psychological test, and can be sent with name and
-number to Shashi on WhatsApp. Nothing is stored. Any link to `#eq-test` opens
-straight into it.
+**The EQ check was removed** on 13 Oct 2026 at the owner's request; the
+Brain Game replaced it (§7e). "game", "points", "mission" and the like in the
+assistant open the matching tab of Play & Grow, and old `#eq-test` links open
+the game too.
 
 **Script rule.** Same as §4: no `&`, `|`, `<` or `>`. `AMP`, `LT` and `GT` are
 built with `String.fromCharCode`. Do **not** write `\u0026` in that file
 through an editor that unescapes it - that is how a literal `&` slipped in
 once; both publish scripts refuse it.
+
+## 7e. Play & Grow - Brain Game, Missions, Wallet
+
+Asked for on 13 Oct 2026: an IQ-style game with points, a Mission of the
+Month, and a wallet whose points buy a 1:1 session or a Silver, Gold or
+Platinum membership. The owner chose **real accounts and a server-side
+wallet** (points are money: **1 point = ₹1**), missions **self-marked with a
+written reflection**, and the EQ check removed.
+
+**Where it runs.** The plugin **Code Snippets** (wordpress.org) holds one
+snippet, *SP Game backend* (id 5), whose source is
+`website/game/sp-game.php`. It adds the REST namespace `sp/v1`, prints the
+game's CSS and JS (options `sp_g_css`, `sp_g_js`) in every page's footer, hides
+the toolbar from members and sends them away from wp-admin. Because the game
+script is printed by PHP and not stored in post content, it is free of §4's
+character rule - but it must never contain a closing script tag.
+`push_game.py` validates (`php -l`, `node --check`, bank shape) and publishes
+all of it; Hostinger answers **PUT with a bare 403**, so updates go as POST.
+
+**Nothing that decides points runs in the browser.** The bank (option
+`sp_g_bank`) is served without answers; `/answer` checks the choice, and pays
+only on the **first attempt** at a question, only when right, only up to a
+**daily cap**, and only for an **unlocked** level. Every rule was exercised on
+the live site with a throwaway account, which was then deleted - deleting a
+member also removes their reflections and requests (`deleted_user` hook).
+
+| Setting (in `sp_g_conf()`) | Value |
+|---|---|
+| Points per first right answer | 1 (Grades 1-3), 2 (4-6), 3 (7-8), 4 (9-10) |
+| Daily cap from the game | 30 |
+| Unlock the next level | 15 distinct right answers in this one |
+| Visitors without an account | Levels 1-2, practice only |
+| Sign-up bonus | 10 |
+| Minimum redeem | 50 |
+| Any single mission | capped at 100 whatever the page says |
+
+**Question bank.** `website/game/bank_gen.py` builds 600 questions - 10
+levels x 60 - from generators that know their answers: number and letter
+series, analogies, odd one out, word problems, codes, ordering logic,
+calendar and clock, and SVG puzzles (arrow rotation, counting, odd picture,
+3x3 grids). It is deterministic (fixed seed) and question ids are
+`L<level>Q<n>`, and **players' progress is keyed by those ids**, so once real
+members exist, changing a generator reshuffles what each id means - add new
+ids rather than rebuilding old ones. Two traps were found by looking at a
+contact sheet, not by the asserts: a square and a diamond are the same shape
+turned (never count one beside the other), and a triangle repeats every 120
+degrees so a 135-degree turn reads as 15 (rotation puzzles use arrows only).
+
+**Missions.** The page **Missions** (id 155, slug `missions`, noindex) holds
+the month as plain lines she edits in wp-admin:
+
+```
+Month: October 2026
+Theme: Boundaries that hold
+Week 1 | 20 | Title | What to do
+```
+
+Week N opens on day 1 + 7(N-1). A mission pays once per member, after a
+reflection of at least 20 characters. October 2026 was seeded with four
+example missions (`website/game/missions.txt`) for her to rewrite;
+`push_game.py` creates the page only if it is missing and never overwrites it.
+
+**Wallet and redeem.** A redeem request takes the points off at once (on
+hold), creates a code like `SP-7F3K2Q`, and offers a WhatsApp message to Shashi
+with it. In the game's **Admin** tab (visible only to administrators) she marks
+it *Done* or *Rejects* it, which refunds the points. The Silver, Gold and
+Platinum memberships have **no prices on the site yet** - redemption only
+records how many points the member wants to use.
+
+**Accounts.** Sign-up asks name, email, WhatsApp number and a password and
+logs the member straight in; log-in takes email and password. Both are
+throttled per IP. Password reset uses WordPress's own lost-password page,
+which depends on the site sending email - not verified.
+
+**Entry points.** Any link to `#play`, `#missions` or `#wallet` opens the app on
+that tab (the homepage menu, a *Play & Grow* section above the blog, the
+assistant's quick buttons and keywords). `window.SPGame.open(tab)` does the
+same from code.
 
 ## 8. Sharing
 
