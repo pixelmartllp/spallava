@@ -302,6 +302,11 @@ from here.
 
 ## 7c. Instagram grid
 
+**Switched off on the homepage** at the owner's request (13 Oct 2026): the
+section carries `data-show="no"` and the script skips it. Remove that
+attribute and push to bring it back - the daily sync keeps the feed current
+meanwhile.
+
 `#insta` on the homepage shows the latest Instagram posts and stays `hidden`
 until there is something to show. The browser never talks to Instagram: the
 Meta token cannot go in a page every visitor can read, and the image URLs the
@@ -489,6 +494,23 @@ which depends on the site sending email - not verified.
 that tab (the homepage menu, a *Play & Grow* section above the blog, the
 assistant's quick buttons and keywords). `window.SPGame.open(tab)` does the
 same from code.
+
+## 7f. Menu and Policy
+
+The homepage menu, top to bottom: Home, How I Help, About, Programs,
+Questions, Brain Game, Missions, Membership, Dashboard, Wallet, Account, Blog,
+Community, Policy. Dashboard / Wallet / Account are `#dashboard`, `#wallet`,
+`#account`, which open Play & Grow on that tab (Account shows Login when
+logged out). The menu scrolls on short phones.
+
+**Policy** (page 171, `/policy/`, from `website/pages/policy.html`, linked in
+both footers) covers what the site actually collects - account details,
+game progress, reflections, Google Analytics, login and theme cookies - the
+right to see, correct or delete data, the points rules exactly as
+`sp_g_conf()` enforces them, and coaching-not-therapy with Tele-MANAS. It
+promises **no refund terms** for paid programs, because none were given; add
+them only from her. Not reviewed by a lawyer - worth saying to her if it ever
+matters. `page_for_privacy_policy` is not settable over REST.
 
 ## 8. Sharing
 

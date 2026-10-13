@@ -468,7 +468,7 @@
   }
 
   /* ---------------- entry points ---------------- */
-  var HASH = { '#play': 'game', '#missions': 'missions', '#wallet': 'wallet', '#dashboard': 'home' };
+  var HASH = { '#play': 'game', '#missions': 'missions', '#wallet': 'wallet', '#dashboard': 'home', '#account': 'account' };
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href]');
     if (!a) return;
