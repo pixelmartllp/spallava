@@ -20,6 +20,7 @@ body{margin:0;background:var(--bg)!important;color:var(--fg)!important;
 .spb-bar nav{display:flex;gap:18px;margin-left:auto;align-items:center}
 .spb-bar nav a{color:var(--dim);text-decoration:none;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 .spb-bar nav a.on{color:var(--gold)}
+.spb-bar nav a.dk{display:none}
 .spb-tg{width:40px;height:40px;border:1px solid var(--fg);border-radius:12px;background:var(--fg);
   display:grid;place-items:center;cursor:pointer;padding:0}
 .spb-tg svg{width:19px;height:19px;stroke:var(--bg);fill:none;stroke-width:1.9;stroke-linecap:round;grid-area:1/1}
@@ -112,6 +113,7 @@ body{margin:0;background:var(--bg)!important;color:var(--fg)!important;
 .spb-foot .fl a{color:var(--dim);text-decoration:none;font-weight:600}
 @media (min-width:900px){
   .spb-bar{padding:12px 36px}
+  .spb-bar nav a.dk{display:inline}
   .spb-main{padding-top:64px!important}
   .spb-btns{flex-direction:row;justify-content:center}
   .spb-wide{max-width:1100px}
@@ -120,6 +122,6 @@ body{margin:0;background:var(--bg)!important;color:var(--fg)!important;
 </style>
 <header class="spb-bar">
   <a class="lg" href="/"><img src="https://shashipallava.com/wp-content/uploads/2026/09/sp-logo-mark.png" alt="Shashi Pallava"></a>
-  <nav><a href="/">Home</a><a class="on" href="/blog/">Blog</a>
+  <nav><a href="/">Home</a><a class="dk" href="/#play">Brain Game</a><a class="dk" href="/membership/">Membership</a><a class="on" href="/blog/">Blog</a>
   <button class="spb-tg" type="button" aria-label="Switch theme"><svg class="su" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="mo" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button></nav>
 </header>

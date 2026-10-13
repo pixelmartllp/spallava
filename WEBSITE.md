@@ -499,7 +499,11 @@ same from code.
 
 The homepage menu, top to bottom: Home, How I Help, About, Programs,
 Questions, Brain Game, Missions, Membership, Dashboard, Wallet, Account, Blog,
-Community, Policy. Dashboard / Wallet / Account are `#dashboard`, `#wallet`,
+Community, Policy. **Desktop** (from 900px) keeps the menu button and its slide-in
+panel too - it used to hide both, which left desktop with no navigation at all -
+and adds four inline links in the app bar (Programs, Brain Game, Membership,
+Blog; `.dnav`, hidden on phones). The blog and page header gains Brain Game
+and Membership on desktop only (`a.dk`). Dashboard / Wallet / Account are `#dashboard`, `#wallet`,
 `#account`, which open Play & Grow on that tab (Account shows Login when
 logged out). The menu scrolls on short phones.
 
