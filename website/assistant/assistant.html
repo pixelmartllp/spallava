@@ -64,9 +64,9 @@
   font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer}
 .spa-heads button small{flex:none;font-size:.6rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--a-muted)}
 /* always-visible quick questions */
-.spa-quick{display:flex;gap:8px;overflow-x:auto;padding:8px 12px;border-top:1px solid var(--a-line);scrollbar-width:none}
+.spa-quick{display:flex;flex-wrap:wrap;gap:6px;max-height:112px;overflow-y:auto;padding:8px 12px;border-top:1px solid var(--a-line);scrollbar-width:none}
 .spa-quick::-webkit-scrollbar{display:none}
-.spa-quick button{flex:none;min-height:34px;padding:6px 13px;border-radius:999px;cursor:pointer;white-space:nowrap;
+.spa-quick button{flex:none;min-height:32px;padding:5px 12px;border-radius:999px;cursor:pointer;white-space:nowrap;
   border:1px solid var(--a-gline);background:var(--a-soft);color:var(--a-gold);font-family:inherit;font-size:.76rem;font-weight:700}
 .spa-quick button.main{background:linear-gradient(135deg,var(--a-gold-hi),var(--a-gold));color:var(--a-on-gold);border-color:transparent}
 .spa-form{display:flex;gap:8px;padding:8px 12px calc(10px + env(safe-area-inset-bottom))}
@@ -84,15 +84,20 @@
   border:1px solid var(--a-line);background:transparent;color:var(--a-fg);font-family:inherit;font-size:.74rem;
   font-weight:700;cursor:pointer;text-decoration:none}
 .spa-rh .pres{margin-left:auto;border-color:var(--a-gline);color:var(--a-gold)}
+.spa-rh{flex-wrap:wrap}
 .spa-rb{flex:1;overflow-y:auto;padding:18px 18px 28px;color:var(--a-dim);font-size:.98rem;line-height:1.65}
 .spa-rb .tp{font-size:.66rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--a-gold)}
 .spa-rb h2.hd{margin:6px 0 14px;font-size:1.4rem;font-weight:800;line-height:1.2;color:var(--a-fg)}
 .spa-rb p{margin:0 0 .9em}
+/* the homepage hides every br (wpautop debris) - chapters need theirs */
+.sp .spa br,.spa br{display:inline!important}
 .spa-rb h2,.spa-rb h3{color:var(--a-fg);margin:1.2em 0 .5em;line-height:1.3}
 .spa-rb ul,.spa-rb ol{padding-left:1.3em;margin:0 0 1em}
 .spa-rb img{max-width:100%;height:auto;border-radius:10px}
 .spa-rb .priv{display:inline-block;margin-top:4px;font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
   padding:3px 8px;border-radius:999px;border:1px solid var(--a-line);color:var(--a-muted)}
+.spa.page .spa-panel{left:0;right:0;top:0;bottom:0;width:auto;height:100%;border-radius:0}
+.spa.page .spa-fab{display:none}
 .spa-reader.present .spa-rb{font-size:1.5rem;line-height:1.6;padding:5vh 7vw}
 .spa-reader.present .spa-rb h2.hd{font-size:2.6rem}
 .spa-reader:fullscreen{background:var(--a-bg)}
@@ -397,6 +402,10 @@
       if (w.length === 0) { return; }
       if (w.length === 1) { return; }
       if (STOP.indexOf(w) !== -1) { return; }
+      /* fold a plain plural so emotions finds emotion */
+      if (w.length !== Math.min(w.length, 4)) {
+        if (w.slice(-1) === 's') { if (w.slice(-2) !== 'ss') { w = w.slice(0, -1); } }
+      }
       if (out.indexOf(w) === -1) { out.push(w); }
     });
     return out;
@@ -445,7 +454,7 @@
       qw.forEach(function(w){
         if (item.hw.indexOf(w) !== -1) { s = s + 3; }
         else if (item.kw.indexOf(w) !== -1) { s = s + 3; }
-        else if (item.tw.indexOf(w) !== -1) { s = s + 2; }
+        else if (item.tw.indexOf(w) !== -1) { s = s + 3; }
         else if (item.bw.indexOf(w) !== -1) { s = s + 1; }
       });
       /* needs a headline or keyword hit, or three words of the body */
@@ -460,9 +469,9 @@
     return out.sort();
   }
   function topicOf(q){
-    var t = q.trim().toLowerCase();
+    var qw = words(q).join(' ');
     var found = null;
-    topics().forEach(function(name){ if (name.toLowerCase() === t) { found = name; } });
+    topics().forEach(function(name){ if (words(name).join(' ') === qw) { found = name; } });
     return found;
   }
   function headlines(list, intro){
@@ -483,7 +492,10 @@
   }
   function showTopic(name){
     var list = kb.filter(function(k){ return k.topic === name; });
-    headlines(list, '**' + name + '** — ' + list.length + ' headline. Kisi par click kijiye:');
+    list.sort(function(a, b){ return a.head.localeCompare(b.head, undefined, {numeric: true}); });
+    var word = ' headlines';
+    if (list.length === 1) { word = ' headline'; }
+    headlines(list, '**' + name + '** — ' + list.length + word + '. Kisi par click kijiye:');
   }
   function kbAnswer(hits){
     var top = hits[0].item;
@@ -502,16 +514,26 @@
   }
   function openChapter(item){
     clearReader();
+    var pres = el('button', 'x pres', 'Full screen');
+    pres.type = 'button';
+    pres.addEventListener('click', function(){
+      reader.classList.toggle('present');
+      if (reader.classList.contains('present')) {
+        pres.textContent = 'Exit full screen';
+        if (reader.requestFullscreen) { reader.requestFullscreen().catch(function(){}); }
+        else { root.classList.add('page'); }
+      } else {
+        pres.textContent = 'Full screen';
+        if (document.fullscreenElement) { document.exitFullscreen(); }
+      }
+    });
+    rhead.appendChild(pres);
+    var nt = el('a', 'x', 'New tab');
+    nt.href = '/?kb=' + item.id;
+    nt.target = '_blank';
+    nt.rel = 'noopener';
+    rhead.appendChild(nt);
     if (isAdmin) {
-      var pres = el('button', 'x pres', 'Present');
-      pres.type = 'button';
-      pres.addEventListener('click', function(){
-        reader.classList.toggle('present');
-        if (reader.classList.contains('present')) {
-          if (reader.requestFullscreen) { reader.requestFullscreen().catch(function(){}); }
-        } else if (document.fullscreenElement) { document.exitFullscreen(); }
-      });
-      rhead.appendChild(pres);
       var ed = el('a', 'x', 'Edit');
       ed.href = '/wp-admin/post.php?post=' + item.id + AMP + 'action=edit';
       ed.target = '_blank';
@@ -532,6 +554,12 @@
     clearReader();
   }
   reader.querySelector('.back').addEventListener('click', closeReader);
+  document.addEventListener('fullscreenchange', function(){
+    if (document.fullscreenElement) { return; }
+    reader.classList.remove('present');
+    var b = rhead.querySelector('.pres');
+    if (b) { b.textContent = 'Full screen'; }
+  });
 
   /* teach: a new chapter, saved as a child page of KB_ROOT */
   function teach(prefill){
@@ -621,21 +649,17 @@
     var ready = kbReady;
     if (!ready) { ready = loadKB(); }
     ready.then(function(){
-      if (isAdmin) {
-        var t = topicOf(q);
-        if (t) { showTopic(t); return; }
-        var found = search(q);
-        if (found.length) {
-          headlines(found.slice(0, 8).map(function(h){ return h.item; }), 'Ye chapters mile:');
-          return;
-        }
-      }
+      var t = topicOf(q);
+      if (t) { showTopic(t); return; }
       var hits = search(q);
       var best = Math.max.apply(null, scores);
+      var list = hits.slice(0, 8).map(function(h){ return h.item; });
       if (hits.length) {
-        /* a strong knowledge-base match beats a built-in answer */
-        if (Math.min(hits[0].s, 6) === 6) { kbAnswer(hits); return; }
-        if (best === 0) { kbAnswer(hits); return; }
+        /* admin always gets the list; for visitors a strong knowledge-base
+           match beats a built-in answer */
+        if (isAdmin) { headlines(list, 'Ye mile — kisi par click kijiye:'); return; }
+        if (Math.min(hits[0].s, 6) === 6) { headlines(list, 'Ye mile — kisi par click kijiye:'); return; }
+        if (best === 0) { headlines(list, 'Ye mile — kisi par click kijiye:'); return; }
       }
       if (best === 0) { A.unknown(q); return; }
       var name = INTENTS[scores.indexOf(best)][0];
@@ -873,6 +897,7 @@
   function close(){
     closeReader();
     root.classList.remove('open');
+    root.classList.remove('page');
   }
   function endChat(){
     if (testOn) { endTest(); }
@@ -920,5 +945,20 @@
   });
   window.addEventListener('hashchange', fromHash);
   fromHash();
+  var kbId = parseInt(new URLSearchParams(location.search).get('kb'), 10);
+  if (kbId) {
+    root.classList.add('page');
+    root.classList.add('open');
+    started = true;
+    checkAdmin().then(function(){
+      drawQuick();
+      A.hello();
+      return loadKB();
+    }).then(function(){
+      var hit = kb.filter(function(k){ return k.id === kbId; })[0];
+      if (hit) { openChapter(hit); }
+      else { bot(['Ye chapter nahi mila — shayad private hai ya hata diya gaya.']); }
+    });
+  }
 })();
 </script>
