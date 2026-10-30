@@ -402,6 +402,24 @@ only me - that saves a child page of 141. Admin mode cannot be tested from
 here: the application password cannot log into wp-admin, so it was tested
 against a local copy that proxies REST with the app password.
 
+**Course notes (30 Oct 2026).** `website/tools/kb_import_docx.py` imported the
+owner's Alison *Mindfulness Powerhouse* notes (`Alison_Mindfulness_Properly_Formatted.docx`
+in the repo root) as **84 private chapters** under page 141, topic
+*Mindfulness*, titled `M<module>.<nn> <lesson>` so typing "Mindfulness" lists
+the course in order. **Private on purpose:** it is Alison's course material,
+for her own webinars - never publish it or let the assistant answer visitors
+from it. The notes have gaps the importer cannot fill: several headings have
+no text (M1 Course Introduction, M1/M2 Lesson Summary and Experiential Action,
+Course Assessment, Additional Resources), and two headings carry another
+lesson's text word for word (M1 "The Way of Mindfulness" holds Historical
+Proof Part 1; M2's second "Understanding the Gap" holds Attention Part 1) -
+the duplicates are dropped and the text kept under the heading it belongs to.
+Re-running the importer updates by slug (`mf-m1-05`...).
+
+In admin mode a headline word outweighs a keyword (+5 vs +3), and when one
+chapter clearly wins a search it opens on top of the list, ready for Full
+screen. The knowledge base loads in pages of 100.
+
 **Always visible:** the five quick questions sit in a scrolling bar above the
 input, and **End chat** in the header clears the conversation.
 

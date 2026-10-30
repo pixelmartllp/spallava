@@ -393,9 +393,18 @@
       url = url + AMP + 'status=publish,private';
       opts.headers = {'X-WP-Nonce': nonce};
     }
-    kbReady = fetch(url, opts).then(function(r){ return r.json(); }).then(function(list){
+    /* pages of 100 until a short one comes back - the course notes alone are ~85 chapters */
+    var all = [];
+    function page(n){
+      return fetch(url + AMP + 'page=' + n, opts).then(function(r){ return r.json(); }).then(function(list){
+        if (!Array.isArray(list)) { return all; }
+        all = all.concat(list);
+        if (list.length === 100) { return page(n + 1); }
+        return all;
+      });
+    }
+    kbReady = page(1).then(function(list){
       kb = [];
-      if (!Array.isArray(list)) { return; }
       list.forEach(function(p){
         var holder = el('div');
         holder.innerHTML = p.title.rendered;
@@ -428,7 +437,8 @@
     kb.forEach(function(item){
       var s = 0;
       qw.forEach(function(w){
-        if (item.hw.indexOf(w) !== -1) { s = s + 3; }
+        /* a word in the headline outweighs the same word in keywords or text */
+        if (item.hw.indexOf(w) !== -1) { s = s + 5; }
         else if (item.kw.indexOf(w) !== -1) { s = s + 3; }
         else if (item.tw.indexOf(w) !== -1) { s = s + 3; }
         else if (item.bw.indexOf(w) !== -1) { s = s + 1; }
@@ -630,6 +640,18 @@
       var hits = search(q);
       var best = Math.max.apply(null, scores);
       var list = hits.slice(0, 8).map(function(h){ return h.item; });
+      /* admin: the list goes into the chat, and a clear winner opens on top of
+         it straight away, ready to present - Back shows the rest */
+      if (isAdmin) {
+        if (hits.length === 1) { openChapter(hits[0].item); return; }
+        if (hits.length) {
+          if (hits[0].s !== hits[1].s) {
+            headlines(list, 'Ye mile — sabse achha match khul gaya hai:');
+            openChapter(hits[0].item);
+            return;
+          }
+        }
+      }
       if (hits.length) {
         /* admin always gets the list; for visitors a strong knowledge-base
            match beats a built-in answer */
