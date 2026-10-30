@@ -124,11 +124,17 @@ up glued to the logo whenever Install was hidden.
 Phones also get a **bottom tab bar** and a **right-hand slide-in menu**;
 both are hidden on desktop.
 
-**Logos.** The header uses the lotus **mark only** (`sp-logo-mark.png`); the
-full logo with the "REVIVE, RISE & RELIVE" tagline (`sp-logo-full.png`) goes in
-the footer at 104px. The tagline is unreadable at header size, which is the
-whole reason there are two files. Both were keyed to transparency from a
-flat-black original — the raw file would show as a lighter square on the page.
+**Logos.** Since 30 Oct 2026 every header - homepage app bar and menu, the
+blog/post/page header, the Play & Grow app - uses the owner's **Revive, Rise &
+Relive** logo (`website/assets/sp-logo-rrr-original.png`, transparent). Its
+tagline is thin pale grey with black dots, which vanish on one theme or the
+other, so it ships in two inks: `sp-logo-rrr-dark.png` (media 186, light
+lettering, dark theme) and `sp-logo-rrr-light.png` (187, dark lettering, light
+theme) - only the grey and black pixels were recoloured, the gold is as drawn.
+Both `<img>`s sit side by side (`.lgd` / `.lgl`) and CSS shows the one that
+matches the theme. Headers grew to fit it: 60px on phones, 68px desktop (48/52
+once the bar tightens). At that size the tagline is decoration, not text -
+he chose that knowing it. The footer still uses `sp-logo-full.png`.
 
 ## 4. Three traps this page has already fallen into
 
@@ -564,7 +570,14 @@ plugin's placeholder logo and a pale blue `#D5E0EB`:
 
 The icons were cut from the lotus mark onto the brand's near-black, with the
 maskable one held inside the safe zone because launchers crop to a circle.
-`site_icon` is already pointed at id 65, which is what the favicon and the iOS
+**Update 30 Oct 2026:** the owner set SuperPWA's icons himself to the Revive,
+Rise & Relive logo (`rrr-512x512-1.png`, `rrr-192x192-1.png`; background and
+theme colour #0a0a0b). His 512 file is also used as the *maskable* icon, and
+the tagline runs past the safe zone a circular crop keeps.
+`sp-icon-rrr-512-maskable.png` (media 190) holds the logo inside it - set it
+as SuperPWA's maskable/splash icon by hand if Android crops it. `site_icon`
+(favicon, apple-touch-icon) now points at `sp-icon-rrr-512.png` (188).
+Previously `site_icon` was pointed at id 65, which is what the favicon and the iOS
 `apple-touch-icon` use.
 
 ## 10. Still open

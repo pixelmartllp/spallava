@@ -12,7 +12,10 @@
 .spg br{display:inline!important}
 .spg button{font-family:inherit}
 .spg-top{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--g-line)}
-.spg-top img{height:34px;width:auto}
+.spg-top img{height:44px;width:auto}
+.spg-top .lgl{display:none}
+.spg.light .spg-top .lgl{display:block}
+.spg.light .spg-top .lgd{display:none}
 .spg-top .ttl{font-weight:800;font-size:1rem;line-height:1.1}
 .spg-top .sub{font-size:.66rem;color:var(--g-muted);font-weight:600}
 .spg-pts{margin-left:auto;display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--g-soft);

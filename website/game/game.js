@@ -7,7 +7,8 @@
   if (window.SPGame) return;
   var API = window.SPG_API || '/wp-json/sp/v1/';
   var WA = '919876732099';
-  var LOGO = 'https://shashipallava.com/wp-content/uploads/2026/09/sp-logo-mark.png';
+  var LOGO = 'https://shashipallava.com/wp-content/uploads/2026/10/sp-logo-rrr-dark.png';
+  var LOGO_LIGHT = 'https://shashipallava.com/wp-content/uploads/2026/10/sp-logo-rrr-light.png';
   var state = { me: null, nonce: '', tab: null, round: null, track: 'iq' };
 
   /* ---------------- dom helpers ---------------- */
@@ -56,7 +57,7 @@
     main = h('div', { class: 'spg-main' });
     root = h('div', { class: 'spg', id: 'spg', role: 'dialog', 'aria-label': 'Play and Grow' }, [
       h('div', { class: 'spg-top' }, [
-        h('img', { src: LOGO, alt: '' }),
+        h('img', { class: 'lgd', src: LOGO, alt: '' }), h('img', { class: 'lgl', src: LOGO_LIGHT, alt: '' }),
         h('div', null, [h('p', { class: 'ttl', text: 'Play & Grow' }), h('p', { class: 'sub', text: 'Brain Game · Missions · Wallet' })]),
         pts,
         h('button', { class: 'spg-x', type: 'button', 'aria-label': 'Close', text: '✕', onclick: close })
