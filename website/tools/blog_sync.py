@@ -3,6 +3,7 @@
 
     python website/tools/blog_sync.py            # dry run: list what it would do
     python website/tools/blog_sync.py --confirm  # upload creatives, write posts
+    python website/tools/blog_sync.py --confirm --schedule  # drafts with publish_on -> scheduled
 
 Each entry names an Instagram post by media id. Its creative is uploaded once,
 full size, as ``ig-<id>-full.jpg`` and becomes the post's featured image.
@@ -75,6 +76,8 @@ def body(e: dict, permalink: str) -> str:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--confirm", action="store_true")
+    ap.add_argument("--schedule", action="store_true",
+                    help="turn drafts with publish_on into scheduled posts (only after the owner said yes)")
     args = ap.parse_args()
 
     entries = json.loads(POSTS.read_text(encoding="utf-8"))["posts"]
@@ -98,14 +101,32 @@ def main() -> int:
                         data=json.dumps({"featured_media": mid}).encode())
                 print(f"  post {e['wp_id']}: featured image {mid}")
                 continue
-            payload = {"title": e["title"], "slug": e["slug"], "status": "publish",
+            # A post with publish_on is a scheduled one: it is created as a draft
+            # dated that morning, and only --schedule turns it into "future", which
+            # WordPress then publishes by itself. Without publish_on it goes live
+            # now, dated to the Instagram post.
+            if e.get("publish_on"):
+                status = "future" if args.schedule else "draft"
+                when = {"date": e["publish_on"] + "T07:30:00"}
+            else:
+                status = "publish"
+                when = {"date_gmt": m["timestamp"][:19]}
+            found = wp.call(f"/wp-json/wp/v2/posts?slug={e['slug']}&status=publish,future,draft&_fields=id,status")
+            if found:
+                # never rewrite the content of a post that exists: seo_sync.py has
+                # appended its block to it, and a rewrite here would erase that
+                payload = {"featured_media": mid}
+                if e.get("publish_on") and found[0]["status"] != "publish":
+                    payload.update({"status": status, **when})
+                out = wp.call(f"/wp-json/wp/v2/posts/{found[0]['id']}", method="POST", headers=json_h,
+                              data=json.dumps(payload).encode())
+                print(f"  kept {out['slug']} ({out['status']}, {out['date'][:10]})")
+                continue
+            payload = {"title": e["title"], "slug": e["slug"], "status": status,
                        "content": body(e, m["permalink"]), "excerpt": e["lead"],
-                       "featured_media": mid, "date_gmt": m["timestamp"][:19],
-                       "comment_status": "closed", "ping_status": "closed"}
-            found = wp.call(f"/wp-json/wp/v2/posts?slug={e['slug']}&status=publish,draft&_fields=id")
-            path = f"/wp-json/wp/v2/posts/{found[0]['id']}" if found else "/wp-json/wp/v2/posts"
-            out = wp.call(path, method="POST", headers=json_h, data=json.dumps(payload).encode())
-            print(f"  {'updated' if found else 'created'} {out['link']}")
+                       "featured_media": mid, "comment_status": "closed", "ping_status": "closed", **when}
+            out = wp.call("/wp-json/wp/v2/posts", method="POST", headers=json_h, data=json.dumps(payload).encode())
+            print(f"  created {out['slug']} ({out['status']}, {out['date'][:10]})")
     except urllib.error.HTTPError as exc:
         print("  FAILED:", exc.code, exc.read()[:300].decode("utf-8", "replace"))
         return 1

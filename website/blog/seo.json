@@ -1,191 +1,791 @@
 {
-  "_comment": "SEO and GEO layer for every blog post, published by website/tools/seo_sync.py. Per post: category, the Slim SEO title and description, three practical steps, two questions with direct answers (also emitted as FAQPage schema) and two internal links. The block is appended between <!-- sp-seo:start --> and <!-- sp-seo:end --> so a re-run replaces it instead of stacking. Owner asked for this on 09 Oct 2026, keywords around 'Shashi Pallava - Life, Relationship & Mindset Coach'.",
-  "categories": {
-    "boundaries": {"name": "Boundaries", "description": "Short reads by Shashi Pallava, life, relationship and mindset coach, on saying no without guilt, people-pleasing and boundaries that hold."},
-    "relationships": {"name": "Relationships", "description": "Relationship advice for women from Shashi Pallava, life, relationship and mindset coach - self-respect, letting go, overthinking and healthy love."},
-    "healing": {"name": "Healing & Self-Worth", "description": "Gentle reads on emotional healing, self-worth and self-compassion by Shashi Pallava, life, relationship and mindset coach."},
-    "mindset": {"name": "Mindset", "description": "Mindset shifts for women from Shashi Pallava, life, relationship and mindset coach - limiting beliefs, change and moving forward."}
+ "_comment": "SEO and GEO layer for every blog post, published by website/tools/seo_sync.py. Per post: category, the Slim SEO title and description, three practical steps, two questions with direct answers (also emitted as FAQPage schema) and two internal links. The block is appended between <!-- sp-seo:start --> and <!-- sp-seo:end --> so a re-run replaces it instead of stacking. Owner asked for this on 09 Oct 2026, keywords around 'Shashi Pallava - Life, Relationship & Mindset Coach'.",
+ "categories": {
+  "boundaries": {
+   "name": "Boundaries",
+   "description": "Short reads by Shashi Pallava, life, relationship and mindset coach, on saying no without guilt, people-pleasing and boundaries that hold."
   },
-  "posts": {
-    "a-boundary-is-not-a-punishment": {
-      "cat": "boundaries",
-      "title": "A Boundary Is Not a Punishment | Shashi Pallava, Life Coach",
-      "desc": "Boundaries are not fights. Relationship coach Shashi Pallava on why a boundary you keep teaches people how to love you well - and how to start.",
-      "steps": [
-        "Pick one situation that keeps draining you - a call, a request, a habit.",
-        "Say your boundary in one calm sentence, without a long explanation: “Main 9 baje ke baad calls nahi le paungi.”",
-        "Then act on it the same way every time. Your “no” becomes real when your actions match it."
-      ],
-      "faq": [
-        ["Is setting a boundary selfish?", "No. A boundary tells people what you can give and what you cannot. It protects the relationship from quiet resentment, which does far more damage than an honest “no”."],
-        ["What if people get upset when I set a boundary?", "Some will, at first - especially those who benefited from you having none. Stay kind and stay consistent. Their discomfort is not proof that you were wrong."]
-      ],
-      "related": ["you-are-not-responsible-for-how-everyone-feels-about-your-honesty", "you-are-not-a-backup-plan"]
-    },
-    "you-are-not-responsible-for-how-everyone-feels-about-your-honesty": {
-      "cat": "boundaries",
-      "title": "Honesty Without Guilt: You Are Not Responsible for Their Reaction",
-      "desc": "Saying the true thing kindly is your job; how others feel about it is not. Mindset coach Shashi Pallava on honesty, people-pleasing and guilt.",
-      "steps": [
-        "Notice the moment you start softening the truth just to keep someone comfortable.",
-        "Say it once, kindly and clearly - no over-explaining.",
-        "Let their reaction belong to them. Breathe, and don’t rush in to fix it."
-      ],
-      "faq": [
-        ["How do I stop people-pleasing?", "Start small. Say one honest “no” this week in a low-stakes situation and notice that you survive the discomfort. People-pleasing loosens through practice, not through one big decision."],
-        ["Is it unkind to say something that might hurt?", "Kindness is in how you say it, not in hiding it. You can be gentle and truthful at the same time - what hurts more over time is a relationship built on things left unsaid."]
-      ],
-      "related": ["a-boundary-is-not-a-punishment", "softness-is-not-weakness"]
-    },
-    "you-are-not-a-backup-plan": {
-      "cat": "relationships",
-      "title": "You Are Not a Backup Plan | Relationship Advice by Shashi Pallava",
-      "desc": "If you keep proving your worth to stay in someone’s life, the question is about them, not you. Relationship coach Shashi Pallava on choosing yourself.",
-      "steps": [
-        "Write down what you keep doing to “earn” your place with this person.",
-        "Ask honestly: would I accept this if a friend described it to me?",
-        "Choose one thing you will stop over-giving this week - and notice what changes."
-      ],
-      "faq": [
-        ["How do I know if I’m someone’s second choice?", "Look at patterns, not promises: who makes plans, who waits, who explains. If you are always the one adjusting, you are carrying the relationship alone."],
-        ["How can I stop seeking validation in relationships?", "Begin by giving yourself what you keep asking others for - time, respect, rest. When your worth is not on the table every day, you stop auditioning for it."]
-      ],
-      "related": ["some-people-are-lessons", "not-every-silence-needs-an-explanation"]
-    },
-    "some-people-are-lessons": {
-      "cat": "relationships",
-      "title": "Some People Are Lessons, Not Lifetimes | Shashi Pallava",
-      "desc": "Not every relationship is meant to last forever. Life and relationship coach Shashi Pallava on letting go without guilt - and why leaving is not failing.",
-      "steps": [
-        "Name what this relationship taught you - one line is enough.",
-        "Separate the lesson from the person: you keep the first, you can release the second.",
-        "Notice where you are holding on only because leaving feels like losing."
-      ],
-      "faq": [
-        ["How do I let go of someone I still love?", "Loving someone and staying with them are two different decisions. You can honour what was real and still choose what is healthy for you now. Letting go is usually a process, not a moment."],
-        ["Is ending a relationship a failure?", "No. Leaving is not failing, and staying is not loyalty. Sometimes the wisest step is recognising that a chapter has done its work."]
-      ],
-      "related": ["change-feels-like-loss-before-it-feels-like-freedom", "you-are-not-a-backup-plan"]
-    },
-    "your-body-kept-the-score": {
-      "cat": "healing",
-      "title": "Your Body Kept the Score: Healing After Emotional Pain",
-      "desc": "When your mind says “it’s over” but your sleep and shoulders disagree, your body is still holding it. Life coach Shashi Pallava on gentle emotional healing.",
-      "steps": [
-        "Pause twice a day and notice where you feel tension - jaw, shoulders, stomach.",
-        "Breathe slowly into that spot for one minute, without trying to fix anything.",
-        "Write one line about what that feeling might be carrying."
-      ],
-      "faq": [
-        ["Can unresolved emotions show up in the body?", "Many people notice stress as tight shoulders, poor sleep or a heavy stomach long after a painful time has passed. Paying attention to these signals is a first step - and if symptoms persist, please see a doctor."],
-        ["Is coaching the same as therapy for emotional pain?", "No. Coaching works on your present - thoughts, patterns, relationships - and on what you can do next. If you need clinical or therapeutic support, Shashi will tell you honestly and point you to the right professional."]
-      ],
-      "related": ["you-dont-have-to-keep-carrying-the-armor", "the-version-of-you-who-survived-deserves-thanks"]
-    },
-    "softness-is-not-weakness": {
-      "cat": "healing",
-      "title": "Softness Is Not Weakness | Shashi Pallava, Mindset Coach",
-      "desc": "Staying open after being hurt takes more strength than building walls. Mindset coach Shashi Pallava on softness, rest and emotional strength for women.",
-      "steps": [
-        "Notice one place where you have gone hard to avoid getting hurt again.",
-        "Allow one small soft thing today - ask for help, rest, or say how you feel.",
-        "Remind yourself: rest is not giving up. It is how you restore yourself."
-      ],
-      "faq": [
-        ["Is it weak to show emotions?", "No. Showing emotions with awareness is a strength - it takes courage to stay open when you know you might be hurt again."],
-        ["How can strong women make space for rest?", "Treat rest as part of the work, not a reward after it. You do not have to handle everything every day to be strong."]
-      ],
-      "related": ["the-version-of-you-who-survived-deserves-thanks", "you-are-not-responsible-for-how-everyone-feels-about-your-honesty"]
-    },
-    "you-dont-have-to-keep-carrying-the-armor": {
-      "cat": "healing",
-      "title": "You Don’t Have to Keep Carrying the Armor | Healing Journey",
-      "desc": "What protected you in the past may be holding you back today. Life coach Shashi Pallava on healing, fear and learning when it is safe to let go.",
-      "steps": [
-        "List the rules you made to stay safe - never ask for help, always stay in control.",
-        "Ask of each one: is this still protecting me, or only keeping people out?",
-        "Lower one piece of armor with one safe person this week."
-      ],
-      "faq": [
-        ["How do I know if I’m emotionally guarded?", "Common signs are finding it hard to ask for help, expecting to be let down, and feeling safer handling everything alone. None of these are flaws - they are old protection that may have outlived its job."],
-        ["How do you start healing from past hurt?", "Start by recognising what your defences once did for you, with gratitude rather than blame. Healing is learning when it is safe to let go - at your own pace."]
-      ],
-      "related": ["your-body-kept-the-score", "change-feels-like-loss-before-it-feels-like-freedom"]
-    },
-    "change-feels-like-loss-before-it-feels-like-freedom": {
-      "cat": "mindset",
-      "title": "Why Change Feels Like Loss Before It Feels Like Freedom",
-      "desc": "Letting go of people-pleasing and old expectations can feel empty at first. Mindset coach Shashi Pallava on why that is part of change, not a sign to stop.",
-      "steps": [
-        "Name one old habit you are trying to let go of.",
-        "When the empty feeling comes, call it what it is: the middle of change, not the end.",
-        "Fill that space with one small thing that is truly yours."
-      ],
-      "faq": [
-        ["Why does positive change feel so uncomfortable?", "Old habits, even unhelpful ones, feel familiar and safe. Giving them up can feel like loss before the new way feels like home - that discomfort is normal."],
-        ["How long does it take to feel better after a big change?", "There is no fixed timeline. For most people it eases as new habits become familiar, and support from a coach or a community can make the middle stretch less lonely."]
-      ],
-      "related": ["you-are-allowed-to-change-the-rules", "some-people-are-lessons"]
-    },
-    "the-version-of-you-who-survived-deserves-thanks": {
-      "cat": "healing",
-      "title": "Be Proud of the Woman Who Kept Going | Shashi Pallava",
-      "desc": "The version of you who survived deserves thanks, not judgement. Life coach Shashi Pallava on self-compassion and giving yourself the credit you deserve.",
-      "steps": [
-        "Write down three things your past self got through.",
-        "Next to each, write what she learned - not what she got wrong.",
-        "Read it once, and say thank you to her."
-      ],
-      "faq": [
-        ["How do I stop judging my past self?", "Remember that you made choices with the understanding and strength you had then. What you know today, you know because she lived through it."],
-        ["What is self-compassion?", "Treating yourself with the same kindness you would give a close friend going through a hard time - honest, but gentle."]
-      ],
-      "related": ["softness-is-not-weakness", "you-dont-have-to-keep-carrying-the-armor"]
-    },
-    "not-every-silence-needs-an-explanation": {
-      "cat": "relationships",
-      "title": "Not Every Silence Is Rejection | Relationship Advice for Women",
-      "desc": "No reply doesn’t always mean “I don’t care”. Relationship coach Shashi Pallava on overthinking, assumptions and giving people space - and yourself peace.",
-      "steps": [
-        "When a silence starts a story in your head, write the story down.",
-        "Next to it, write two other explanations that are just as possible.",
-        "Choose one calming action - a walk, a call to a friend - instead of sending another message."
-      ],
-      "faq": [
-        ["How do I stop overthinking when someone doesn’t reply?", "Notice the story your mind is building and treat it as a guess, not a fact. Give it time, and if it matters, ask directly and calmly rather than assuming."],
-        ["Is silence in a relationship always a bad sign?", "No. People go quiet for many reasons - tiredness, stress, needing space. Silence used again and again as punishment is different, and worth talking about openly."]
-      ],
-      "related": ["you-are-not-a-backup-plan", "a-boundary-is-not-a-punishment"]
-    },
-    "you-are-allowed-to-change-the-rules": {
-      "cat": "mindset",
-      "title": "You Are Allowed to Change the Rules | Mindset Coach for Women",
-      "desc": "The beliefs you agreed to when you knew less don’t have to rule your life now. Mindset coach Shashi Pallava on limiting beliefs and choosing again.",
-      "steps": [
-        "Write down one rule you grew up with - “achhi ladki…”, “pehle sab, phir main”.",
-        "Ask: who gave me this rule, and does it still serve me?",
-        "Rewrite it in your own words, as a rule you choose to live by."
-      ],
-      "faq": [
-        ["What are limiting beliefs?", "Old ideas about yourself or life - often learned early - that quietly decide what you think you are allowed to do. Noticing them is the first step to changing them."],
-        ["Can you really change beliefs as an adult?", "Yes. Beliefs are learned, so they can be re-examined. Coaching helps you notice them, question them and practise new choices until they feel natural."]
-      ],
-      "related": ["why-me-keeps-you-stuck", "change-feels-like-loss-before-it-feels-like-freedom"]
-    },
-    "why-me-keeps-you-stuck": {
-      "cat": "mindset",
-      "title": "“Why Me?” vs “What Now?” - A Mindset Shift to Move Forward",
-      "desc": "“Why me?” keeps you stuck in the pain; “what now?” hands you your next step. Mindset coach Shashi Pallava on shifting the question after a setback.",
-      "steps": [
-        "Catch yourself the next time you ask “why me?” - no judgement.",
-        "Replace it with “what now?” and write one small answer.",
-        "Do that one thing within 24 hours, however small."
-      ],
-      "faq": [
-        ["Why do I keep asking “why me?”", "It is a natural response to pain - the mind looks for a reason. The trouble starts when the question has no answer and keeps you standing in the same place."],
-        ["How do I change my mindset after a setback?", "Move the question from the past to the next step. Small, doable actions rebuild a sense of control faster than waiting to feel ready."]
-      ],
-      "related": ["you-are-allowed-to-change-the-rules", "the-version-of-you-who-survived-deserves-thanks"]
-    }
+  "relationships": {
+   "name": "Relationships",
+   "description": "Relationship advice for women from Shashi Pallava, life, relationship and mindset coach - self-respect, letting go, overthinking and healthy love."
+  },
+  "healing": {
+   "name": "Healing & Self-Worth",
+   "description": "Gentle reads on emotional healing, self-worth and self-compassion by Shashi Pallava, life, relationship and mindset coach."
+  },
+  "mindset": {
+   "name": "Mindset",
+   "description": "Mindset shifts for women from Shashi Pallava, life, relationship and mindset coach - limiting beliefs, change and moving forward."
   }
+ },
+ "posts": {
+  "a-boundary-is-not-a-punishment": {
+   "cat": "boundaries",
+   "title": "A Boundary Is Not a Punishment | Shashi Pallava, Life Coach",
+   "desc": "Boundaries are not fights. Relationship coach Shashi Pallava on why a boundary you keep teaches people how to love you well - and how to start.",
+   "steps": [
+    "Pick one situation that keeps draining you - a call, a request, a habit.",
+    "Say your boundary in one calm sentence, without a long explanation: “Main 9 baje ke baad calls nahi le paungi.”",
+    "Then act on it the same way every time. Your “no” becomes real when your actions match it."
+   ],
+   "faq": [
+    [
+     "Is setting a boundary selfish?",
+     "No. A boundary tells people what you can give and what you cannot. It protects the relationship from quiet resentment, which does far more damage than an honest “no”."
+    ],
+    [
+     "What if people get upset when I set a boundary?",
+     "Some will, at first - especially those who benefited from you having none. Stay kind and stay consistent. Their discomfort is not proof that you were wrong."
+    ]
+   ],
+   "related": [
+    "you-are-not-responsible-for-how-everyone-feels-about-your-honesty",
+    "you-are-not-a-backup-plan"
+   ]
+  },
+  "you-are-not-responsible-for-how-everyone-feels-about-your-honesty": {
+   "cat": "boundaries",
+   "title": "Honesty Without Guilt: You Are Not Responsible for Their Reaction",
+   "desc": "Saying the true thing kindly is your job; how others feel about it is not. Mindset coach Shashi Pallava on honesty, people-pleasing and guilt.",
+   "steps": [
+    "Notice the moment you start softening the truth just to keep someone comfortable.",
+    "Say it once, kindly and clearly - no over-explaining.",
+    "Let their reaction belong to them. Breathe, and don’t rush in to fix it."
+   ],
+   "faq": [
+    [
+     "How do I stop people-pleasing?",
+     "Start small. Say one honest “no” this week in a low-stakes situation and notice that you survive the discomfort. People-pleasing loosens through practice, not through one big decision."
+    ],
+    [
+     "Is it unkind to say something that might hurt?",
+     "Kindness is in how you say it, not in hiding it. You can be gentle and truthful at the same time - what hurts more over time is a relationship built on things left unsaid."
+    ]
+   ],
+   "related": [
+    "a-boundary-is-not-a-punishment",
+    "softness-is-not-weakness"
+   ]
+  },
+  "you-are-not-a-backup-plan": {
+   "cat": "relationships",
+   "title": "You Are Not a Backup Plan | Relationship Advice by Shashi Pallava",
+   "desc": "If you keep proving your worth to stay in someone’s life, the question is about them, not you. Relationship coach Shashi Pallava on choosing yourself.",
+   "steps": [
+    "Write down what you keep doing to “earn” your place with this person.",
+    "Ask honestly: would I accept this if a friend described it to me?",
+    "Choose one thing you will stop over-giving this week - and notice what changes."
+   ],
+   "faq": [
+    [
+     "How do I know if I’m someone’s second choice?",
+     "Look at patterns, not promises: who makes plans, who waits, who explains. If you are always the one adjusting, you are carrying the relationship alone."
+    ],
+    [
+     "How can I stop seeking validation in relationships?",
+     "Begin by giving yourself what you keep asking others for - time, respect, rest. When your worth is not on the table every day, you stop auditioning for it."
+    ]
+   ],
+   "related": [
+    "some-people-are-lessons",
+    "not-every-silence-needs-an-explanation"
+   ]
+  },
+  "some-people-are-lessons": {
+   "cat": "relationships",
+   "title": "Some People Are Lessons, Not Lifetimes | Shashi Pallava",
+   "desc": "Not every relationship is meant to last forever. Life and relationship coach Shashi Pallava on letting go without guilt - and why leaving is not failing.",
+   "steps": [
+    "Name what this relationship taught you - one line is enough.",
+    "Separate the lesson from the person: you keep the first, you can release the second.",
+    "Notice where you are holding on only because leaving feels like losing."
+   ],
+   "faq": [
+    [
+     "How do I let go of someone I still love?",
+     "Loving someone and staying with them are two different decisions. You can honour what was real and still choose what is healthy for you now. Letting go is usually a process, not a moment."
+    ],
+    [
+     "Is ending a relationship a failure?",
+     "No. Leaving is not failing, and staying is not loyalty. Sometimes the wisest step is recognising that a chapter has done its work."
+    ]
+   ],
+   "related": [
+    "change-feels-like-loss-before-it-feels-like-freedom",
+    "you-are-not-a-backup-plan"
+   ]
+  },
+  "your-body-kept-the-score": {
+   "cat": "healing",
+   "title": "Your Body Kept the Score: Healing After Emotional Pain",
+   "desc": "When your mind says “it’s over” but your sleep and shoulders disagree, your body is still holding it. Life coach Shashi Pallava on gentle emotional healing.",
+   "steps": [
+    "Pause twice a day and notice where you feel tension - jaw, shoulders, stomach.",
+    "Breathe slowly into that spot for one minute, without trying to fix anything.",
+    "Write one line about what that feeling might be carrying."
+   ],
+   "faq": [
+    [
+     "Can unresolved emotions show up in the body?",
+     "Many people notice stress as tight shoulders, poor sleep or a heavy stomach long after a painful time has passed. Paying attention to these signals is a first step - and if symptoms persist, please see a doctor."
+    ],
+    [
+     "Is coaching the same as therapy for emotional pain?",
+     "No. Coaching works on your present - thoughts, patterns, relationships - and on what you can do next. If you need clinical or therapeutic support, Shashi will tell you honestly and point you to the right professional."
+    ]
+   ],
+   "related": [
+    "you-dont-have-to-keep-carrying-the-armor",
+    "the-version-of-you-who-survived-deserves-thanks"
+   ]
+  },
+  "softness-is-not-weakness": {
+   "cat": "healing",
+   "title": "Softness Is Not Weakness | Shashi Pallava, Mindset Coach",
+   "desc": "Staying open after being hurt takes more strength than building walls. Mindset coach Shashi Pallava on softness, rest and emotional strength for women.",
+   "steps": [
+    "Notice one place where you have gone hard to avoid getting hurt again.",
+    "Allow one small soft thing today - ask for help, rest, or say how you feel.",
+    "Remind yourself: rest is not giving up. It is how you restore yourself."
+   ],
+   "faq": [
+    [
+     "Is it weak to show emotions?",
+     "No. Showing emotions with awareness is a strength - it takes courage to stay open when you know you might be hurt again."
+    ],
+    [
+     "How can strong women make space for rest?",
+     "Treat rest as part of the work, not a reward after it. You do not have to handle everything every day to be strong."
+    ]
+   ],
+   "related": [
+    "the-version-of-you-who-survived-deserves-thanks",
+    "you-are-not-responsible-for-how-everyone-feels-about-your-honesty"
+   ]
+  },
+  "you-dont-have-to-keep-carrying-the-armor": {
+   "cat": "healing",
+   "title": "You Don’t Have to Keep Carrying the Armor | Healing Journey",
+   "desc": "What protected you in the past may be holding you back today. Life coach Shashi Pallava on healing, fear and learning when it is safe to let go.",
+   "steps": [
+    "List the rules you made to stay safe - never ask for help, always stay in control.",
+    "Ask of each one: is this still protecting me, or only keeping people out?",
+    "Lower one piece of armor with one safe person this week."
+   ],
+   "faq": [
+    [
+     "How do I know if I’m emotionally guarded?",
+     "Common signs are finding it hard to ask for help, expecting to be let down, and feeling safer handling everything alone. None of these are flaws - they are old protection that may have outlived its job."
+    ],
+    [
+     "How do you start healing from past hurt?",
+     "Start by recognising what your defences once did for you, with gratitude rather than blame. Healing is learning when it is safe to let go - at your own pace."
+    ]
+   ],
+   "related": [
+    "your-body-kept-the-score",
+    "change-feels-like-loss-before-it-feels-like-freedom"
+   ]
+  },
+  "change-feels-like-loss-before-it-feels-like-freedom": {
+   "cat": "mindset",
+   "title": "Why Change Feels Like Loss Before It Feels Like Freedom",
+   "desc": "Letting go of people-pleasing and old expectations can feel empty at first. Mindset coach Shashi Pallava on why that is part of change, not a sign to stop.",
+   "steps": [
+    "Name one old habit you are trying to let go of.",
+    "When the empty feeling comes, call it what it is: the middle of change, not the end.",
+    "Fill that space with one small thing that is truly yours."
+   ],
+   "faq": [
+    [
+     "Why does positive change feel so uncomfortable?",
+     "Old habits, even unhelpful ones, feel familiar and safe. Giving them up can feel like loss before the new way feels like home - that discomfort is normal."
+    ],
+    [
+     "How long does it take to feel better after a big change?",
+     "There is no fixed timeline. For most people it eases as new habits become familiar, and support from a coach or a community can make the middle stretch less lonely."
+    ]
+   ],
+   "related": [
+    "you-are-allowed-to-change-the-rules",
+    "some-people-are-lessons"
+   ]
+  },
+  "the-version-of-you-who-survived-deserves-thanks": {
+   "cat": "healing",
+   "title": "Be Proud of the Woman Who Kept Going | Shashi Pallava",
+   "desc": "The version of you who survived deserves thanks, not judgement. Life coach Shashi Pallava on self-compassion and giving yourself the credit you deserve.",
+   "steps": [
+    "Write down three things your past self got through.",
+    "Next to each, write what she learned - not what she got wrong.",
+    "Read it once, and say thank you to her."
+   ],
+   "faq": [
+    [
+     "How do I stop judging my past self?",
+     "Remember that you made choices with the understanding and strength you had then. What you know today, you know because she lived through it."
+    ],
+    [
+     "What is self-compassion?",
+     "Treating yourself with the same kindness you would give a close friend going through a hard time - honest, but gentle."
+    ]
+   ],
+   "related": [
+    "softness-is-not-weakness",
+    "you-dont-have-to-keep-carrying-the-armor"
+   ]
+  },
+  "not-every-silence-needs-an-explanation": {
+   "cat": "relationships",
+   "title": "Not Every Silence Is Rejection | Relationship Advice for Women",
+   "desc": "No reply doesn’t always mean “I don’t care”. Relationship coach Shashi Pallava on overthinking, assumptions and giving people space - and yourself peace.",
+   "steps": [
+    "When a silence starts a story in your head, write the story down.",
+    "Next to it, write two other explanations that are just as possible.",
+    "Choose one calming action - a walk, a call to a friend - instead of sending another message."
+   ],
+   "faq": [
+    [
+     "How do I stop overthinking when someone doesn’t reply?",
+     "Notice the story your mind is building and treat it as a guess, not a fact. Give it time, and if it matters, ask directly and calmly rather than assuming."
+    ],
+    [
+     "Is silence in a relationship always a bad sign?",
+     "No. People go quiet for many reasons - tiredness, stress, needing space. Silence used again and again as punishment is different, and worth talking about openly."
+    ]
+   ],
+   "related": [
+    "you-are-not-a-backup-plan",
+    "a-boundary-is-not-a-punishment"
+   ]
+  },
+  "you-are-allowed-to-change-the-rules": {
+   "cat": "mindset",
+   "title": "You Are Allowed to Change the Rules | Mindset Coach for Women",
+   "desc": "The beliefs you agreed to when you knew less don’t have to rule your life now. Mindset coach Shashi Pallava on limiting beliefs and choosing again.",
+   "steps": [
+    "Write down one rule you grew up with - “achhi ladki…”, “pehle sab, phir main”.",
+    "Ask: who gave me this rule, and does it still serve me?",
+    "Rewrite it in your own words, as a rule you choose to live by."
+   ],
+   "faq": [
+    [
+     "What are limiting beliefs?",
+     "Old ideas about yourself or life - often learned early - that quietly decide what you think you are allowed to do. Noticing them is the first step to changing them."
+    ],
+    [
+     "Can you really change beliefs as an adult?",
+     "Yes. Beliefs are learned, so they can be re-examined. Coaching helps you notice them, question them and practise new choices until they feel natural."
+    ]
+   ],
+   "related": [
+    "why-me-keeps-you-stuck",
+    "change-feels-like-loss-before-it-feels-like-freedom"
+   ]
+  },
+  "why-me-keeps-you-stuck": {
+   "cat": "mindset",
+   "title": "“Why Me?” vs “What Now?” - A Mindset Shift to Move Forward",
+   "desc": "“Why me?” keeps you stuck in the pain; “what now?” hands you your next step. Mindset coach Shashi Pallava on shifting the question after a setback.",
+   "steps": [
+    "Catch yourself the next time you ask “why me?” - no judgement.",
+    "Replace it with “what now?” and write one small answer.",
+    "Do that one thing within 24 hours, however small."
+   ],
+   "faq": [
+    [
+     "Why do I keep asking “why me?”",
+     "It is a natural response to pain - the mind looks for a reason. The trouble starts when the question has no answer and keeps you standing in the same place."
+    ],
+    [
+     "How do I change my mindset after a setback?",
+     "Move the question from the past to the next step. Small, doable actions rebuild a sense of control faster than waiting to feel ready."
+    ]
+   ],
+   "related": [
+    "you-are-allowed-to-change-the-rules",
+    "the-version-of-you-who-survived-deserves-thanks"
+   ]
+  },
+  "like-a-butterfly-leave-the-cocoon-behind": {
+   "cat": "mindset",
+   "title": "Like a Butterfly: Leaving What Once Felt Safe | Shashi Pallava",
+   "desc": "Growth begins when you dare to leave what once felt safe. Mindset coach Shashi Pallava on change, fear and making room for the life you deserve.",
+   "steps": [
+    "Name one “cocoon” in your life - a habit, belief or situation that once kept you safe.",
+    "Ask: is it still protecting me, or only keeping me small?",
+    "Take one small step outside it this week, and notice what you feel."
+   ],
+   "faq": [
+    [
+     "Why does growth feel so scary?",
+     "Because it asks you to leave the familiar before the new feels safe. That fear is normal - it doesn't mean you are going the wrong way."
+    ],
+    [
+     "How do I know it's time to move on from something?",
+     "When something that once protected you now mostly holds you back - keeping you quiet, small or stuck - it may have done its job."
+    ]
+   ],
+   "related": [
+    "change-feels-like-loss-before-it-feels-like-freedom",
+    "you-dont-have-to-keep-carrying-the-armor"
+   ]
+  },
+  "you-are-not-too-much": {
+   "cat": "relationships",
+   "title": "You Are Not Too Much: Love, Capacity and Self-Worth",
+   "desc": "Not too much - just with someone who had too little to give. Relationship coach Shashi Pallava on needs, capacity and never shrinking yourself.",
+   "steps": [
+    "Write down the needs you were told were “too much”.",
+    "Next to each, ask: is this a fair need in a healthy relationship?",
+    "Keep the fair ones, and let go of the guilt attached to them."
+   ],
+   "faq": [
+    [
+     "How do I stop feeling like I'm “too much”?",
+     "Separate your needs from someone's capacity to meet them. Wanting care and respect is normal; not everyone can give it."
+    ],
+    [
+     "Should I lower my expectations in relationships?",
+     "Lower unrealistic ones, not basic ones. Respect, consistency and emotional safety are not too much to ask."
+    ]
+   ],
+   "related": [
+    "you-are-not-a-backup-plan",
+    "not-every-silence-needs-an-explanation"
+   ]
+  },
+  "protect-the-first-hour": {
+   "cat": "mindset",
+   "title": "Protect the First Hour: A Morning Habit for Women",
+   "desc": "How you begin your day shapes how you show up for the rest of it. Mindset coach Shashi Pallava on protecting your first hour.",
+   "steps": [
+    "Keep your phone away for the first 20 minutes after waking.",
+    "Drink water, breathe slowly and ask: what do I need today?",
+    "Write one line of intention before you open any message."
+   ],
+   "faq": [
+    [
+     "Is it selfish to take time for myself in the morning?",
+     "No. Your first hour is self-leadership - when you start steady, you show up better for everyone else."
+    ],
+    [
+     "What if I have no time in the morning?",
+     "Start with five minutes. The habit matters more than the length - protect a small slot first, then grow it."
+    ]
+   ],
+   "related": [
+    "why-me-keeps-you-stuck",
+    "softness-is-not-weakness"
+   ]
+  },
+  "healing-is-not-becoming-someone-new": {
+   "cat": "healing",
+   "title": "Healing Is Not Becoming Someone New: Returning to Yourself",
+   "desc": "Healing is not becoming perfect or new - it is returning to yourself. Life coach Shashi Pallava on reconnecting with your needs, dreams and identity.",
+   "steps": [
+    "Write down three things you loved doing before life got heavy.",
+    "Do one of them this week, even for ten minutes.",
+    "Notice what part of “you” it brings back."
+   ],
+   "faq": [
+    [
+     "What does healing actually mean?",
+     "Not becoming perfect or new, but slowly reconnecting with your own needs, dreams and identity."
+    ],
+    [
+     "How do I know I am healing?",
+     "Often it shows quietly: you react less, rest more, and recognise yourself again."
+    ]
+   ],
+   "related": [
+    "you-dont-have-to-keep-carrying-the-armor",
+    "the-version-of-you-who-survived-deserves-thanks"
+   ]
+  },
+  "love-is-not-enough-on-its-own": {
+   "cat": "relationships",
+   "title": "Love Is Not Enough On Its Own: What Relationships Need",
+   "desc": "Love needs respect, effort, trust and emotional safety to survive. Relationship coach Shashi Pallava on nurturing love, not just feeling it.",
+   "steps": [
+    "Rate your relationship on four things: respect, effort, trust, emotional safety.",
+    "Pick the lowest one and name one small action that would nurture it.",
+    "Talk about it calmly with your partner, starting with “I feel…”."
+   ],
+   "faq": [
+    [
+     "If we love each other, why is it so hard?",
+     "Because love is the feeling; respect, effort and safety are the daily practice that keeps it alive."
+    ],
+    [
+     "What makes a relationship emotionally safe?",
+     "Being able to share feelings without fear of insult, judgement or rejection - and knowing conflict will be repaired."
+    ]
+   ],
+   "related": [
+    "not-every-silence-needs-an-explanation",
+    "you-are-not-a-backup-plan"
+   ]
+  },
+  "peacekeeping-is-not-peace": {
+   "cat": "boundaries",
+   "title": "Peacekeeping Is Not Peace: Stop Being the Family's Shock Absorber",
+   "desc": "Keeping everyone comfortable by disappearing is not harmony. Shashi Pallava, life and relationship coach, on real peace that includes you.",
+   "steps": [
+    "Notice one moment this week where you stay silent only to keep the peace.",
+    "Say one honest sentence instead - calmly, starting with “I”.",
+    "Notice that the room survives your voice."
+   ],
+   "faq": [
+    [
+     "Is avoiding conflict the same as keeping the peace?",
+     "No. Avoiding conflict by silencing yourself only moves the cost onto you. Real peace includes your needs too."
+    ],
+    [
+     "How do I stop being the family's shock absorber?",
+     "Start small: share one feeling, set one boundary, and let others hold some of the discomfort instead of you."
+    ]
+   ],
+   "related": [
+    "a-boundary-is-not-a-punishment",
+    "you-are-not-responsible-for-how-everyone-feels-about-your-honesty"
+   ]
+  },
+  "stop-calling-it-rejection-its-redirection": {
+   "cat": "relationships",
+   "title": "Rejection or Redirection? How to Move On | Shashi Pallava",
+   "desc": "What hurts like rejection is often redirection - toward growth, peace and self-love. Shashi Pallava on moving on without blaming yourself.",
+   "steps": [
+    "Write what you lost - and let yourself feel it without rushing.",
+    "Next to it, write one thing this ending made space for.",
+    "Take one step towards that new space this week."
+   ],
+   "faq": [
+    [
+     "How do I stop taking rejection personally?",
+     "Remember that a “no” often says more about fit, timing or the other person's capacity than about your worth."
+    ],
+    [
+     "Is it okay to still feel hurt?",
+     "Yes. Seeing it as redirection doesn't mean skipping the pain. Feel it first; the new direction gets clearer after."
+    ]
+   ],
+   "related": [
+    "some-people-are-lessons",
+    "change-feels-like-loss-before-it-feels-like-freedom"
+   ]
+  },
+  "khud-ko-sambhalna-selfishness-nahi-hai": {
+   "cat": "healing",
+   "title": "Self-Care Is Self-Respect, Not Selfishness | Shashi Pallava",
+   "desc": "Apne liye time nikalna bhi self-respect hai. Life coach Shashi Pallava on why self-care is not selfish, and how to start small.",
+   "steps": [
+    "Choose one 20-minute slot this week that is only for you.",
+    "Put it in your calendar like any other promise.",
+    "When guilt comes, remind yourself: caring for myself helps me care for others."
+   ],
+   "faq": [
+    [
+     "Is self-care selfish?",
+     "No. Self-care keeps you well enough to show up for the people and the work you care about."
+    ],
+    [
+     "What counts as self-care?",
+     "Anything that genuinely restores you - rest, movement, quiet, a boundary, time with people who feel safe."
+    ]
+   ],
+   "related": [
+    "softness-is-not-weakness",
+    "a-boundary-is-not-a-punishment"
+   ]
+  },
+  "small-and-consistent-beats-big-and-occasional": {
+   "cat": "mindset",
+   "title": "Small and Consistent Beats Big and Occasional | Mindset",
+   "desc": "The version of you that you want is built in ordinary days, not one dramatic weekend. Mindset coach Shashi Pallava on small habits that last.",
+   "steps": [
+    "Pick one habit you want and shrink it to two minutes.",
+    "Attach it to something you already do every day.",
+    "Track it for seven days - never skip twice in a row."
+   ],
+   "faq": [
+    [
+     "Why do my big resolutions fail?",
+     "Big changes depend on motivation, which comes and goes. Small habits survive ordinary days."
+    ],
+    [
+     "How long does it take to build a habit?",
+     "It varies from person to person. Focus on showing up consistently rather than counting days."
+    ]
+   ],
+   "related": [
+    "why-me-keeps-you-stuck",
+    "you-are-allowed-to-change-the-rules"
+   ]
+  },
+  "green-flags-in-a-relationship": {
+   "cat": "relationships",
+   "title": "Green Flags in a Relationship: Signs of Healthy Love",
+   "desc": "Respect, emotional safety, consistency and repair after conflict. Relationship coach Shashi Pallava on the green flags that matter.",
+   "steps": [
+    "List the green flags you see in your closest relationship.",
+    "Notice which ones you also offer in return.",
+    "Appreciate one green flag out loud this week."
+   ],
+   "faq": [
+    [
+     "What are green flags in a relationship?",
+     "Respect, emotional safety, consistency, keeping small promises, staying calm in disagreement and repairing after conflict."
+    ],
+    [
+     "Does a healthy relationship have no fights?",
+     "No. Healthy couples still disagree - what matters is that they repair afterwards."
+    ]
+   ],
+   "related": [
+    "not-every-silence-needs-an-explanation",
+    "you-are-not-a-backup-plan"
+   ]
+  },
+  "you-dont-need-to-reopen-the-wound": {
+   "cat": "healing",
+   "title": "You Don't Need to Reopen the Wound to Prove It Hurt | Healing",
+   "desc": "You don't have to keep revisiting the pain to validate it. Life coach Shashi Pallava on healing that chooses not to go back.",
+   "steps": [
+    "Notice when you retell a painful story - and ask what you hope to get from retelling it.",
+    "Write the story once, fully, then close the notebook.",
+    "Replace one retelling with one kind act for yourself."
+   ],
+   "faq": [
+    [
+     "Is talking about past pain bad?",
+     "No. Speaking about pain can heal. The difference is between processing it and reliving it again and again without relief."
+    ],
+    [
+     "How do I stop reliving painful memories?",
+     "Start by noticing the trigger, then gently bring yourself back to the present. If memories overwhelm you, a trained professional can help."
+    ]
+   ],
+   "related": [
+    "your-body-kept-the-score",
+    "you-dont-have-to-keep-carrying-the-armor"
+   ]
+  },
+  "stop-shrinking-to-fit-rooms-you-have-outgrown": {
+   "cat": "mindset",
+   "title": "Stop Shrinking to Fit Rooms You Have Outgrown | Shashi Pallava",
+   "desc": "You don't need to become smaller to be accepted. Mindset coach Shashi Pallava on outgrowing spaces and choosing ones where you can grow.",
+   "steps": [
+    "Notice where you make yourself smaller - quieter, less ambitious, less visible.",
+    "Ask: who or what am I shrinking for?",
+    "Take up a little more space this week: speak up once, share one dream."
+   ],
+   "faq": [
+    [
+     "Why do I make myself smaller around others?",
+     "Often to stay accepted or avoid conflict. It works for a while, but it costs you your voice."
+    ],
+    [
+     "How do I know I've outgrown a space?",
+     "When staying requires you to shrink your needs, dreams or voice, the space may no longer fit who you are becoming."
+    ]
+   ],
+   "related": [
+    "you-are-not-a-backup-plan",
+    "you-are-allowed-to-change-the-rules"
+   ]
+  },
+  "missing-someone-is-not-a-reason-to-go-back": {
+   "cat": "relationships",
+   "title": "Missing Someone Is Not a Reason to Go Back | Shashi Pallava",
+   "desc": "Missing them is a feeling; going back is a decision. Relationship coach Shashi Pallava on choosing peace over an old wound.",
+   "steps": [
+    "When you miss them, write down what exactly you miss - the person, a feeling, or a memory.",
+    "Next to it, write why you left.",
+    "Do one thing that gives you that feeling in a healthier way."
+   ],
+   "faq": [
+    [
+     "Why do I miss someone who hurt me?",
+     "Because the mind remembers the good moments and the familiar. Missing them is natural; it doesn't mean the relationship was right."
+    ],
+    [
+     "How do I stop going back to an ex?",
+     "Treat missing as a feeling to sit with, not an instruction. Lean on friends, limit contact and remember why you chose peace."
+    ]
+   ],
+   "related": [
+    "some-people-are-lessons",
+    "change-feels-like-loss-before-it-feels-like-freedom"
+   ]
+  },
+  "everything-looks-fine-so-why-do-i-feel-empty": {
+   "cat": "healing",
+   "title": "Everything Looks Fine, So Why Do I Feel Empty? | Shashi Pallava",
+   "desc": "A good family, a stable career - and still something feels missing. Life coach Shashi Pallava on what that emptiness is telling you.",
+   "steps": [
+    "Write down what “fine” looks like in your life - and then what feels missing.",
+    "Notice which of your own needs or dreams you have not spoken of in a long time.",
+    "Share the feeling with one person you trust, or in a safe community."
+   ],
+   "faq": [
+    [
+     "Is it wrong to feel empty when life looks good?",
+     "No. Feeling empty is not ingratitude - it is a signal that something important to you is being left out."
+    ],
+    [
+     "When should I seek professional help for feeling empty?",
+     "If the emptiness lasts for weeks, affects your sleep, appetite or daily life, or comes with hopelessness, please speak to a doctor or mental health professional. Coaching is not a replacement for that care."
+    ]
+   ],
+   "related": [
+    "your-body-kept-the-score",
+    "softness-is-not-weakness"
+   ]
+  },
+  "you-cannot-step-into-a-new-chapter": {
+   "cat": "healing",
+   "title": "Start a New Chapter: Put Down the Old Pages | Shashi Pallava",
+   "desc": "You can't begin again while holding on to what's already over. Life coach Shashi Pallava on letting go of what doesn't belong in your next chapter.",
+   "steps": [
+    "List what you are still carrying from the last chapter - regrets, beliefs, other people's opinions.",
+    "Mark one thing that doesn't belong in your next chapter.",
+    "Decide one action that puts it down - a conversation, a goodbye, or simply a decision."
+   ],
+   "faq": [
+    [
+     "How do I let go of the past?",
+     "Letting go is less a single moment and more a daily choice not to pick the old weight up again. Start with one thing, not everything."
+    ],
+    [
+     "Does moving on mean forgetting?",
+     "No. You can honour what happened and still stop carrying it into every new day."
+    ]
+   ],
+   "related": [
+    "some-people-are-lessons",
+    "you-are-allowed-to-change-the-rules"
+   ]
+  },
+  "healthy-love-feels-like": {
+   "cat": "relationships",
+   "title": "Healthy Love Feels Like: Clarity, Consistency, Safety, Effort",
+   "desc": "Healthy love is clarity, consistency, emotional safety and effort from both sides. Relationship coach Shashi Pallava on what it really feels like.",
+   "steps": [
+    "Score your relationship from 1 to 5 on clarity, consistency, emotional safety and mutual effort.",
+    "Share the score that matters most with your partner - calmly, with one example.",
+    "Agree on one small action together."
+   ],
+   "faq": [
+    [
+     "What does healthy love feel like?",
+     "Clear, consistent, emotionally safe, and built by both people - calm more often than chaotic."
+    ],
+    [
+     "Is intense love the same as healthy love?",
+     "Not always. Intensity can feel exciting, but healthy love usually feels steady and safe."
+    ]
+   ],
+   "related": [
+    "not-every-silence-needs-an-explanation",
+    "you-are-not-a-backup-plan"
+   ]
+  },
+  "start-the-day-answering-to-yourself": {
+   "cat": "mindset",
+   "title": "Start Your Day Answering to Yourself | Mindset Coach for Women",
+   "desc": "What do I need? What do I feel? What matters? Mindset coach Shashi Pallava on a three-question morning check-in.",
+   "steps": [
+    "Before checking messages, write three answers: what do I need, what do I feel, what matters?",
+    "Pick one need and plan when you will meet it today.",
+    "At night, check in: did I keep that one promise to myself?"
+   ],
+   "faq": [
+    [
+     "What is a morning check-in?",
+     "A few quiet minutes to notice your needs, feelings and priorities before the world's demands arrive."
+    ],
+    [
+     "Why do I always put myself last?",
+     "Often because we learned that being good means being available to everyone first. Noticing that pattern is the first step to changing it."
+    ]
+   ],
+   "related": [
+    "you-are-allowed-to-change-the-rules",
+    "the-version-of-you-who-survived-deserves-thanks"
+   ]
+  },
+  "you-cannot-heal-in-the-environment-that-hurts-you": {
+   "cat": "healing",
+   "title": "You Can't Heal Where You Keep Getting Hurt | Shashi Pallava",
+   "desc": "Sometimes choosing peace means choosing distance. Life coach Shashi Pallava on healing when your environment keeps reopening the wound.",
+   "steps": [
+    "Notice which people, places or conversations reopen the same hurt.",
+    "Choose one kind of distance you can create - time, topics or space.",
+    "Fill that space with something that helps you heal."
+   ],
+   "faq": [
+    [
+     "Does choosing distance mean I don't love them?",
+     "No. Distance can protect a relationship as well as you - it gives the wound time to heal."
+    ],
+    [
+     "What if I can't leave the environment?",
+     "Then create small distances inside it: boundaries on topics, time for yourself, and support from people outside."
+    ]
+   ],
+   "related": [
+    "a-boundary-is-not-a-punishment",
+    "some-people-are-lessons"
+   ]
+  },
+  "the-child-inside-you-it-was-not-your-fault": {
+   "cat": "healing",
+   "title": "Inner Child Healing: It Was Not Your Fault | Shashi Pallava",
+   "desc": "The child inside you is still waiting to hear it was not your fault. Life coach Shashi Pallava on letting go of the weight of blame.",
+   "steps": [
+    "Find a childhood photo and look at it for a minute.",
+    "Say or write to her: “It was not your fault.”",
+    "Notice one belief you still carry from that time, and question it gently."
+   ],
+   "faq": [
+    [
+     "What is inner child healing?",
+     "Gently revisiting feelings and beliefs formed in childhood, and offering yourself the understanding you needed then."
+    ],
+    [
+     "Can coaching help with childhood trauma?",
+     "Coaching can help with present patterns. Deep childhood trauma is best worked through with a qualified therapist - Shashi will say so honestly if that is what you need."
+    ]
+   ],
+   "related": [
+    "the-version-of-you-who-survived-deserves-thanks",
+    "your-body-kept-the-score"
+   ]
+  },
+  "grief-is-love-with-nowhere-left-to-go": {
+   "cat": "healing",
+   "title": "Grief Is Love With Nowhere Left to Go | Shashi Pallava",
+   "desc": "When someone we love is gone, the love doesn't disappear - that gap is grief. Shashi Pallava on giving that love somewhere to go.",
+   "steps": [
+    "Give the love a place: write a letter to the person you miss.",
+    "Choose one small ritual in their memory - a song, a dish, a walk.",
+    "Let one trusted person know how you are really doing."
+   ],
+   "faq": [
+    [
+     "How long does grief last?",
+     "There is no fixed timeline. Grief often softens and returns in waves; be gentle with yourself."
+    ],
+    [
+     "When should I get help for grief?",
+     "If grief makes daily life very hard for a long time, or you feel hopeless, please reach out to a counsellor or doctor. In India, Tele-MANAS (14416) is free and available 24x7."
+    ]
+   ],
+   "related": [
+    "the-version-of-you-who-survived-deserves-thanks",
+    "your-body-kept-the-score"
+   ]
+  }
+ }
 }

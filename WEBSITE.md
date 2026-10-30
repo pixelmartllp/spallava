@@ -266,6 +266,19 @@ uploads each creative once as `ig-<id>-full.jpg`; re-running is safe. New
 posts are **written**, so they are never automatic: add the entry, show him the
 words, publish only after he says yes.
 
+**Daily posting is a scheduled batch, not automation** (owner's choice, 30
+Oct 2026). Nothing writes posts by itself. A batch of entries goes into
+`posts.json` with `publish_on` dates (plus their `seo.json` entries);
+`blog_sync.py --confirm` creates them as **drafts** dated 07:30 IST that day,
+`seo_sync.py --confirm` adds the SEO block, and only after he has read them
+`blog_sync.py --confirm --schedule` turns them into scheduled posts, which
+WordPress publishes one a day by itself. `blog_sync.py` never rewrites the
+content of a post that already exists - that would erase the SEO block.
+Related links in a batch point only at posts already live, so nothing links
+to a draft. Batch 2: 20 posts, 31 Oct to 19 Nov 2026. Instagram itself went
+quiet after 12 Oct, so later batches have to come from older captions (about
+20 unused remain) or new material from him.
+
 ## 7a. SEO and GEO
 
 Asked for on 09 Oct 2026, keywords around **"Shashi Pallava - Life,

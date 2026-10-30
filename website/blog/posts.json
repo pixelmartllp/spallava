@@ -1,65 +1,341 @@
 {
-  "_comment": "Blog posts tied to Instagram creatives, published by website/tools/blog_sync.py. An entry with wp_id only attaches the creative to an existing post. The rest are whole posts: title and lead come from the creative and its caption (his own words), the paragraphs expand them in the blog's existing voice. The post is dated to the Instagram post.",
-  "posts": [
-    {"wp_id": 29, "ig": "18202931791340095", "note": "A boundary is not a punishment <- 'A boundary you do not enforce is just a wish'"},
-    {"wp_id": 30, "ig": "18032591405845663", "note": "You are not a backup plan <- 'You cannot love someone into respecting you'"},
-    {"wp_id": 31, "ig": "18134494279644851", "note": "Your body kept the score <- 'You are not the worst thing that was done to you'"},
-    {"wp_id": 32, "ig": "17958842679232501", "note": "Some people are lessons <- 'Leaving is not failing. Staying is not loyalty.'"},
-    {"wp_id": 33, "ig": "18010411757950501", "note": "Softness is not weakness <- 'Strong women need soft spaces too'"},
-    {"wp_id": 34, "ig": "17981466480088636", "note": "Not responsible for how everyone feels about your honesty <- 'the first No will feel like a crime'"},
-
-    {"ig": "18409718881089856", "slug": "you-dont-have-to-keep-carrying-the-armor",
-     "title": "You don’t have to keep carrying the armor",
-     "lead": "Fear can protect you from getting hurt — and also protect you from being truly alive.",
-     "paras": [
-       "Jo deewar aapne kabhi khud ko bachane ke liye banayi thi, wo galat nahi thi. Us waqt shayad wahi sahi tha — kisi pe zyada bharosa na karna, sab kuch akele sambhalna, har baat pehle se soch lena.",
-       "Lekin jo cheez past mein aapko protect karti thi, wahi aaj aapko rok bhi sakti hai. Armor chot se bachata hai — par kisi ko aapke kareeb bhi nahi aane deta.",
-       "Healing ka matlab armor phenk dena nahi hai. Healing hai ye pehchanna ki kab use utaarna safe hai — aur kis ke saamne."
-     ]},
-
-    {"ig": "18094460846445800", "slug": "change-feels-like-loss-before-it-feels-like-freedom",
-     "title": "Change feels like loss before it feels like freedom",
-     "lead": "Sometimes letting go is not losing yourself — it’s finally choosing yourself.",
-     "paras": [
-       "Expectations, people pleasing, “log kya kahenge” — inhe chhodna aasaan nahi lagta. Kyunki ye sirf aadatein nahi hain, saalon se ye aapki pehchaan ka hissa rahi hain.",
-       "Isliye jab aap badalna shuru karti hain, pehle azaadi nahi, khaali-pan mehsoos hota hai. Lagta hai kuch kho gaya hai.",
-       "Wo ehsaas galat nahi hai — wo bas beech ka raasta hai. Jo jagah khaali hui hai, wahi dheere-dheere aapki apni jagah banegi."
-     ]},
-
-    {"ig": "18099196313453236", "slug": "the-version-of-you-who-survived-deserves-thanks",
-     "title": "The version of you who survived deserves thanks, not judgement",
-     "lead": "Be proud of the woman who kept going.",
-     "paras": [
-       "Hum aksar apne purane version ko judge karte hain — “maine itna kyun saha?”, “pehle kyun nahi samjhi?”",
-       "Par us waqt aapke paas jitni samajh thi, jitni himmat thi, aapne usi se kaam chalaya. Aapne sirf survive nahi kiya — aapne khud ko sambhala, seekha aur grow kiya.",
-       "Aaj jo aap jaanti hain, wo usi ki wajah se jaanti hain. Use thoda credit dijiye. Wo deserve karti hai."
-     ]},
-
-    {"ig": "18594163528066837", "slug": "not-every-silence-needs-an-explanation",
-     "title": "Not every silence needs an explanation",
-     "lead": "Sometimes the healthiest thing you can do is stop assuming.",
-     "paras": [
-       "Message ka reply nahi aaya, aur dimaag kahaniyan banane lagta hai — “kya main enough nahi hoon?”, “kya wo naraz hai?”, “kya maine kuch galat kaha?”",
-       "Zyada tar baar silence ka matlab rejection nahi hota. Saamne wala thaka hua ho sakta hai, busy ho sakta hai, ya bas apne aap mein ho sakta hai.",
-       "Har chuppi ko assumptions se mat bhariye. Logon ko space dijiye — aur khud ko peace."
-     ]},
-
-    {"ig": "18187375057415564", "slug": "you-are-allowed-to-change-the-rules",
-     "title": "You are allowed to change the rules",
-     "lead": "What you believed years ago may not be what you need today.",
-     "paras": [
-       "“Achhi ladki aisa nahi karti.” “Pehle sabka khayal, phir apna.” Kuch rules humne tab maan liye the jab humare paas koi aur option nahi tha.",
-       "Wo rules us waqt survive karne ke liye the. Par jo kabhi zaroori tha, zaroori nahi ki aaj bhi wahi aapke liye sahi ho.",
-       "Aap ab zyada jaanti hain. Aap grow kar chuki hain. Aap dobara choose kar sakti hain — aur alag choose kar sakti hain."
-     ]},
-
-    {"ig": "18047943935815408", "slug": "why-me-keeps-you-stuck",
-     "title": "“Why me?” keeps you stuck. “What now?” moves you forward",
-     "lead": "Life becomes lighter when you stop asking why it happened and start asking what you can do next.",
-     "paras": [
-       "“Mere saath hi kyun?” — ye sawaal bilkul natural hai. Dard mein sabse pehle yahi aata hai.",
-       "Mushkil tab hoti hai jab hum isi sawaal mein ruk jaate hain. Iska koi jawab nahi milta, aur hum wahin khade reh jaate hain.",
-       "“Ab kya?” ek chhota sa shift hai. Ye dard ko chhota nahi karta — bas aapka agla kadam aapke haath mein wapas de deta hai."
-     ]}
-  ]
+ "_comment": "Blog posts tied to Instagram creatives, published by website/tools/blog_sync.py. An entry with wp_id only attaches the creative to an existing post. The rest are whole posts: title and lead come from the creative and its caption (his own words), the paragraphs expand them in the blog's existing voice. The post is dated to the Instagram post.",
+ "posts": [
+  {
+   "wp_id": 29,
+   "ig": "18202931791340095",
+   "note": "A boundary is not a punishment <- 'A boundary you do not enforce is just a wish'"
+  },
+  {
+   "wp_id": 30,
+   "ig": "18032591405845663",
+   "note": "You are not a backup plan <- 'You cannot love someone into respecting you'"
+  },
+  {
+   "wp_id": 31,
+   "ig": "18134494279644851",
+   "note": "Your body kept the score <- 'You are not the worst thing that was done to you'"
+  },
+  {
+   "wp_id": 32,
+   "ig": "17958842679232501",
+   "note": "Some people are lessons <- 'Leaving is not failing. Staying is not loyalty.'"
+  },
+  {
+   "wp_id": 33,
+   "ig": "18010411757950501",
+   "note": "Softness is not weakness <- 'Strong women need soft spaces too'"
+  },
+  {
+   "wp_id": 34,
+   "ig": "17981466480088636",
+   "note": "Not responsible for how everyone feels about your honesty <- 'the first No will feel like a crime'"
+  },
+  {
+   "ig": "18409718881089856",
+   "slug": "you-dont-have-to-keep-carrying-the-armor",
+   "title": "You don’t have to keep carrying the armor",
+   "lead": "Fear can protect you from getting hurt — and also protect you from being truly alive.",
+   "paras": [
+    "Jo deewar aapne kabhi khud ko bachane ke liye banayi thi, wo galat nahi thi. Us waqt shayad wahi sahi tha — kisi pe zyada bharosa na karna, sab kuch akele sambhalna, har baat pehle se soch lena.",
+    "Lekin jo cheez past mein aapko protect karti thi, wahi aaj aapko rok bhi sakti hai. Armor chot se bachata hai — par kisi ko aapke kareeb bhi nahi aane deta.",
+    "Healing ka matlab armor phenk dena nahi hai. Healing hai ye pehchanna ki kab use utaarna safe hai — aur kis ke saamne."
+   ]
+  },
+  {
+   "ig": "18094460846445800",
+   "slug": "change-feels-like-loss-before-it-feels-like-freedom",
+   "title": "Change feels like loss before it feels like freedom",
+   "lead": "Sometimes letting go is not losing yourself — it’s finally choosing yourself.",
+   "paras": [
+    "Expectations, people pleasing, “log kya kahenge” — inhe chhodna aasaan nahi lagta. Kyunki ye sirf aadatein nahi hain, saalon se ye aapki pehchaan ka hissa rahi hain.",
+    "Isliye jab aap badalna shuru karti hain, pehle azaadi nahi, khaali-pan mehsoos hota hai. Lagta hai kuch kho gaya hai.",
+    "Wo ehsaas galat nahi hai — wo bas beech ka raasta hai. Jo jagah khaali hui hai, wahi dheere-dheere aapki apni jagah banegi."
+   ]
+  },
+  {
+   "ig": "18099196313453236",
+   "slug": "the-version-of-you-who-survived-deserves-thanks",
+   "title": "The version of you who survived deserves thanks, not judgement",
+   "lead": "Be proud of the woman who kept going.",
+   "paras": [
+    "Hum aksar apne purane version ko judge karte hain — “maine itna kyun saha?”, “pehle kyun nahi samjhi?”",
+    "Par us waqt aapke paas jitni samajh thi, jitni himmat thi, aapne usi se kaam chalaya. Aapne sirf survive nahi kiya — aapne khud ko sambhala, seekha aur grow kiya.",
+    "Aaj jo aap jaanti hain, wo usi ki wajah se jaanti hain. Use thoda credit dijiye. Wo deserve karti hai."
+   ]
+  },
+  {
+   "ig": "18594163528066837",
+   "slug": "not-every-silence-needs-an-explanation",
+   "title": "Not every silence needs an explanation",
+   "lead": "Sometimes the healthiest thing you can do is stop assuming.",
+   "paras": [
+    "Message ka reply nahi aaya, aur dimaag kahaniyan banane lagta hai — “kya main enough nahi hoon?”, “kya wo naraz hai?”, “kya maine kuch galat kaha?”",
+    "Zyada tar baar silence ka matlab rejection nahi hota. Saamne wala thaka hua ho sakta hai, busy ho sakta hai, ya bas apne aap mein ho sakta hai.",
+    "Har chuppi ko assumptions se mat bhariye. Logon ko space dijiye — aur khud ko peace."
+   ]
+  },
+  {
+   "ig": "18187375057415564",
+   "slug": "you-are-allowed-to-change-the-rules",
+   "title": "You are allowed to change the rules",
+   "lead": "What you believed years ago may not be what you need today.",
+   "paras": [
+    "“Achhi ladki aisa nahi karti.” “Pehle sabka khayal, phir apna.” Kuch rules humne tab maan liye the jab humare paas koi aur option nahi tha.",
+    "Wo rules us waqt survive karne ke liye the. Par jo kabhi zaroori tha, zaroori nahi ki aaj bhi wahi aapke liye sahi ho.",
+    "Aap ab zyada jaanti hain. Aap grow kar chuki hain. Aap dobara choose kar sakti hain — aur alag choose kar sakti hain."
+   ]
+  },
+  {
+   "ig": "18047943935815408",
+   "slug": "why-me-keeps-you-stuck",
+   "title": "“Why me?” keeps you stuck. “What now?” moves you forward",
+   "lead": "Life becomes lighter when you stop asking why it happened and start asking what you can do next.",
+   "paras": [
+    "“Mere saath hi kyun?” — ye sawaal bilkul natural hai. Dard mein sabse pehle yahi aata hai.",
+    "Mushkil tab hoti hai jab hum isi sawaal mein ruk jaate hain. Iska koi jawab nahi milta, aur hum wahin khade reh jaate hain.",
+    "“Ab kya?” ek chhota sa shift hai. Ye dard ko chhota nahi karta — bas aapka agla kadam aapke haath mein wapas de deta hai."
+   ]
+  },
+  {
+   "ig": "18102647912638544",
+   "slug": "like-a-butterfly-leave-the-cocoon-behind",
+   "title": "Like a butterfly, you have to leave the cocoon behind",
+   "lead": "Growth begins when you dare to leave what once felt safe.",
+   "paras": [
+    "Cocoon butterfly ki dushman nahi thi. Wahi jagah thi jahan woh surakshit rahi, jahan uska badalna shuru hua.",
+    "Hamari zindagi mein bhi kuch aadatein, rishte aur soch aisi hi hoti hain — ek waqt par unhone humein bachaya. Par jo jagah kabhi safe thi, zaroori nahi ki aaj bhi wahi aapke liye sahi ho.",
+    "Bahar nikalna dar lagta hai, kyunki naya abhi jaana-pehchana nahi hai. Khud par bharosa rakhiye, aur us zindagi ke liye jagah banaiye jiski aap hakdaar hain."
+   ],
+   "publish_on": "2026-10-31"
+  },
+  {
+   "ig": "18096656045384931",
+   "slug": "you-are-not-too-much",
+   "title": "You are not too much",
+   "lead": "Sometimes you simply gave your heart to someone who didn’t have the capacity to give the same in return.",
+   "paras": [
+    "“Main zyada expect karti hoon.” “Shayad main hi too much hoon.” Ek adhoore rishte ke baad hum aksar khud ko hi chhota kar lete hain.",
+    "Kabhi-kabhi baat aapki zaroorton ki nahi hoti, saamne wale ki kshamta ki hoti hai. Pyaar, dhyaan aur izzat chahna “too much” nahi hai.",
+    "Kisi aur ki seemaon mein fit hone ke liye khud ko kabhi chhota mat kijiye."
+   ],
+   "publish_on": "2026-11-01"
+  },
+  {
+   "ig": "18137855320626309",
+   "slug": "protect-the-first-hour",
+   "title": "Protect the first hour",
+   "lead": "Your first hour is not selfish. It’s self-leadership.",
+   "paras": [
+    "Aap din kaise shuru karti hain, aksar wahi tay karta hai ki baaki din aap kaise jeeti hain.",
+    "Aankh khulte hi phone, sabke messages, sabki zarooratein — aur khud ki baari aate-aate din khatam ho jaata hai.",
+    "Pehla ghanta apne liye rakhiye: thoda paani, thodi saans, thoda likhna. Baaki sab us bache hue waqt mein adjust ho jaata hai — aur aap zyada shaant hokar sabke liye maujood hoti hain."
+   ],
+   "publish_on": "2026-11-02"
+  },
+  {
+   "ig": "18108139973597209",
+   "slug": "healing-is-not-becoming-someone-new",
+   "title": "Healing is not becoming someone new",
+   "lead": "It’s returning to yourself.",
+   "paras": [
+    "Kabhi-kabhi life ke anubhavon ke baad hum apni hi needs, sapno aur pehchaan se door ho jaate hain.",
+    "Healing ka matlab perfect banna nahi hai. Iska matlab hai dheere-dheere us insaan se dobara judna jo aap thi — us se pehle jab aapne maan liya tha ki aapko koi aur banna padega.",
+    "Aapko naya banne ki zaroorat nahi. Bas khud ke paas wapas aana hai."
+   ],
+   "publish_on": "2026-11-03"
+  },
+  {
+   "ig": "18635609485050763",
+   "slug": "love-is-not-enough-on-its-own",
+   "title": "Love is not enough on its own",
+   "lead": "Healthy relationships need respect, effort, trust and emotional safety.",
+   "paras": [
+    "Hum maan lete hain ki agar pyaar hai, toh sab theek ho jayega. Par pyaar ek beej hai — use paudha banne ke liye roz paani chahiye.",
+    "Izzat, koshish, bharosa aur emotional safety — yahi woh paani hai. Inke bina sabse gehra pyaar bhi sookhne lagta hai.",
+    "Pyaar tabhi khoobsurat hai, jab dono use nurture karein."
+   ],
+   "publish_on": "2026-11-04"
+  },
+  {
+   "ig": "18107083025337218",
+   "slug": "peacekeeping-is-not-peace",
+   "title": "Peacekeeping is not peace",
+   "lead": "Keeping everyone comfortable by disappearing is not harmony. It is a quiet form of absence.",
+   "paras": [
+    "Ghar mein sab khush rahein, isliye aap chup reh jaati hain. Har jhagde ko aap apne andar sokh leti hain — family ki “shock absorber”.",
+    "Bahar se lagta hai sab shaant hai. Par jis shaanti mein aap khud hi gayab hain, woh peace nahi, peacekeeping hai — aur uski keemat aap chuka rahi hain.",
+    "Asli shaanti mein aap bhi kamre mein maujood hoti hain — apni awaaz aur apni zaroorton ke saath."
+   ],
+   "publish_on": "2026-11-05"
+  },
+  {
+   "ig": "17935485258391023",
+   "slug": "stop-calling-it-rejection-its-redirection",
+   "title": "Stop calling it rejection — sometimes it’s redirection",
+   "lead": "What didn’t work out may be making space for what will.",
+   "paras": [
+    "Jab koi rishta, naukri ya mauka haath se nikal jaata hai, dil kehta hai — “main kaafi nahi thi.”",
+    "Par jo dard rejection jaisa lagta hai, woh kai baar ek mod hota hai — growth, peace, self-love aur naye mauko ki taraf.",
+    "Dard ko maaniye, use jaldi se positive mat banaiye. Phir ek sawaal poochhiye: is band darwaaze ne meri zindagi mein kis cheez ke liye jagah banayi hai?"
+   ],
+   "publish_on": "2026-11-06"
+  },
+  {
+   "ig": "18087427661254293",
+   "slug": "khud-ko-sambhalna-selfishness-nahi-hai",
+   "title": "Khud ko sambhalna selfishness nahi hai",
+   "lead": "Apne liye time nikalna bhi self-respect hai.",
+   "paras": [
+    "Hum mein se kai women ko sikhaya gaya ki apne liye waqt nikalna swaarth hai — pehle sab, phir main.",
+    "Par jab aap apna khayal rakhti hain, aap Bhagwan ki sabse khoobsurat rachna ka khayal rakh rahi hoti hain — aur phir har us cheez ke liye behtar maujood hoti hain jo aapke liye maayne rakhti hai.",
+    "Exercise, neend, ek shaant cup chai, ek “nahi” — self-care inhi chhoti chhoti cheezon se banta hai."
+   ],
+   "publish_on": "2026-11-07"
+  },
+  {
+   "ig": "17991959294843104",
+   "slug": "small-and-consistent-beats-big-and-occasional",
+   "title": "Small and consistent beats big and occasional",
+   "lead": "The version of you that you want is not built in one dramatic weekend. It is built in unremarkable Tuesdays.",
+   "paras": [
+    "Hum badlav ko ek bade din ki tarah dekhte hain — naya saal, naya Monday, ek dramatic decision.",
+    "Par asli badlav saadharan dinon mein hota hai — jab kuch khaas nahi ho raha, phir bhi aap apna chhota sa vaada nibhaati hain.",
+    "Aadat ka sabse chhota version chuniye aur use pakad ke rakhiye. Aapka sabse chhota agla kadam kya hai?"
+   ],
+   "publish_on": "2026-11-08"
+  },
+  {
+   "ig": "18108108602591765",
+   "slug": "green-flags-in-a-relationship",
+   "title": "Green flags to look for in a relationship",
+   "lead": "Not every healthy relationship is perfect.",
+   "paras": [
+    "Hum red flags pehchaanna seekh lete hain, par green flags ke baare mein kam sochte hain.",
+    "Asli green flags: izzat, emotional safety, consistency, aur jhagde ke baad rishta jodne ki koshish. Chhote vaade nibhaana, aur asehmati mein bhi shaant rehna.",
+    "Aisa rishta chuniye jahan shaanti naturally mehsoos ho — kabhi-kabhi nahi."
+   ],
+   "publish_on": "2026-11-09"
+  },
+  {
+   "ig": "18092553956246664",
+   "slug": "you-dont-need-to-reopen-the-wound",
+   "title": "You don’t need to reopen the wound to prove it hurt",
+   "lead": "You already know what you went through.",
+   "paras": [
+    "Kabhi-kabhi hum dard ko baar-baar yaad karte hain, sunaate hain, dohraate hain — jaise uske bina koi maanega hi nahi ki humein chot lagi thi.",
+    "Aapka anubhav sach tha, chahe aap use roz na dohraayein. Use sach saabit karne ke liye ghaav ko khula rakhna zaroori nahi.",
+    "Healing ka matlab yeh bhi ho sakta hai — wapas na jaana. Kahani ko yaad rakhiye, par usme rehna band kijiye."
+   ],
+   "publish_on": "2026-11-10"
+  },
+  {
+   "ig": "18133649959642680",
+   "slug": "stop-shrinking-to-fit-rooms-you-have-outgrown",
+   "title": "Stop shrinking to fit rooms you have already outgrown",
+   "lead": "You don’t need to become smaller to be accepted.",
+   "paras": [
+    "Kabhi-kabhi hum acceptance ke liye apni needs, sapne aur awaaz chhoti kar dete hain.",
+    "Par jo jagah aapko chhota karke hi rakh sakti hai, woh aapki jagah nahi rahi.",
+    "Agar koi space aapki growth ko limit kar raha hai, shayad waqt hai aisi jagah chunne ka jahan aap badh sakein, saans le sakein aur khud ho sakein."
+   ],
+   "publish_on": "2026-11-11"
+  },
+  {
+   "ig": "18119520895915665",
+   "slug": "missing-someone-is-not-a-reason-to-go-back",
+   "title": "Missing someone is not a reason to go back",
+   "lead": "Missing them is a feeling. Going back is a decision.",
+   "paras": [
+    "Kabhi-kabhi hum kisi ko miss karte hain, lekin iska matlab yeh nahi ki humein wahi rishta ya wahi situation wapas chahiye.",
+    "Aap yaadon ko miss kar sakti hain, aur phir bhi apni peace chun sakti hain.",
+    "Woh chuniye jo aapki peace ko bachaaye — woh nahi jo purana ghaav phir se khol de. Kuch chapters band hone ke liye hote hain, dohraane ke liye nahi."
+   ],
+   "publish_on": "2026-11-12"
+  },
+  {
+   "ig": "17909109999540091",
+   "slug": "everything-looks-fine-so-why-do-i-feel-empty",
+   "title": "Everything looks fine — so why do I still feel empty?",
+   "lead": "You don’t have to figure everything out alone.",
+   "paras": [
+    "Achha parivaar, stable career, achhe dost, aaram ki cheezein — sab kuch hai. Phir bhi andar kuch khaali sa lagta hai, aur hum is ehsaas ko “ungrateful” samajh kar dabaa dete hain.",
+    "Yeh khaalipan kamzori nahi, ek signal hai — ki kahin na kahin aap apni needs, apne sapno ya apni awaaz se door ho gayi hain.",
+    "Ise akele samajhna zaroori nahi. Sahi guidance, sachchi baatcheet aur ek supportive community se safar halka ho jaata hai. Agla chapter ek chhote faisle se shuru ho sakta hai — khud ko chunne se."
+   ],
+   "publish_on": "2026-11-13"
+  },
+  {
+   "ig": "18171654859457348",
+   "slug": "you-cannot-step-into-a-new-chapter",
+   "title": "You cannot step into a new chapter while holding on to the old one",
+   "lead": "Sometimes, moving forward simply means putting down what no longer belongs in your next chapter.",
+   "paras": [
+    "Purani galtiyan, purane beliefs, toxic rishte, “log kya kahenge” — hum inhe ek bojh ki tarah saath le kar chalte rehte hain, aur phir sochte hain ki naya shuru kyun nahi ho raha.",
+    "Naye chapter mein kadam rakhne ke liye pehle haath khaali karne padte hain. Iska matlab purana bhool jaana nahi — bas use ab saath le kar na chalna.",
+    "Aaj ek cheez chuniye jo aapke agle chapter ka hissa nahi hai. Use dheere se neeche rakh dijiye."
+   ],
+   "publish_on": "2026-11-14"
+  },
+  {
+   "ig": "18141000286585805",
+   "slug": "healthy-love-feels-like",
+   "title": "Healthy love feels like…",
+   "lead": "Healthy love is not just saying “I love you”.",
+   "paras": [
+    "Clarity — mujhe pata hai main is rishte mein kahan khadi hoon. Consistency — baatein aur kaam kuch din nahi, roz ek jaise rehte hain.",
+    "Emotional safety — main apni feelings bina judge, insult ya reject hone ke dar ke keh sakti hoon. Mutual efforts — rishta ek insaan ke kandhon par nahi chalta.",
+    "Healthy love shor nahi karta, sukoon deta hai."
+   ],
+   "publish_on": "2026-11-15"
+  },
+  {
+   "ig": "18136356097711495",
+   "slug": "start-the-day-answering-to-yourself",
+   "title": "Start the day answering to yourself",
+   "lead": "A strong mindset begins when you stop leaving yourself last.",
+   "paras": [
+    "Hum din bhar sabke sawaalon ka jawab dete hain — ghar, kaam, phone. Par apne sawaalon ka jawab dena bhool jaate hain.",
+    "Teen sawaal kaafi hain: Aaj mujhe kya chahiye? Main kya mehsoos kar rahi hoon? Mere liye sach mein kya zaroori hai?",
+    "Jab aap pehle khud se baat karti hain, din aapka hota hai — warna din sabka hota hai, aur aap bas usme fit hoti rehti hain."
+   ],
+   "publish_on": "2026-11-16"
+  },
+  {
+   "ig": "18121897039924147",
+   "slug": "you-cannot-heal-in-the-environment-that-hurts-you",
+   "title": "You cannot heal in the environment that keeps hurting you",
+   "lead": "Sometimes, choosing peace means choosing distance.",
+   "paras": [
+    "Ek ghaav ko bharne ke liye use baar-baar chhoona band karna padta hai. Mann ke ghaav bhi aise hi hote hain.",
+    "Agar wahi log, wahi baatein, wahi mahaul har baar chot ko taaza kar dete hain, toh sirf “strong” rehne se healing nahi hogi.",
+    "Doori hamesha rishta todna nahi hoti. Kam milna, kuch topics par baat na karna, apne liye alag jagah banana — yeh bhi doori hai. Peace chuniye. Behtar chuniye. Khud ko chuniye."
+   ],
+   "publish_on": "2026-11-17"
+  },
+  {
+   "ig": "17922636549203847",
+   "slug": "the-child-inside-you-it-was-not-your-fault",
+   "title": "The child inside you is still waiting to hear: it was not your fault",
+   "lead": "Healing begins with a powerful affirmation: “I am free from the weight of blame.”",
+   "paras": [
+    "Bachpan mein jo hua, uska bojh kai baar hum badi umar tak uthate rehte hain — jaise galti hamari hi thi.",
+    "Aapke andar ki woh chhoti bachchi abhi bhi masoomiyat se chamakti hai. Use bas woh sunna hai jo shayad kisi ne kabhi kaha nahi: “yeh tumhari galti nahi thi.”",
+    "Aaj use yeh khud kahiye. Healing wahin se shuru hoti hai jahan blame khatam hota hai."
+   ],
+   "publish_on": "2026-11-18"
+  },
+  {
+   "ig": "17861653224693505",
+   "slug": "grief-is-love-with-nowhere-left-to-go",
+   "title": "Grief is love with nowhere left to go",
+   "lead": "When someone we deeply love is no longer with us, the love doesn’t simply disappear.",
+   "paras": [
+    "Hum ab bhi unse baat karna chahte hain, unka khayal rakhna chahte hain, unke saath cheezein baantna chahte hain.",
+    "Jo pyaar hum ab bhi mehsoos karte hain aur jo insaan ab pahunch se door hai — un dono ke beech ki khaali jagah ko hi grief kehte hain.",
+    "Grief koi problem nahi jise jaldi solve karna hai. Woh pyaar hi hai, bas ab naya roop dhoondh raha hai — ek yaad, ek rasm, unke naam par ek kaam."
+   ],
+   "publish_on": "2026-11-19"
+  }
+ ]
 }

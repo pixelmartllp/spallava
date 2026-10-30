@@ -88,7 +88,8 @@ def main() -> int:
                 print(f"  note: {slug} {k} is {len(s[k])} chars (aim {n})")
 
     wp = WP()
-    posts = wp.call("/wp-json/wp/v2/posts?per_page=100&context=edit"
+    # drafts and scheduled posts too, so a batch gets its SEO before it goes out
+    posts = wp.call("/wp-json/wp/v2/posts?per_page=100&context=edit&status=publish,future,draft"
                     "&_fields=id,slug,title,content,featured_media")
     by_slug = {p["slug"]: p for p in posts}
     missing = [s for s in data["posts"] if s not in by_slug]
