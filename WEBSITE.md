@@ -275,7 +275,9 @@ Oct 2026). Nothing writes posts by itself. A batch of entries goes into
 WordPress publishes one a day by itself. `blog_sync.py` never rewrites the
 content of a post that already exists - that would erase the SEO block.
 Related links in a batch point only at posts already live, so nothing links
-to a draft. Batch 2: 20 posts, 31 Oct to 19 Nov 2026. Instagram itself went
+to a draft. Batch 2: 20 posts, approved and scheduled 30 Oct 2026, 31 Oct to 19 Nov at
+07:30 IST. WP-Cron only runs on a page load, so `.github/workflows/wp-cron.yml`
+loads `wp-cron.php` at 07:35 and 10:00 IST to publish on time on a quiet morning. Instagram itself went
 quiet after 12 Oct, so later batches have to come from older captions (about
 20 unused remain) or new material from him.
 

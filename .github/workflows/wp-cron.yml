@@ -1,0 +1,27 @@
+# Wake WordPress so scheduled blog posts go out on time.
+#
+# WordPress publishes a scheduled post from WP-Cron, which only runs when
+# someone loads the site. On a quiet morning the 07:30 IST post could wait for
+# the first visitor. This job loads wp-cron.php twice each morning; GitHub's
+# schedule can run late or skip a run, which is why there are two.
+# It changes nothing on the site by itself and needs no secrets.
+name: Wake WordPress for scheduled posts
+
+on:
+  schedule:
+    - cron: "5 2 * * *"    # 07:35 IST, just after the 07:30 post is due
+    - cron: "30 4 * * *"   # 10:00 IST, the backup
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load wp-cron.php
+        run: |
+          curl -sS -o /dev/null -w "wp-cron.php: %{http_code}\n" \
+            -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Safari/537.36" \
+            "https://shashipallava.com/wp-cron.php?doing_wp_cron"
