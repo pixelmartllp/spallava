@@ -76,7 +76,17 @@
   background:linear-gradient(135deg,var(--a-gold-hi),var(--a-gold));color:var(--a-on-gold)}
 .spa-form button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .spa-form[hidden]{display:none}
-/* chapter reader and teach form - cover the panel */
+/* chapter reader, teach form and the Talk to Shashi form - cover the panel */
+.spa-sw{display:flex;gap:6px;padding:4px;border-radius:12px;border:1px solid var(--a-line);background:var(--a-card)}
+.spa-sw button{flex:1;min-height:40px;border:0;border-radius:9px;background:transparent;color:var(--a-dim);font-family:inherit;
+  font-size:.8rem;font-weight:800;cursor:pointer}
+.spa-sw button.on{background:linear-gradient(135deg,var(--a-gold-hi),var(--a-gold));color:var(--a-on-gold)}
+.spa-tf .fld{display:flex;flex-direction:column;gap:6px}
+.spa-tf .fld[hidden]{display:none}
+.spa-cc{display:flex;gap:8px}
+.spa-tf .spa-cc select{flex:0 0 120px;width:120px;padding:11px 6px}
+.spa-tf .spa-cc input{flex:1;min-width:0}
+.spa-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .spa-reader{position:absolute;inset:0;z-index:5;display:none;flex-direction:column;background:var(--a-bg)}
 .spa-reader.on{display:flex}
 .spa-rh{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--a-line)}
@@ -121,13 +131,13 @@
   <div class="spa-panel" role="dialog" aria-label="Shashi's assistant">
     <div class="spa-head">
       <img src="https://shashipallava.com/wp-content/uploads/2026/09/shashi-pallava-headshot.jpg" alt="">
-      <div><p class="t">Shashi's Assistant<span class="badge">Admin</span></p><p class="s">Programs · Webinar · Brain Game</p></div>
+      <div><p class="t">RRR Agent<span class="badge">Admin</span></p><p class="s">Programs · 1:1 Booking · Brain Game</p></div>
       <div class="spa-hb"><button class="spa-end" type="button">End chat</button><button class="spa-x" type="button" aria-label="Close">&#10005;</button></div>
     </div>
     <div class="spa-log" aria-live="polite"></div>
     <div class="spa-quick" aria-label="Quick questions"></div>
     <form class="spa-form" autocomplete="off">
-      <input type="text" placeholder="Apna sawaal likhiye…" aria-label="Your question">
+      <input type="text" placeholder="Type your question…" aria-label="Your question">
       <button type="submit" aria-label="Send"><svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button>
     </form>
     <div class="spa-reader">
@@ -222,34 +232,53 @@
 
   /* ---------------- built-in answers ----------------
      Every fact here is Shashi's own, from FAQ.txt and the site.
-     Do not add anything she has not said. */
+     Do not add anything she has not said. Everything is in English; the
+     Hindi switch on the page translates it for anyone who wants Hindi. */
   var RRR = 'Revive, Rise ' + AMP + ' Relive';
   var A = {};
+  var MENU = function(){ return [
+    ['Book a 1:1 session', function(){ talk('book'); }, true],
+    ['Programs ' + AMP + ' fees', function(){ A.programs(); }],
+    ['Free webinar', function(){ A.webinar(); }],
+    ['Brain Game', function(){ playGame('game'); }]]; };
   A.hello = function(){
     if (isAdmin) {
-      bot(['**Admin mode.** Namaste Shashi!',
-        'Topic ka naam likhiye (jaise **Emotion**) — main uske saare headlines dikhaungi. Kisi par click kijiye, poora chapter khulega; webinar mein **Present** dabaiye.',
-        'Naya chapter sikhane ke liye neeche **＋ Teach** dabaiye.']);
+      bot(['**Admin mode.** Hi Shashi!',
+        'Type a topic (for example **Emotion**) and I will list every headline under it. Click one to open the full chapter; use **Full screen** during a webinar.',
+        'To teach me a new chapter, tap **＋ Teach** below.']);
       return;
     }
     bot(['Hi, I am your **RRR Agent**!']);
   };
+  A.greet = function(){
+    bot(['Hello! How can I help you today?',
+      'You can ask me about Shashi, her programs and fees, the free webinar, booking a 1:1 session, or the Brain Game and missions.'], MENU());
+  };
+  A.help = function(){
+    bot(['Here is what I can help with:',
+      '**Programs and fees** - the free webinar and the 6-month ' + RRR + ' program.',
+      '**Talk to Shashi** - request a call back or book a 1:1 session.',
+      '**Play ' + AMP + ' Grow** - the Brain Game, monthly missions and your points wallet.',
+      'Or just type your question.'], MENU());
+  };
   A.programs = function(){
-    bot(['Shashi ke saath shuru karne ke **do raste** hain:',
-      '**1. Live Webinar — Free.** Online, sabke liye. Dekhne ka sabse aasaan tareeka ki ye kaam karne ka tareeka aapke liye hai ya nahi.',
-      '**2. ' + RRR + ' — ₹999, 6 mahine.** Mindset, confidence, emotional well-being aur relationships par kaam: private WhatsApp community, interactive live webinars, Mentie Go par practical challenges aur missions, aur Shashi ke saath **ek personal 1:1 session**. 100% online, women aged 18 to 55 ke liye.'], [
-      ['Join the program', base + '#pay', true], ['Free webinar', base + '#register'], ['How do I pay?', function(){ A.price(); }]]);
+    bot(['There are **two ways** to begin with Shashi:',
+      '**1. Live Webinar - free.** Online and open to everyone. The easiest way to see whether this way of working is right for you.',
+      '**2. ' + RRR + ' - ₹999 for 6 months.** Work on your mindset, confidence, emotional well-being and relationships: a private WhatsApp community, interactive live webinars, practical challenges and missions on Mentie Go, and **one personal 1:1 session** with Shashi. 100% online, for women aged 18 to 55.',
+      'Want to go deeper? There are also Silver, Gold and Platinum memberships.'], [
+      ['Join the program', base + '#pay', true], ['Free webinar', base + '#register'], ['Memberships', '/membership/'], ['How do I pay?', function(){ A.price(); }]]);
   };
   A.price = function(){
-    bot(['**' + RRR + ': ₹999** — poore 6 mahine ke liye. Webinar bilkul **free** hai.',
-      'Payment UPI se: QR scan kijiye ya UPI ID **shashipallav@ybl** par ₹999 bhejiye, phir screenshot WhatsApp par bhejiye — Shashi khud aapko add karti hain.',
-      'Card aur netbanking jald aa rahe hain.'], [
+    bot(['**' + RRR + ': ₹999** for the full 6 months. The webinar is completely **free**.',
+      'Pay by UPI: scan the QR code or send ₹999 to the UPI ID **shashipallav@ybl**, then share the screenshot on WhatsApp - Shashi adds you herself.',
+      'Card and netbanking are coming soon. Memberships: Silver ₹9,999, Gold ₹49,999, Platinum ₹4,99,999.'], [
       ['Pay ₹999', base + '#pay', true],
-      ['Send screenshot', wa('Hi Shashi, I have paid 999 for Revive, Rise and Relive. Sending the screenshot now.')]]);
+      ['Send screenshot', wa('Hi Shashi, I have paid 999 for Revive, Rise and Relive. Sending the screenshot now.')],
+      ['Memberships', '/membership/']]);
   };
   A.webinar = function(){
-    var lines = ['**Free live webinar** — un women ke liye jo jaanti hain ki wo aur bhi kar sakti hain, par kahin stuck, overwhelmed ya confused mehsoos karti hain.',
-      'Mindset badalne, confidence badhane, emotions sambhalne aur healthier relationships ke simple, practical tareeke — aur apne sawaal seedhe Shashi se. “Aapko sirf motivation nahi, ek nayi direction milegi.”'];
+    var lines = ['**Free live webinar** - for women who know they are capable of more, but feel stuck, overwhelmed or confused somewhere.',
+      'You learn simple, practical ways to shift your mindset, build confidence, handle emotions and build healthier relationships - and you can ask Shashi your questions directly. You leave with a new direction, not just motivation.'];
     var acts = [['Register free', base + '#register', true]];
     fetch('/wp-json/wp/v2/pages?slug=webinar-details').then(function(r){ return r.json(); }).then(function(list){
       if (list) {
@@ -272,84 +301,252 @@
     }).catch(function(){ bot(lines, acts); });
   };
   A.therapy = function(){
-    bot(['**Nahi — coaching aur therapy alag hain.**',
-      'Coaching aapke present par kaam karti hai: thoughts, beliefs, patterns, communication aur relationships — aur sabse zaroori, aap aage kya alag kar sakti hain.',
-      'Ye mental health conditions ko diagnose ya treat karne ki jagah nahi hai, aur professional clinical care ki jagah kabhi nahi le sakti. Agar Shashi ko lage ki aapko clinical ya therapeutic support chahiye, wo aapko saaf-saaf batayengi aur sahi professional ki taraf guide karengi.',
-      '“Har problem ka solution coaching nahi hota — aur sahi help lena weakness nahi, wisdom hai.”']);
+    bot(['**No - coaching and therapy are different.**',
+      'Coaching works on your present: your thoughts, beliefs, patterns, communication and relationships - and above all, what you can do differently from here.',
+      'It is not a place to diagnose or treat mental health conditions, and it never replaces professional clinical care. If Shashi feels you need clinical or therapeutic support, she will tell you honestly and point you to the right professional.',
+      'Not every problem is solved by coaching - and asking for the right help is not weakness, it is wisdom.']);
   };
   A.language = function(){
-    bot(['Sessions **English, Hindi ya Hinglish** mein hote hain — jo aapko sabse natural lage.',
-      'Fluent hona zaroori nahi. Concepts English mein samajh aate hain par emotions Hindi mein nikalte hain? Hinglish bilkul theek hai.',
-      '“Jis bhasha mein dil khul kar baat ho sake, wahi sabse achhi language hai.”']);
+    bot(['Sessions run in **English, Hindi or Hinglish** - whichever feels most natural to you.',
+      'You do not need to be fluent. If ideas land better in English but feelings come out in Hindi, Hinglish is perfectly fine.',
+      'This website can also be read in Hindi - tap the **हिं** button at the top.']);
   };
   A.online = function(){
-    bot(['Poora program **100% online** hai — aap kahin se bhi judh sakti hain.',
-      'WhatsApp community, interactive webinars, aur Mentie Go par practical challenges aur missions. Na travel, na routine badalna.',
-      '“Bas judna hai, seekhna hai, aur khud ko step-by-step upgrade karna hai.”']);
+    bot(['Everything is **100% online**, so you can join from anywhere.',
+      'You connect through a WhatsApp community, interactive webinars, and practical challenges and missions on Mentie Go. No travel, no change to your routine.',
+      'Shashi is based in Chandigarh, Punjab, and coaches women across India.']);
   };
   A.who = function(){
-    bot(['Program **women aged 18 to 55** ke liye hai — homemaker, working professional, entrepreneur, student, mother, daughter, married, unmarried — ya bas zindagi ke kisi naye mod par.',
-      'Aapki growth aapke relationship status ya role se tay nahi hoti. “Aapki kahani alag ho sakti hai, par growth ka haq sabka hai.”',
-      'Free webinar sabke liye open hai.']);
+    bot(['The program is for **women aged 18 to 55** - homemakers, working professionals, entrepreneurs, students, mothers, daughters, married or unmarried - or anyone at a new turning point in life.',
+      'Your growth is not defined by your relationship status or your role. Your story may be different, but everyone deserves to grow.',
+      'The free webinar is open to everyone.']);
   };
   A.about = function(){
-    bot(['**Shashi Pallava** — Life, Relationship ' + AMP + ' Mindset Coach.',
-      'Wo un women ke saath kaam karti hain jo khud ko khoye bina grow karna chahti hain. Sessions mein coaching conversations, practical mindset tools, communication techniques aur NLP-based approach.',
-      '**4+ years practice · NLP-based approach · Life Coaching Certified (Alison)**',
-      'Coaching ka matlab “aapko kya karna chahiye” batana nahi — ek safe space hai jahan aap khud dekh sakein ki aap kya mehsoos karti hain, kyun react karti hain, aur asal mein kya chahti hain.'], [
-      ['About Shashi', base + '#about']]);
+    bot(['**Shashi Pallava** - Life, Relationship ' + AMP + ' Mindset Coach, Mindset Mentor and Entrepreneur, based in Chandigarh, Punjab.',
+      'She works with women who want to grow without losing themselves in the process. Sessions combine coaching conversations, practical mindset tools and communication techniques.',
+      '**Certified Life Coach**',
+      'Coaching with her is not about being told what to do - it is a safe space to see for yourself what you feel, why you react the way you do, and what you really want.'], [
+      ['About Shashi', '/about-shashi-pallava/'], ['Talk to Shashi', function(){ talk('call'); }, true]]);
   };
   A.contact = function(){
-    bot(['Seedha Shashi se baat kijiye:',
-      '**WhatsApp:** +91 98767 32099', '**Email:** shashipallava@gmail.com',
-      '**Instagram / Facebook:** @ShashiPallava'], [
-      ['WhatsApp Shashi', wa('Hi Shashi, I found you on your website.'), true],
-      ['Instagram', 'https://www.instagram.com/ShashiPallava']]);
+    bot(['Happy to connect you with Shashi. Leave your details and she will get back to you personally.',
+      'Choose a **call back**, or **book a 1:1 session** for a date that suits you.'], [
+      ['Book a 1:1 session', function(){ talk('book'); }, true],
+      ['Request a call back', function(){ talk('call'); }]]);
   };
+  A.book = function(){ talk('book'); };
   A.community = function(){
-    bot(['Shashi ki **WhatsApp community** — women jo personal development ko sirf padhti nahi, practise karti hain. Roz ek thought, aur saath chalne wali women.'], [
+    bot(['Shashi\'s **WhatsApp community** - women who practise personal development, not just read about it. One thought every morning, and women walking the same road.'], [
       ['Join the community', COMMUNITY, true]]);
   };
   A.blog = function(){
-    bot(['Blog par boundaries, self-worth, healing aur mindset par chhote reads hain — har ek do minute ka, practical steps ke saath.'], [
+    bot(['The blog has short reads on boundaries, self-worth, healing and mindset - two minutes each, with practical steps.'], [
       ['Read the blog', '/blog/', true]]);
   };
   A.crisis = function(){
-    bot(['Aap jo mehsoos kar rahi hain, wo important hai — aur aapko akele nahi jhelna chahiye.',
-      'Agar aap khud ko nuksaan pahunchane ka soch rahi hain, **abhi kisi se baat kijiye**: India mein **Tele-MANAS 14416** (24x7, free, kai bhashaon mein). Turant khatre mein **112** dial kijiye.',
-      'Coaching is waqt ki sahi madad nahi hai — kisi trained professional ya bharosemand insaan se abhi baat kijiye.']);
+    bot(['What you are feeling matters - and you should not have to carry it alone.',
+      'If you are thinking about harming yourself, **please talk to someone now**: in India call **Tele-MANAS 14416** (24x7, free, many languages). In immediate danger, dial **112**.',
+      'Coaching is not the right help for this moment - please reach a trained professional or someone you trust right now.']);
   };
-  A.thanks = function(){ bot(['Aapka swagat hai! Kuch aur poochhna ho to yahin hoon.']); };
+  /* feelings and coaching questions: be kind, point to what helps, and
+     bring up any blog posts on the same subject */
+  A.support = function(q){
+    bot(['Thank you for sharing that. What you are going through matters.',
+      'Shashi coaches women on exactly these things - mindset, confidence, emotions and relationships. The gentlest first step is the **free webinar**; if you want to talk about your situation personally, **book a 1:1 session**.'], [
+      ['Book a 1:1 session', function(){ talk('book'); }, true],
+      ['Free webinar', base + '#register'],
+      ['Is this therapy?', function(){ A.therapy(); }]]);
+    reads(q, 'These short reads may help:');
+  };
+  A.thanks = function(){ bot(['You are welcome! Anything else, I am right here.']); };
   A.unknown = function(q){
     if (isAdmin) {
-      bot(['Is par abhi kuch sikhaya nahi gaya hai.'], [['＋ Teach this', function(){ teach(q); }, true]]);
+      bot(['Nothing has been taught on this yet.'], [['＋ Teach this', function(){ teach(q); }, true]]);
       return;
     }
-    bot(['Is sawaal ka pakka jawab mere paas nahi hai — main sirf wahi batati hoon jo Shashi ne khud likha ya sikhaya hai.',
-      'Seedha Shashi se poochh lijiye, wo khud reply karti hain.'], [
-      ['Ask Shashi on WhatsApp', wa('Hi Shashi, ' + q), true]]);
+    reads(q, '', function(found){
+      if (found) { return; }
+      bot(['I do not have a ready answer for that - I only share what Shashi has written or taught me.',
+        'Shashi can answer it personally. Leave your details and she will get back to you.'], [
+        ['Talk to Shashi', function(){ talk('call'); }, true],
+        ['Programs ' + AMP + ' fees', function(){ A.programs(); }],
+        ['Free webinar', function(){ A.webinar(); }]]);
+    });
   };
+  /* blog posts on the same subject, from the site's own search */
+  function reads(q, intro, done){
+    var words2 = words(q).join(' ');
+    if (words2.length === 0) { if (done) { done(false); } return; }
+    fetch('/wp-json/wp/v2/search?subtype=post' + AMP + 'per_page=3' + AMP + 'search=' + encodeURIComponent(words2)).then(function(r){
+      return r.json();
+    }).then(function(list){
+      if (!Array.isArray(list)) { list = []; }
+      if (list.length === 0) { if (done) { done(false); } return; }
+      var acts = list.map(function(p){
+        var t = el('div');
+        t.innerHTML = p.title;
+        return [t.textContent + ' →', p.url];
+      });
+      if (done) {
+        bot(['Shashi has written about this:'], acts.concat([['Talk to Shashi', function(){ talk('call'); }]]));
+        done(true);
+        return;
+      }
+      bot([intro], acts);
+    }).catch(function(){ if (done) { done(false); } });
+  }
 
-  /* keyword intents - Hinglish and English, matched as whole words.
-     Crisis is checked first and always wins. */
+  /* ---------------- Talk to Shashi: call back or 1:1 booking ----------------
+     A form over the panel. It goes to /sp/v1/contact, which keeps the
+     request for the Admin tab and emails Shashi. */
+  var CODES = [['91', 'India'], ['1', 'USA / Canada'], ['44', 'UK'], ['971', 'UAE'], ['61', 'Australia'], ['65', 'Singapore'],
+    ['966', 'Saudi Arabia'], ['974', 'Qatar'], ['965', 'Kuwait'], ['968', 'Oman'], ['973', 'Bahrain'], ['64', 'New Zealand'],
+    ['977', 'Nepal'], ['880', 'Bangladesh'], ['94', 'Sri Lanka'], ['60', 'Malaysia'], ['852', 'Hong Kong'], ['49', 'Germany'],
+    ['33', 'France'], ['31', 'Netherlands'], ['353', 'Ireland'], ['39', 'Italy'], ['27', 'South Africa'], ['92', 'Pakistan']];
+  function pad(n){ return ('0' + n).slice(-2); }
+  function isoDay(d){ return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function talk(kind){
+    clearReader();
+    rbody.appendChild(el('p', 'tp', 'Talk to Shashi'));
+    var title = el('h2', 'hd', '');
+    rbody.appendChild(title);
+    var f = el('div', 'spa-tf');
+    var sw = el('div', 'spa-sw');
+    var tabs = {};
+    [['book', 'Book a 1:1 session'], ['call', 'Request a call back']].forEach(function(t){
+      var b = el('button', '', t[1]);
+      b.type = 'button';
+      b.addEventListener('click', function(){ setKind(t[0]); });
+      tabs[t[0]] = b;
+      sw.appendChild(b);
+    });
+    f.appendChild(sw);
+    function field(label, node, hint){
+      var wrapN = el('div', 'fld');
+      wrapN.appendChild(el('label', '', label));
+      wrapN.appendChild(node);
+      if (hint) { wrapN.appendChild(el('p', 'hint', hint)); }
+      f.appendChild(wrapN);
+      return wrapN;
+    }
+    var nm = el('input');
+    nm.autocomplete = 'name';
+    nm.placeholder = 'Your name';
+    field('Your name', nm);
+    var row = el('div', 'spa-cc');
+    var cc = el('select');
+    cc.setAttribute('aria-label', 'Country code');
+    CODES.forEach(function(c){ var o = el('option', '', '+' + c[0] + ' ' + c[1]); o.value = c[0]; cc.appendChild(o); });
+    var ph = el('input');
+    ph.type = 'tel';
+    ph.inputMode = 'numeric';
+    ph.autocomplete = 'tel-national';
+    ph.placeholder = 'Mobile / WhatsApp number';
+    row.appendChild(cc);
+    row.appendChild(ph);
+    field('Mobile / WhatsApp', row);
+    var em = el('input');
+    em.type = 'email';
+    em.autocomplete = 'email';
+    em.placeholder = 'you@example.com';
+    field('Email (optional)', em);
+    var tp = el('select');
+    ['1:1 coaching session', RRR + ' program', 'Membership', 'Something else'].forEach(function(t){ var o = el('option', '', t); o.value = t; tp.appendChild(o); });
+    field('What is it about?', tp);
+    var dt = el('input');
+    dt.type = 'date';
+    var today = new Date();
+    dt.min = isoDay(today);
+    var later = new Date(today.getTime() + 2 * 864e5);
+    dt.value = isoDay(later);
+    var dateF = field('Preferred date', dt);
+    var sl = el('select');
+    ['Morning (9 am - 12 pm)', 'Afternoon (12 - 4 pm)', 'Evening (4 - 8 pm)'].forEach(function(t){ var o = el('option', '', t); o.value = t; sl.appendChild(o); });
+    var slotF = field('Preferred time', sl, 'Shashi confirms the exact time with you.');
+    var ms = el('textarea');
+    ms.placeholder = 'Anything you would like Shashi to know (optional)';
+    ms.style.minHeight = '90px';
+    field('Message', ms);
+    var hp = el('input', 'spa-hp');
+    hp.tabIndex = -1;
+    hp.setAttribute('aria-hidden', 'true');
+    hp.autocomplete = 'off';
+    f.appendChild(hp);
+    var err = el('p', 'err');
+    f.appendChild(err);
+    var save = el('button', 'save', '');
+    save.type = 'button';
+    f.appendChild(save);
+    f.appendChild(el('p', 'hint', 'Your details go only to Shashi, to reach you about this request.'));
+    function setKind(k){
+      kind = k;
+      tabs.book.className = k === 'book' ? 'on' : '';
+      tabs.call.className = k === 'call' ? 'on' : '';
+      title.textContent = k === 'book' ? 'Book a 1:1 session' : 'Request a call back';
+      dateF.hidden = k !== 'book';
+      slotF.hidden = k !== 'book';
+      save.textContent = k === 'book' ? 'Send booking request' : 'Request a call back';
+      if (k === 'book') { tp.value = '1:1 coaching session'; }
+    }
+    setKind(kind === 'call' ? 'call' : 'book');
+    save.addEventListener('click', function(){
+      err.textContent = '';
+      if (nm.value.trim().length === Math.min(nm.value.trim().length, 1)) { err.textContent = 'Please enter your name.'; return; }
+      if (ph.value.replace(/\D/g, '').length === Math.min(ph.value.replace(/\D/g, '').length, 5)) { err.textContent = 'Please enter your mobile number.'; return; }
+      save.disabled = true;
+      var was = save.textContent;
+      save.textContent = 'Sending…';
+      var body = {kind: kind, name: nm.value.trim(), cc: cc.value, phone: ph.value.trim(), email: em.value.trim(),
+        topic: tp.value, message: ms.value.trim(), website: hp.value};
+      if (kind === 'book') { body.date = dt.value; body.slot = sl.value; }
+      var headers = {'Content-Type': 'application/json'};
+      if (nonce) { headers['X-WP-Nonce'] = nonce; }
+      fetch('/wp-json/sp/v1/contact', {method: 'POST', credentials: 'same-origin', headers: headers, body: JSON.stringify(body)}).then(function(r){
+        return r.json().then(function(j){ if (!r.ok) { throw new Error(j.message); } return j; });
+      }).then(function(j){
+        closeReader();
+        var first = body.name.split(' ')[0];
+        if (kind === 'book') {
+          bot(['Thank you, **' + first + '**! Your 1:1 booking request (**' + j.id + '**) has reached Shashi.',
+            'Preferred: ' + body.date + ', ' + body.slot + '. She will confirm the time with you on **+' + body.cc + ' ' + body.phone + '**.']);
+        } else {
+          bot(['Thank you, **' + first + '**! Your request (**' + j.id + '**) has reached Shashi.',
+            'She will get back to you on **+' + body.cc + ' ' + body.phone + '**.']);
+        }
+      }).catch(function(e){
+        save.disabled = false;
+        save.textContent = was;
+        err.textContent = e.message ? e.message : 'Could not send. Please try again.';
+      });
+    });
+    rbody.appendChild(f);
+    reader.classList.add('on');
+    nm.focus();
+  }
+
+  /* keyword intents - English and Hinglish, matched as whole words.
+     Crisis is checked first and always wins; on a tie the earlier one wins. */
   var INTENTS = [
-    ['crisis', ['suicide', 'suicidal', 'kill myself', 'end my life', 'self harm', 'khudkushi', 'marna chahti', 'mar jaun', 'jeena nahi']],
-    ['eq', ['eq', 'iq', 'test', 'quiz', 'game', 'games', 'brain', 'puzzle', 'puzzles', 'play', 'khel', 'level', 'levels']],
+    ['crisis', ['suicide', 'suicidal', 'kill myself', 'end my life', 'self harm', 'want to die', 'khudkushi', 'marna chahti', 'mar jaun', 'jeena nahi']],
+    ['book', ['book', 'booking', 'appointment', 'session', 'sessions', 'consultation', 'consult', 'slot', 'schedule', '1:1', 'one on one', 'one to one', 'personal session', 'meet shashi', 'call back', 'callback']],
+    ['eq', ['iq', 'test', 'quiz', 'game', 'games', 'brain', 'puzzle', 'puzzles', 'play', 'level', 'levels']],
     ['missions', ['mission', 'missions', 'challenge', 'challenges', 'weekly', 'task']],
-    ['wallet', ['wallet', 'points', 'point', 'redeem', 'membership', 'silver', 'gold', 'platinum', 'signup', 'sign up', 'account', 'login']],
-    ['price', ['price', 'fees', 'fee', 'cost', 'kitna', 'kitne', 'paisa', 'paise', 'charges', 'charge', '999', 'rupees', 'rs', 'pay', 'payment', 'upi', 'paid', 'qr']],
-    ['programs', ['program', 'programme', 'course', 'revive', 'rise', 'relive', 'package', 'plan', 'enroll', 'months', 'month', 'mahine', '1:1', 'one on one']],
-    ['webinar', ['webinar', 'live', 'free', 'date', 'time', 'kab', 'timing', 'register', 'registration', 'link']],
-    ['therapy', ['therapy', 'therapist', 'counselling', 'counseling', 'counsellor', 'depression', 'anxiety', 'mental', 'doctor', 'psychologist', 'psychiatrist', 'medicine']],
+    ['wallet', ['wallet', 'points', 'point', 'redeem', 'signup', 'sign up', 'account', 'login', 'log in', 'otp']],
+    ['price', ['price', 'prices', 'fees', 'fee', 'cost', 'kitna', 'kitne', 'charges', 'charge', '999', 'rupees', 'rs', 'pay', 'payment', 'upi', 'paid', 'qr', 'membership', 'silver', 'gold', 'platinum']],
+    ['programs', ['program', 'programs', 'programme', 'course', 'courses', 'revive', 'rise', 'relive', 'package', 'plan', 'plans', 'enroll', 'join', 'months', 'month', 'services', 'offer']],
+    ['webinar', ['webinar', 'live', 'free', 'date', 'time', 'timing', 'register', 'registration', 'link']],
+    ['therapy', ['therapy', 'therapist', 'counselling', 'counseling', 'counsellor', 'depression', 'mental', 'doctor', 'psychologist', 'psychiatrist', 'medicine']],
+    ['support', ['anxious', 'anxiety', 'stress', 'stressed', 'sad', 'lonely', 'alone', 'depressed', 'overthinking', 'overthink', 'angry', 'anger', 'hurt', 'confused', 'stuck', 'lost', 'tired', 'overwhelmed', 'breakup', 'divorce', 'marriage', 'husband', 'relationship', 'relationships', 'confidence', 'self worth', 'boundaries', 'boundary', 'cry', 'crying', 'fear', 'scared', 'guilt', 'coaching', 'help me', 'need help', 'problem', 'problems', 'feel', 'feeling']],
     ['language', ['language', 'hindi', 'english', 'hinglish', 'bhasha', 'punjabi']],
-    ['online', ['online', 'offline', 'in person', 'location', 'city', 'kahan', 'where', 'travel', 'zoom', 'mentie', 'chandigarh', 'address']],
-    ['who', ['who', 'married', 'unmarried', 'age', 'women', 'woman', 'men', 'man', 'male', 'husband', 'student', 'homemaker', 'housewife', 'mere liye', 'for me', 'eligible']],
-    ['about', ['shashi', 'about', 'coach', 'experience', 'certified', 'certificate', 'qualification', 'nlp', 'alison', 'background']],
-    ['community', ['community', 'group', 'members']],
-    ['contact', ['contact', 'whatsapp', 'number', 'call', 'email', 'phone', 'baat', 'talk', 'message', 'instagram', 'facebook']],
-    ['blog', ['blog', 'article', 'articles', 'post', 'posts']],
-    ['thanks', ['thanks', 'thank', 'shukriya', 'dhanyavad', 'ok', 'okay', 'great']],
-    ['hello', ['hi', 'hello', 'hey', 'namaste', 'namaskar', 'hii', 'helo']]
+    ['online', ['online', 'offline', 'in person', 'location', 'city', 'kahan', 'where', 'travel', 'zoom', 'mentie', 'chandigarh', 'punjab', 'address']],
+    ['about', ['shashi', 'about', 'who are you', 'experience', 'certified', 'certificate', 'qualification', 'alison', 'background', 'founder']],
+    ['who', ['married', 'unmarried', 'age', 'women', 'woman', 'men', 'man', 'male', 'student', 'homemaker', 'housewife', 'mere liye', 'for me', 'eligible']],
+    ['community', ['community', 'group', 'members', 'whatsapp group']],
+    ['contact', ['contact', 'whatsapp', 'number', 'call', 'email', 'phone', 'talk', 'speak', 'message', 'reach', 'instagram', 'facebook']],
+    ['blog', ['blog', 'article', 'articles', 'post', 'posts', 'read']],
+    ['help', ['help', 'what can you do', 'how can you help', 'options', 'menu', 'guide']],
+    ['thanks', ['thanks', 'thank', 'shukriya', 'dhanyavad', 'ok', 'okay', 'great', 'nice', 'cool']],
+    ['greet', ['hi', 'hello', 'hey', 'namaste', 'namaskar', 'hii', 'helo', 'good morning', 'good evening', 'good afternoon']]
   ];
   function norm(q){
     return ' ' + q.toLowerCase().replace(/[^a-z0-9:ऀ-ॿ ]+/g, ' ').replace(/ +/g, ' ').trim() + ' ';
@@ -481,7 +678,7 @@
     list.sort(function(a, b){ return a.head.localeCompare(b.head, undefined, {numeric: true}); });
     var word = ' headlines';
     if (list.length === 1) { word = ' headline'; }
-    headlines(list, '**' + name + '** — ' + list.length + word + '. Kisi par click kijiye:');
+    headlines(list, '**' + name + '** — ' + list.length + word + '. Click one to open it:');
   }
   function kbAnswer(hits){
     var top = hits[0].item;
@@ -551,7 +748,7 @@
   function teach(prefill){
     clearReader();
     rbody.appendChild(el('p', 'tp', 'Teach the assistant'));
-    rbody.appendChild(el('h2', 'hd', 'Naya chapter'));
+    rbody.appendChild(el('h2', 'hd', 'New chapter'));
     var f = el('div', 'spa-tf');
     function field(label, node, hint){
       f.appendChild(el('label', '', label));
@@ -566,19 +763,19 @@
     var tp = el('input');
     tp.setAttribute('list', 'spa-topics');
     tp.placeholder = 'Emotion';
-    field('Topic (shortcut)', tp, 'Webinar mein yahi likh kar saare headlines milenge.');
+    field('Topic (shortcut)', tp, 'Type this during a webinar to list every headline under it.');
     var hd = el('input');
-    hd.placeholder = 'Gussa kaise sambhalein';
+    hd.placeholder = 'How to handle anger';
     if (prefill) { hd.value = prefill; }
     field('Headline', hd);
     var kw = el('input');
-    kw.placeholder = 'gussa, anger, irritation';
-    field('Keywords', kw, 'Comma se alag. Users in shabdon se poochhenge to ye chapter milega.');
+    kw.placeholder = 'anger, irritation, temper';
+    field('Keywords', kw, 'Separated by commas. When people ask with these words, this chapter comes up.');
     var tx = el('textarea');
-    tx.placeholder = 'Poora chapter yahan likhiye ya paste kijiye. Khaali line se naya paragraph.';
+    tx.placeholder = 'Write or paste the full chapter here. A blank line starts a new paragraph.';
     field('Text', tx);
     var vis = el('select');
-    [['publish', 'Public — assistant visitors ko bhi bataye'], ['private', 'Only me — sirf admin mode / webinar notes']].forEach(function(o){
+    [['publish', 'Public — the assistant shares it with visitors'], ['private', 'Only me — admin mode and webinar notes only']].forEach(function(o){
       var op = el('option', '', o[1]);
       op.value = o[0];
       vis.appendChild(op);
@@ -592,10 +789,10 @@
       var topic = tp.value.trim();
       var head = hd.value.trim();
       var text = tx.value.trim();
-      if (topic.length === 0) { err.textContent = 'Topic likhiye.'; return; }
-      if (head.length === 0) { err.textContent = 'Headline likhiye.'; return; }
-      if (text.length === 0) { err.textContent = 'Text likhiye.'; return; }
-      if (topic.indexOf(':') !== -1) { err.textContent = 'Topic mein colon (:) mat lagaiye.'; return; }
+      if (topic.length === 0) { err.textContent = 'Please add a topic.'; return; }
+      if (head.length === 0) { err.textContent = 'Please add a headline.'; return; }
+      if (text.length === 0) { err.textContent = 'Please add the text.'; return; }
+      if (topic.indexOf(':') !== -1) { err.textContent = 'Please leave the colon (:) out of the topic.'; return; }
       err.textContent = '';
       save.disabled = true;
       save.textContent = 'Saving…';
@@ -613,13 +810,13 @@
         return loadKB().then(function(){
           var made = kb.filter(function(k){ return k.id === p.id; })[0];
           closeReader();
-          bot(['Seekh liya! **' + topic + ': ' + head + '** save ho gaya.']);
+          bot(['Learnt it! **' + topic + ': ' + head + '** is saved.']);
           if (made) { openChapter(made); }
         });
       }).catch(function(e){
         save.disabled = false;
         save.textContent = 'Save chapter';
-        err.textContent = 'Save nahi hua: ' + e.message;
+        err.textContent = 'Could not save: ' + e.message;
       });
     });
     f.appendChild(save);
@@ -646,7 +843,7 @@
         if (hits.length === 1) { openChapter(hits[0].item); return; }
         if (hits.length) {
           if (hits[0].s !== hits[1].s) {
-            headlines(list, 'Ye mile — sabse achha match khul gaya hai:');
+            headlines(list, 'Found these — the best match is open:');
             openChapter(hits[0].item);
             return;
           }
@@ -655,16 +852,16 @@
       if (hits.length) {
         /* admin always gets the list; for visitors a strong knowledge-base
            match beats a built-in answer */
-        if (isAdmin) { headlines(list, 'Ye mile — kisi par click kijiye:'); return; }
-        if (Math.min(hits[0].s, 6) === 6) { headlines(list, 'Ye mile — kisi par click kijiye:'); return; }
-        if (best === 0) { headlines(list, 'Ye mile — kisi par click kijiye:'); return; }
+        if (isAdmin) { headlines(list, 'Found these — click one to open it:'); return; }
+        if (Math.min(hits[0].s, 6) === 6) { headlines(list, 'Found these — click one to open it:'); return; }
+        if (best === 0) { headlines(list, 'Found these — click one to open it:'); return; }
       }
       if (best === 0) { A.unknown(q); return; }
       var name = INTENTS[scores.indexOf(best)][0];
       if (name === 'eq') { playGame('game'); return; }
       if (name === 'missions') { playGame('missions'); return; }
       if (name === 'wallet') { playGame('wallet'); return; }
-      A[name]();
+      A[name](q);
     });
   }
 
@@ -697,6 +894,7 @@
     chip('Programs ' + AMP + ' fees', A.programs);
     chip('Free webinar', A.webinar);
     chip('Is this therapy?', A.therapy);
+    chip('Book a 1:1 session', A.book);
     chip('Talk to Shashi', A.contact);
   }
 
@@ -706,7 +904,7 @@
      The assistant only opens it on the right tab. */
   function playGame(tab){
     if (window.SPGame) { close(); window.SPGame.open(tab); return; }
-    bot(['Game abhi load ho raha hai — ek pal mein dobara try kijiye.']);
+    bot(['The game is still loading — please try again in a moment.']);
   }
   function startTest(){ playGame('game'); }
   function endTest(){ testOn = false; }
@@ -724,7 +922,7 @@
       nonce = t;
       isAdmin = true;
       root.classList.add('admin');
-      sub.textContent = 'Admin mode · topic likhiye ya ＋ Teach';
+      sub.textContent = 'Admin mode · type a topic or ＋ Teach';
     }).catch(function(){});
   }
   function begin(){
@@ -803,7 +1001,7 @@
     }).then(function(){
       var hit = kb.filter(function(k){ return k.id === kbId; })[0];
       if (hit) { openChapter(hit); }
-      else { bot(['Ye chapter nahi mila — shayad private hai ya hata diya gaya.']); }
+      else { bot(['This chapter was not found — it may be private or removed.']); }
     });
   }
 })();

@@ -24,6 +24,32 @@
     return n;
   }
   function wa(text) { return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(text); }
+  /* country code picker + number, used by sign-up; India first */
+  var CC = [['91', 'India'], ['1', 'USA / Canada'], ['44', 'UK'], ['971', 'UAE'], ['61', 'Australia'], ['65', 'Singapore'],
+    ['966', 'Saudi Arabia'], ['974', 'Qatar'], ['965', 'Kuwait'], ['968', 'Oman'], ['973', 'Bahrain'], ['64', 'New Zealand'],
+    ['977', 'Nepal'], ['880', 'Bangladesh'], ['94', 'Sri Lanka'], ['60', 'Malaysia'], ['852', 'Hong Kong'], ['49', 'Germany'],
+    ['33', 'France'], ['31', 'Netherlands'], ['353', 'Ireland'], ['39', 'Italy'], ['27', 'South Africa'], ['92', 'Pakistan']];
+  function phoneField() {
+    var cc = h('select', { class: 'cc', 'aria-label': 'Country code' }, CC.map(function (c) { return h('option', { value: c[0], text: '+' + c[0] + ' ' + c[1] }); }));
+    var num = h('input', { type: 'tel', inputmode: 'numeric', autocomplete: 'tel-national', placeholder: 'Mobile number' });
+    return { cc: cc, num: num, row: h('div', { class: 'spg-cc' }, [cc, num]) };
+  }
+  /* the congratulations card: missions, and a level opening */
+  function congrats(title, line, points) {
+    var bits = h('div', { class: 'spg-cf', 'aria-hidden': 'true' });
+    for (var i = 0; i < 28; i++) bits.appendChild(h('i', { style: 'left:' + Math.round(Math.random() * 100) + '%;animation-delay:' + (Math.random() * 0.6).toFixed(2) + 's;background:' + ['#FBBD23', '#FFD666', '#3BA55C', '#E86A92', '#5B8DEF'][i % 5] }));
+    var card = h('div', { class: 'spg-cg', role: 'dialog', 'aria-label': 'Congratulations' }, [bits,
+      h('div', { class: 'in' }, [
+        h('p', { class: 'em', text: '🎉' }), h('h3', { text: 'Congratulations!' }), h('p', { class: 't', text: title }),
+        line ? h('p', { class: 'lede', text: line }) : null,
+        points ? h('p', { class: 'pts', text: '+' + points + ' ★ added to your wallet' }) : null,
+        h('button', { class: 'spg-btn', type: 'button', text: 'Continue', onclick: function () { card.remove(); } })])]);
+    root.appendChild(card);
+  }
+  function langButton() {
+    return h('button', { class: 'spg-lang', type: 'button', 'aria-label': 'Change language', text: window.SPLang ? window.SPLang.label() : 'हिं',
+      onclick: function () { if (window.SPLang) window.SPLang.toggle(); } });
+  }
   function when(t) { return new Date(t * 1000).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); }
 
   /* ---------------- api ---------------- */
@@ -59,7 +85,7 @@
       h('div', { class: 'spg-top' }, [
         h('img', { class: 'lgd', src: LOGO, alt: '' }), h('img', { class: 'lgl', src: LOGO_LIGHT, alt: '' }),
         h('div', null, [h('p', { class: 'ttl', text: 'Play & Grow' }), h('p', { class: 'sub', text: 'Brain Game · Missions · Wallet' })]),
-        pts,
+        pts, langButton(),
         h('button', { class: 'spg-x', type: 'button', 'aria-label': 'Close', text: '✕', onclick: close })
       ]),
       tabsBox, main
@@ -182,7 +208,8 @@
     state.track = track;
     loading();
     api('quiz?level=' + level + '&track=' + track).then(function (r) {
-      state.round = { level: level, track: track, qs: r.questions, i: 0, right: 0, won: 0, each: r.points_each };
+      state.round = { level: level, track: track, qs: r.questions, i: 0, right: 0, won: 0, each: r.points_each, streak: 0, best: 0,
+        wasOpen: trackProg(track).open };
       askQ();
     }).catch(failed);
   }
@@ -207,8 +234,8 @@
         api('answer', { id: q.id, choice: k }).then(function (res) {
           opts.children[res.answer].classList.add('ok');
           if (!res.correct) b.classList.add('bad');
-          if (res.correct) R.right++;
-          var line = res.correct ? 'Sahi jawab! 🎉' : 'Not quite.';
+          if (res.correct) { R.right++; R.streak++; R.best = Math.max(R.best, R.streak); } else R.streak = 0;
+          var line = res.correct ? (R.streak >= 3 ? 'Correct! 🔥 ' + R.streak + ' in a row' : 'Correct! 🎉') : 'Not quite.';
           if (res.awarded) { R.won += res.awarded; state.me.points = res.points; state.me.day_left = res.day_left; paintPoints(true); pop('+' + res.awarded + ' ★'); }
           if (res.progress) state.me.progress = res.progress;
           if (res.progress_mind) state.me.progress_mind = res.progress_mind;
@@ -226,7 +253,7 @@
     });
     wrap([
       h('div', { class: 'spg-qh' }, [h('span', { text: (R.track === 'mind' ? 'Mindset ' : 'Level ') + R.level + ' · Question ' + (R.i + 1) + ' of ' + R.qs.length }),
-        h('span', { text: state.me.logged_in ? (q.fresh ? '+' + R.each + ' ★ if right' : 'practice') : 'practice' })]),
+        h('span', { text: (R.streak >= 2 ? '🔥 ' + R.streak + ' · ' : '') + (state.me.logged_in ? (q.fresh ? '+' + R.each + ' ★ if right' : 'practice') : 'practice') })]),
       h('div', { class: 'spg-qbar' }, [h('i', { style: 'width:' + Math.round(R.i * 100 / R.qs.length) + '%' })]),
       h('p', { class: 'spg-q', text: q.q }),
       q.svg ? h('div', { class: 'spg-fig', html: q.svg }) : null,
@@ -243,6 +270,7 @@
       h('p', { class: 'eyebrow', text: 'Level ' + R.level + ' · round complete' }),
       h('p', { class: 'big', text: R.right + '/' + n }),
       h('p', { class: 'spg-stars', text: '★★★'.slice(0, stars) + '☆☆☆'.slice(0, 3 - stars) }),
+      R.best >= 3 ? h('p', { class: 'lede', text: 'Best streak: 🔥 ' + R.best + ' in a row' }) : null,
       h('p', { class: 'lede', text: state.me.logged_in ? (R.won ? 'You won ' + R.won + ' points this round.' : 'No new points this round.') : 'Create a free account to keep score and win points.' }),
       state.me.logged_in && !last ? h('p', { class: 'lede', text: nextOpen ? 'Level ' + (R.level + 1) + ' is open!' : (prog.correct[R.level] || 0) + ' of ' + prog.unlock + ' right answers needed to open Level ' + (R.level + 1) + '.' }) : null,
       h('div', { class: 'spg-row', style: 'justify-content:center' }, [
@@ -251,6 +279,9 @@
         h('button', { class: 'spg-btn ghost', type: 'button', text: 'All levels', onclick: function () { show('game'); } })
       ])
     ])]);
+    if (state.me.logged_in && prog.open > R.wasOpen) {
+      congrats((R.track === 'mind' ? 'Mindset ' : 'Level ') + prog.open + ' is now open', 'Harder questions, more points for each right answer.', R.won);
+    }
   }
 
   /* ---------------- Dashboard ---------------- */
@@ -271,8 +302,8 @@
     };
     wrap([
       h('p', { class: 'eyebrow', text: 'My Dashboard' }),
-      h('h2', { text: 'Namaste, ' + me.name.split(' ')[0] + ' 🌸' }),
-      h('p', { class: 'lede', text: since ? 'Member since ' + since : '' }),
+      h('h2', { text: 'Hi, ' + me.name.split(' ')[0] + ' 🌸' }),
+      h('p', { class: 'lede', text: (me.plan ? me.plan + ' member' + (me.plan_until ? ' till ' + me.plan_until : '') + ' · ' : '') + (since ? 'Joined ' + since : '') }),
       h('div', { class: 'spg-bal spg-sec' }, [
         h('p', { class: 'eyebrow', text: 'Wallet balance' }), h('p', { class: 'big', text: '★ ' + me.points }), h('p', { class: 'rs', text: '= ₹' + me.points }),
         h('p', { class: 'lede', style: 'margin-top:8px', text: me.points >= me.conf.min_redeem ? 'You can redeem now.' : (me.conf.min_redeem - me.points) + ' more points to your first redeem (from ' + me.conf.min_redeem + ').' }),
@@ -296,9 +327,14 @@
       var done = m.weeks.filter(function (w) { return w.done; }).length;
       var next = m.weeks.filter(function (w) { return w.open && !w.done; })[0];
       missionBox.appendChild(h('p', null, [h('b', { text: (m.theme || 'Missions') + (m.month ? ' · ' + m.month : '') })]));
+      if (!m.member) {
+        missionBox.appendChild(h('p', { class: 'lede', text: m.weeks.length + ' missions this month · open to paid members' }));
+        missionBox.appendChild(h('div', { class: 'spg-row' }, [h('button', { class: 'spg-btn ghost', type: 'button', text: 'See missions', onclick: function () { show('missions'); } })]));
+        return;
+      }
       missionBox.appendChild(h('p', { class: 'lede', text: done + ' of ' + m.weeks.length + ' missions done' }));
       missionBox.appendChild(h('div', { class: 'spg-row' }, [h('button', { class: next ? 'spg-btn' : 'spg-btn ghost', type: 'button',
-        text: next ? 'Next: ' + next.title + ' · +' + next.points + ' ★' : 'See missions', onclick: function () { show('missions'); } })]));
+        text: next ? 'Next: ' + next.label + ' · +' + next.points + ' ★' : 'See missions', onclick: function () { show('missions'); } })]));
     }).catch(function () { missionBox.textContent = ''; });
   }
 
@@ -311,44 +347,74 @@
       pill = h('a', { class: 'spg-pill', href: '#dashboard', title: 'My Dashboard · 1 point = ₹1' });
       var bar = document.querySelector('.sp .appbar');
       var nav = document.querySelector('.spb-bar nav');
-      if (bar) bar.insertBefore(pill, bar.querySelector('.themer'));
+      if (bar) bar.insertBefore(pill, bar.querySelector('.sp-lang') || bar.querySelector('.themer'));
       else if (nav) nav.insertBefore(pill, nav.firstChild);
       else return;
     }
     pill.textContent = '★ ' + state.me.points;
   }
 
-  /* ---------------- Missions ---------------- */
-  function viewMissions() {
+  /* ---------------- Missions ----------------
+     Everyone sees the Mission 1, 2, 3... buttons; what is inside comes from
+     the server only for paid members (the server also refuses to pay anyone else). */
+  function viewMissions(pick) {
     loading();
     api('missions').then(function (m) {
-      var list = h('div', { class: 'spg-ms' });
-      if (!m.weeks.length) list.appendChild(h('p', { class: 'lede', text: 'This month’s missions are coming soon.' }));
-      m.weeks.forEach(function (w) {
-        var card = h('div', { class: 'spg-card spg-m' + (w.open ? '' : ' lock') }, [
-          h('div', { class: 'top' }, [h('span', { class: 'wk', text: 'Week ' + w.week }), h('span', { class: 'pt', text: '+' + w.points + ' ★' })]),
-          h('h3', { text: w.title }), h('p', { class: 'd', text: w.desc })
-        ]);
+      var grid = h('div', { class: 'spg-mgrid' });
+      var detail = h('div', { class: 'spg-mdet' });
+      if (!m.weeks.length) grid.appendChild(h('p', { class: 'lede', text: 'This month’s missions are coming soon.' }));
+      function joinCard() {
+        detail.textContent = '';
+        detail.appendChild(h('div', { class: 'spg-card spg-join' }, [
+          h('p', { class: 'em', text: '🔒' }),
+          h('h3', { text: 'Missions are for paid members' }),
+          h('p', { class: 'lede', text: 'Join Revive, Rise & Relive or a Silver, Gold or Platinum membership to open every mission, and earn points each time you finish one.' }),
+          h('div', { class: 'spg-row', style: 'justify-content:center' }, [
+            h('a', { class: 'spg-btn', href: '/#pay', onclick: close, text: 'Join the program · ₹999' }),
+            h('a', { class: 'spg-btn ghost', href: '/membership/', text: 'See memberships' })]),
+          !state.me.logged_in ? h('p', { class: 'lede', style: 'margin-top:10px' }, ['Already a member? ', h('a', { href: '#', style: 'color:inherit;font-weight:800', text: 'Log in', onclick: function (e) { e.preventDefault(); show('account'); } })]) : null
+        ]));
+        detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      function openOne(w) {
+        Array.prototype.forEach.call(grid.children, function (b) { b.classList.toggle('on', b.dataset.id === w.id); });
+        if (w.locked) return joinCard();
+        detail.textContent = '';
+        var card = h('div', { class: 'spg-card spg-m' }, [
+          h('div', { class: 'top' }, [h('span', { class: 'wk', text: w.label }), h('span', { class: 'pt', text: '+' + w.points + ' ★' })]),
+          h('h3', { text: w.title }), h('p', { class: 'd', text: w.desc })]);
         if (w.done) card.appendChild(h('p', { class: 'st done', text: '✓ Completed' }));
         else if (!w.open) card.appendChild(h('p', { class: 'st', text: 'Opens on ' + w.opens + ' ' + (m.month || '').split(' ')[0] }));
-        else if (!state.me.logged_in) card.appendChild(h('div', { class: 'spg-row' }, [h('button', { class: 'spg-btn ghost', type: 'button', text: 'Log in to take part', onclick: function () { show('account'); } })]));
         else {
-          var ta = h('textarea', { placeholder: 'Kaisa raha? 2-3 line mein likhiye - aapne kya kiya aur kya mehsoos kiya.' });
+          var ta = h('textarea', { placeholder: 'How did it go? Write 2-3 lines about what you did and how it felt.' });
           var err = h('p', { class: 'err' });
-          var btn = h('button', { class: 'spg-btn', type: 'button', text: 'Mark done · +' + w.points + ' ★', onclick: function () {
+          var btn = h('button', { class: 'spg-btn', type: 'button', text: 'Mark complete · +' + w.points + ' ★', onclick: function () {
             btn.disabled = true; err.textContent = '';
             api('mission', { id: w.id, reflection: ta.value }).then(function (r) {
-              state.me.points = r.points; paintPoints(true); pop('+' + r.awarded + ' ★'); viewMissions();
+              state.me.points = r.points; paintPoints(true);
+              viewMissions(w.id);
+              congrats(w.label + ' complete', w.title, r.awarded);
             }).catch(function (e) { btn.disabled = false; err.textContent = e.message; });
           } });
           card.appendChild(ta); card.appendChild(err); card.appendChild(h('div', { class: 'spg-row' }, [btn]));
         }
-        list.appendChild(card);
+        detail.appendChild(card);
+        detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      m.weeks.forEach(function (w) {
+        var st = w.locked ? '🔒 Members' : w.done ? '✓ Done' : !w.open ? 'Opens ' + w.opens + ' ' + (m.month || '').split(' ')[0].slice(0, 3) : '+' + w.points + ' ★';
+        grid.appendChild(h('button', { type: 'button', class: 'spg-mb' + (w.done ? ' done' : '') + (w.locked || !w.open ? ' lock' : ''), 'data-id': w.id,
+          onclick: function () { openOne(w); } }, [h('span', { class: 'n', text: String(w.week) }), h('span', { class: 'l', text: w.label }), h('span', { class: 's', text: st })]));
       });
+      var done = m.weeks.filter(function (w) { return w.done; }).length;
       wrap([h('p', { class: 'eyebrow', text: 'Mission of the Month' + (m.month ? ' · ' + m.month : '') }),
         h('h2', { text: m.theme || 'Self-challenges' }),
-        h('p', { class: 'lede', text: 'One small mission every week. Do it, write a few honest lines about how it went, and earn points.' }),
-        list]);
+        h('p', { class: 'lede', text: m.member
+          ? 'One small mission every week. Do it, write a few honest lines about how it went, and earn points. ' + done + ' of ' + m.weeks.length + ' done.'
+          : 'One small mission every week for paid members. Finish one, and points go straight to your wallet.' }),
+        grid, detail]);
+      var first = m.weeks.filter(function (w) { return pick ? w.id === pick : (m.member && w.open && !w.done); })[0];
+      if (first) openOne(first);
     }).catch(failed);
   }
 
@@ -395,10 +461,95 @@
     ]);
   }
 
-  /* ---------------- Account ---------------- */
-  function viewAccount(mode) {
+  /* ---------------- Account ----------------
+     Passwordless: email -> 6-digit code -> (first time only) name and number. */
+  function signedIn(isNew) {
+    state.loggedIn = true; document.body.classList.add('logged-in');
+    return getNonce().then(loadMe).then(function () {
+      paintTabs(); show(isNew ? 'game' : 'home');
+      if (isNew) pop('Welcome! +' + state.me.conf.signup_bonus + ' ★');
+    });
+  }
+  function viewAccount(step) {
     var me = state.me;
     if (me.logged_in) {
+      return wrap([h('p', { class: 'eyebrow', text: 'Account' }), h('h2', { text: 'Hi, ' + me.name }),
+        h('p', { class: 'lede', text: me.email + (me.phone ? ' · ' + me.phone : '') }),
+        h('div', { class: 'spg-card spg-sec' }, [h('p', { class: 'eyebrow', text: 'Membership' }),
+          h('p', null, [h('b', { text: me.plan ? me.plan + (me.plan_until ? ' · till ' + me.plan_until : '') : 'No paid membership yet' })]),
+          me.plan ? null : h('div', { class: 'spg-row' }, [h('a', { class: 'spg-btn ghost', href: '/membership/', text: 'See memberships' })])]),
+        h('div', { class: 'spg-row spg-sec' }, [
+          h('button', { class: 'spg-btn', type: 'button', text: 'Play Brain Game', onclick: function () { show('game'); } }),
+          h('button', { class: 'spg-btn ghost', type: 'button', text: 'Log out', onclick: function () {
+            api('logout', {}).then(function () { state.nonce = ''; state.loggedIn = false; document.body.classList.remove('logged-in'); return loadMe(); }).then(function () { show('account'); }).catch(failed);
+          } })])]);
+    }
+    if (!me.conf.otp) return viewAccountPassword();
+    var otp = state.otp = state.otp || { email: '' };
+    step = step || 'email';
+    var err = h('p', { class: 'err' });
+    var kids = [], btn, form;
+    function busy(on, label) { btn.disabled = on; if (label) btn.textContent = label; }
+    if (step === 'email') {
+      var email = h('input', { type: 'email', inputmode: 'email', autocomplete: 'email', placeholder: 'you@example.com', value: otp.email });
+      var hp = h('input', { class: 'hp', tabindex: '-1', autocomplete: 'off', 'aria-hidden': 'true' });
+      btn = h('button', { class: 'spg-btn', type: 'submit', text: 'Send me a code' });
+      kids = [h('label', { text: 'Your email' }), email, hp, err, h('div', { class: 'spg-row' }, [btn])];
+      form = h('form', { onsubmit: function (e) {
+        e.preventDefault(); err.textContent = ''; busy(true, 'Sending…');
+        otp.email = email.value.trim();
+        api('otp/send', { email: otp.email, website: hp.value }).then(function () { otp.sentAt = Date.now(); viewAccount('code'); })
+          .catch(function (e2) { busy(false, 'Send me a code'); err.textContent = e2.message; });
+      } }, kids);
+    } else if (step === 'code') {
+      var code = h('input', { type: 'text', inputmode: 'numeric', autocomplete: 'one-time-code', maxlength: '6', placeholder: '6-digit code', class: 'spg-otp' });
+      btn = h('button', { class: 'spg-btn', type: 'submit', text: 'Verify and continue' });
+      var again = h('button', { class: 'spg-btn ghost', type: 'button', text: 'Send a new code', onclick: function () {
+        again.disabled = true; err.textContent = '';
+        api('otp/send', { email: otp.email, website: '' }).then(function () { otp.sentAt = Date.now(); pop('New code sent'); tick(); })
+          .catch(function (e2) { again.disabled = false; err.textContent = e2.message; });
+      } });
+      var tick = function () {
+        var left = 60 - Math.floor((Date.now() - (otp.sentAt || 0)) / 1000);
+        if (!again.isConnected && left !== 60) return;
+        again.disabled = left > 0;
+        again.textContent = left > 0 ? 'Send a new code (' + left + 's)' : 'Send a new code';
+        if (left > 0) setTimeout(tick, 1000);
+      };
+      kids = [h('p', { class: 'lede' }, ['We sent a 6-digit code to ', h('b', { text: otp.email }), '. It may take a minute - check Spam or Promotions too.']),
+        h('label', { text: 'Code' }), code, err, h('div', { class: 'spg-row' }, [btn, again]),
+        h('p', { class: 'lede', style: 'margin-top:12px' }, [h('a', { href: '#', style: 'color:inherit', text: 'Use a different email', onclick: function (e) { e.preventDefault(); viewAccount('email'); } })])];
+      form = h('form', { onsubmit: function (e) {
+        e.preventDefault(); err.textContent = ''; busy(true, 'Checking…');
+        api('otp/verify', { email: otp.email, code: code.value.trim() }).then(function (r) {
+          if (r.need_profile) return viewAccount('profile');
+          return signedIn(false);
+        }).catch(function (e2) { busy(false, 'Verify and continue'); err.textContent = e2.message; });
+      } }, kids);
+      setTimeout(function () { code.focus(); tick(); }, 50);
+    } else {
+      var name = h('input', { type: 'text', autocomplete: 'name', placeholder: 'Your name' });
+      var ph = phoneField();
+      btn = h('button', { class: 'spg-btn', type: 'submit', text: 'Create account · +' + me.conf.signup_bonus + ' ★ welcome' });
+      kids = [h('p', { class: 'lede' }, ['Email verified: ', h('b', { text: otp.email }), '. One last step.']),
+        h('label', { text: 'Your name' }), name, h('label', { text: 'WhatsApp number' }), ph.row, err, h('div', { class: 'spg-row' }, [btn])];
+      form = h('form', { onsubmit: function (e) {
+        e.preventDefault(); err.textContent = ''; busy(true, 'Creating…');
+        api('otp/profile', { email: otp.email, name: name.value.trim(), cc: ph.cc.value, phone: ph.num.value.trim() }).then(function () { return signedIn(true); })
+          .catch(function (e2) { busy(false, 'Create account'); err.textContent = e2.message; });
+      } }, kids);
+    }
+    wrap([h('p', { class: 'eyebrow', text: 'Account' }),
+      h('h2', { text: step === 'profile' ? 'Welcome! Create your account' : 'Log in or sign up' }),
+      h('p', { class: 'lede', text: step === 'email' ? 'No password needed. Enter your email and we will send you a one-time code. New here? The same code creates your free account.' : 'Your points and progress are saved to your account, so they are safe on any phone.' }),
+      form,
+      h('p', { class: 'lede', style: 'margin-top:14px;font-size:.78rem', text: 'We use your number only to reach you about your points and the community.' })]);
+  }
+
+  /* until the site can send email: email + password */
+  function viewAccountPassword(mode) {
+    var me = state.me;
+    if (false) {
       return wrap([h('p', { class: 'eyebrow', text: 'Account' }), h('h2', { text: 'Namaste, ' + me.name }), h('p', { class: 'lede', text: me.email }),
         h('div', { class: 'spg-row' }, [
           h('button', { class: 'spg-btn', type: 'button', text: 'Play Brain Game', onclick: function () { show('game'); } }),
@@ -408,15 +559,17 @@
     }
     mode = mode || 'signup';
     var sw = h('div', { class: 'spg-switch' }, [
-      h('button', { type: 'button', class: mode === 'signup' ? 'on' : null, text: 'Create account', onclick: function () { viewAccount('signup'); } }),
-      h('button', { type: 'button', class: mode === 'login' ? 'on' : null, text: 'Log in', onclick: function () { viewAccount('login'); } })]);
+      h('button', { type: 'button', class: mode === 'signup' ? 'on' : null, text: 'Create account', onclick: function () { viewAccountPassword('signup'); } }),
+      h('button', { type: 'button', class: mode === 'login' ? 'on' : null, text: 'Log in', onclick: function () { viewAccountPassword('login'); } })]);
     var f = {}, err = h('p', { class: 'err' });
     var fields = mode === 'signup'
       ? [['name', 'Your name', 'text', 'name'], ['email', 'Email', 'email', 'email'], ['phone', 'WhatsApp number', 'tel', 'tel'], ['password', 'Password (8+ characters)', 'password', 'new-password']]
       : [['email', 'Email', 'email', 'username'], ['password', 'Password', 'password', 'current-password']];
     var kids = [];
+    var ph = phoneField();
     fields.forEach(function (x) {
-      f[x[0]] = h('input', { type: x[2], autocomplete: x[3], inputmode: x[0] === 'phone' ? 'numeric' : null });
+      if (x[0] === 'phone') { f.phone = ph.num; kids.push(h('label', { text: x[1] }), ph.row); return; }
+      f[x[0]] = h('input', { type: x[2], autocomplete: x[3] });
       kids.push(h('label', { text: x[1] }), f[x[0]]);
     });
     var hp = h('input', { class: 'hp', tabindex: '-1', autocomplete: 'off', 'aria-hidden': 'true' });
@@ -425,6 +578,7 @@
       e.preventDefault(); err.textContent = ''; btn.disabled = true;
       var body = { website: hp.value };
       Object.keys(f).forEach(function (k) { body[k] = f[k].value.trim(); });
+      if (mode === 'signup') body.cc = ph.cc.value;
       if (mode === 'login') body.password = f.password.value;
       if (mode === 'signup') body.password = f.password.value;
       api(mode === 'signup' ? 'register' : 'login', body).then(function () {
@@ -460,12 +614,59 @@
         refl.appendChild(h('div', { class: 'spg-li' }, [h('div', null, [h('p', null, [h('b', { text: r.name }), ' · ' + r.mission]), h('p', { text: r.note }), h('p', { class: 'w', text: when(r.at) })])]));
       });
       if (!o.reflections.length) refl.appendChild(h('p', { class: 'lede', style: 'padding:10px 0', text: 'No mission reflections yet.' }));
-      wrap([h('p', { class: 'eyebrow', text: 'Admin' }), h('h2', { text: o.members + ' members · ' + o.bank + ' questions' }),
+      var leads = h('div', { class: 'spg-list' });
+      (o.leads || []).forEach(function (l) {
+        var digits = l.phone.replace(/\D/g, '');
+        leads.appendChild(h('div', { class: 'spg-li' }, [h('div', null, [
+          h('p', null, [h('span', { class: 'spg-chip ' + (l.kind === 'book' ? 'pending' : 'done'), text: l.kind === 'book' ? '1:1 booking' : 'Call back' }), ' ', h('b', { text: l.name }),
+            ' · ', h('a', { href: 'https://wa.me/' + digits, target: '_blank', rel: 'noopener', style: 'color:inherit', text: l.phone })]),
+          l.date || l.topic ? h('p', { text: [l.topic, l.date ? l.date + (l.slot ? ', ' + l.slot : '') : ''].filter(Boolean).join(' · ') }) : null,
+          l.message ? h('p', { text: l.message }) : null,
+          h('p', { class: 'w', text: l.id + (l.email ? ' · ' + l.email : '') + ' · ' + when(l.at) })]),
+          l.status === 'new' ? h('button', { class: 'spg-btn ghost', type: 'button', style: 'min-height:36px;padding:0 12px', text: 'Done', onclick: function () {
+            api('admin/lead', { id: l.id }).then(viewAdmin).catch(function (e) { alert(e.message); }); } }) : h('span', { class: 'spg-chip done', text: 'done' })]));
+      });
+      if (!(o.leads || []).length) leads.appendChild(h('p', { class: 'lede', style: 'padding:10px 0', text: 'No call-back or booking requests yet.' }));
+      wrap([h('p', { class: 'eyebrow', text: 'Admin' }), h('h2', { text: o.members + ' members · ' + (o.paid || 0) + ' paid · ' + o.bank + ' questions' }),
         h('p', { class: 'lede', html: 'Missions are edited in wp-admin → Pages → <b>Missions</b>.' }),
+        h('div', { class: 'spg-sec' }, [h('h3', { text: 'Call-back & 1:1 requests' }), leads]),
+        h('div', { class: 'spg-sec' }, [h('h3', { text: 'Paid members' }), membersBox(o.plans || {})]),
         h('div', { class: 'spg-sec' }, [h('h3', { text: 'Redeem requests' }), reqs]),
         h('div', { class: 'spg-sec' }, [h('h3', { text: 'Mission reflections' }), refl])]);
     }).catch(failed);
     function act(id, action) { api('admin/request', { id: id, action: action }).then(viewAdmin).catch(function (e) { alert(e.message); }); }
+  }
+  /* find a member and set the plan that opens the missions */
+  function membersBox(plans) {
+    var q = h('input', { type: 'search', placeholder: 'Search by name, email or phone' });
+    var list = h('div', { class: 'spg-list' });
+    function row(u) {
+      var sel = h('select', null, [h('option', { value: '', text: 'No plan' })].concat(Object.keys(plans).map(function (k) {
+        return h('option', { value: k, text: plans[k], selected: u.plan === k ? 'selected' : null }); })));
+      var until = h('input', { type: 'date', value: u.until || '', title: 'Paid till (empty = no end date)' });
+      var msg = h('span', { class: 'w' });
+      var save = h('button', { class: 'spg-btn', type: 'button', style: 'min-height:38px;padding:0 14px', text: 'Save', onclick: function () {
+        save.disabled = true; msg.textContent = '';
+        api('admin/plan', { uid: u.uid, plan: sel.value, until: until.value }).then(function () { msg.textContent = 'Saved ✓'; save.disabled = false; })
+          .catch(function (e) { msg.textContent = e.message; save.disabled = false; });
+      } });
+      return h('div', { class: 'spg-li spg-mem' }, [h('div', null, [h('p', null, [h('b', { text: u.name }), ' · ' + u.points + ' ★']),
+        h('p', { class: 'w', text: u.email + (u.phone ? ' · ' + u.phone : '') + (u.plan && !u.active ? ' · plan ended' : '') })]),
+        h('div', { class: 'spg-memf' }, [sel, until, save, msg])]);
+    }
+    function load() {
+      list.textContent = '';
+      list.appendChild(h('p', { class: 'lede', style: 'padding:8px 0', text: 'Loading…' }));
+      api('admin/users?q=' + encodeURIComponent(q.value.trim())).then(function (us) {
+        list.textContent = '';
+        if (!us.length) list.appendChild(h('p', { class: 'lede', style: 'padding:8px 0', text: q.value.trim() ? 'Nobody found.' : 'No paid members yet. Search for someone to add a plan.' }));
+        us.forEach(function (u) { list.appendChild(row(u)); });
+      }).catch(function (e) { list.textContent = e.message; });
+    }
+    var t;
+    q.addEventListener('input', function () { clearTimeout(t); t = setTimeout(load, 350); });
+    load();
+    return h('div', null, [h('p', { class: 'lede', text: 'When someone pays, find them here and choose their plan - that opens the missions for them. Leave the date empty for no end date.' }), q, list]);
   }
 
   /* ---------------- entry points ---------------- */

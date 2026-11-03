@@ -301,6 +301,11 @@
   background:var(--input-bg);border:1px solid var(--line);color:var(--fg);
   font-family:inherit;font-size:1rem}
 .sp .regform input:focus{outline:none;border-color:var(--gold)}
+.sp .regform .ccrow{display:flex;gap:8px}
+.sp .regform select{flex:0 0 128px;width:128px;min-height:52px;padding:0 8px;border-radius:12px;background:var(--input-bg);
+  border:1px solid var(--line);color:var(--fg);font-family:inherit;font-size:.9rem}
+.sp .regform .ccrow input{flex:1;min-width:0}
+.sp .regform .bad select{border-color:var(--gold-hi)}
 .sp .regform input::placeholder{color:var(--input-ph)}
 .sp .regform .err{color:var(--gold-hi);font-size:.78rem;margin-top:7px;display:none}
 .sp .regform .bad input{border-color:var(--gold-hi)}
@@ -529,11 +534,11 @@
     <div class="hero-ph rv">
       <img src="https://shashipallava.com/wp-content/uploads/2026/09/shashi-pallava-hero.jpg" alt="Shashi Pallava" width="1088" height="1445">
     </div>
-    <p class="name rv">Shashi Pallava</p>
+    <p class="name rv notranslate">Shashi Pallava</p>
     <p class="role rv">Life, Relationship &amp; Mindset Coach · Mindset Mentor · Entrepreneur</p>
     <p class="hloc rv">Based in Chandigarh, Punjab · Coaching women online across India</p>
     <h1 class="rv">Become the <span>Unshakeable You</span></h1>
-    <p class="lede rv">Understand yourself better, build healthier relationships, and look at your life from a new perspective. Jab aap khud ko samajhne lagti hain — you start responding to life differently.</p>
+    <p class="lede rv">Understand yourself better, build healthier relationships, and look at your life from a new perspective. When you begin to understand yourself, you start responding to life differently.</p>
     <div class="cta rv">
       <a class="btn" href="#register">Join Free Webinar</a>
       <a class="btn btn-ghost" href="#work">Explore Programs</a>
@@ -555,7 +560,7 @@
       <div class="card rv">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M18.8 12.3l1.7-1.7a5 5 0 0 0-7-7l-1.8 1.7"/><path d="M5.2 11.8l-1.7 1.7a5 5 0 0 0 7 7l1.7-1.7"/><path d="M8 2v3M2 8h3M16 22v-3M22 16h-3"/></svg></div>
         <h3>Break Your Limiting Beliefs</h3>
-        <p>“Main aise react kyun karti hoon?” Awareness creates choice, and conscious choices create change.</p>
+        <p>“Why do I react like this?” Awareness creates choice, and conscious choices create change.</p>
       </div>
       <div class="card rv">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M11 14h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 16"/><path d="m7 20 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.8-2.9l-4.2 3.9"/><path d="m2 15 6 6"/><path d="M19.5 8.5c.7-.7 1.5-1.6 1.5-2.7A2.7 2.7 0 0 0 16 4a2.8 2.8 0 0 0-5 1.8c0 1.2.8 2 1.5 2.8L16 12Z"/></svg></div>
@@ -574,16 +579,14 @@
   <div class="wrap center">
     <p class="eyebrow rv">About the Coach</p>
     <div class="av rv"><img src="https://shashipallava.com/wp-content/uploads/2026/09/shashi-pallava-headshot.jpg" alt="Shashi Pallava" width="982" height="977"></div>
-    <h2 class="rv">Shashi Pallava</h2>
+    <h2 class="rv notranslate">Shashi Pallava</h2>
     <p class="rl rv">Life, Relationship &amp; Mindset Coach · Mindset Mentor · Entrepreneur</p>
-    <p class="rv" style="margin-top:16px">Coaching is not me telling you “aapko kya karna chahiye.” It is a safe space where you can see for yourself what you are feeling, why you react the way you do, and what you actually want.</p>
+    <p class="rv" style="margin-top:16px">Coaching is not me telling you what you should do. It is a safe space where you can see for yourself what you are feeling, why you react the way you do, and what you actually want.</p>
     <p class="rv">I work with women who want to grow without losing themselves in the process. Sessions combine coaching conversations, practical mindset tools, communication techniques and NLP-based approaches.</p>
     <p class="rv">Based in Chandigarh, Punjab, I coach women online across Punjab and the rest of India - as a life, relationship and mindset coach, mindset mentor and entrepreneur. <a class="gold" href="/about-shashi-pallava/">More about Shashi &rarr;</a></p>
-    <p class="pull rv">“Main sabke liye kar rahi hoon — but mere liye kaun?”</p>
+    <p class="pull rv">“I do everything for everyone — but who is there for me?”</p>
     <ul class="creds rv">
-      <li>4+ Years Practice</li>
-      <li>NLP-Based Approach</li>
-      <li>Life Coaching Certified — Alison</li>
+      <li>Certified Life Coach</li>
     </ul>
   </div>
 </section>
@@ -607,7 +610,7 @@
         <a class="btn btn-ghost" href="#register">Join Free Webinar</a>
       </div>
       <div class="door paid rv">
-        <p class="kick">Go All In</p><h3>Revive, Rise &amp; Relive</h3><p class="sub">A 6-month transformation program for your mindset, confidence, emotional well-being and relationships.</p><p class="price">₹999 <small>· 6 months</small></p><ul><li>A private WhatsApp community</li><li>Interactive live webinars</li><li>Practical challenges and missions on Mentie Go</li><li>One personal 1:1 session with Shashi</li><li>100% online — for women aged 18 to 55</li></ul><a class="btn" href="#pay">Join The Program</a>
+        <p class="kick">Go All In</p><h3 class="notranslate">Revive, Rise &amp; Relive</h3><p class="sub">A 6-month transformation program for your mindset, confidence, emotional well-being and relationships.</p><p class="price">₹999 <small>· 6 months</small></p><ul><li>A private WhatsApp community</li><li>Interactive live webinars</li><li>Practical challenges and missions on Mentie Go</li><li>One personal 1:1 session with Shashi</li><li>100% online — for women aged 18 to 55</li></ul><a class="btn" href="#pay">Join The Program</a>
       </div>
     </div>
   </div>
@@ -615,7 +618,7 @@
 <section id="pay" class="pay">
   <div class="wrap center">
     <p class="eyebrow rv">Payment</p>
-    <h2 class="rv">Join Revive, Rise &amp; Relive</h2>
+    <h2 class="rv">Join <span class="notranslate">Revive, Rise &amp; Relive</span></h2>
     <p class="sec-lede rv">Scan, pay, and send the screenshot. Shashi adds you to the group herself.</p>
     <div class="paycard rv">
       <div class="payamt">&#8377;999</div>
@@ -649,8 +652,8 @@
       </div>
       <div class="row" data-field="phone">
         <label for="reg-phone">WhatsApp number</label>
-        <input id="reg-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10-digit number">
-        <p class="err">Please enter a valid 10-digit number.</p>
+        <div class="ccrow"><select name="cc" aria-label="Country code" class="notranslate"><option value="91">+91 India</option><option value="1">+1 USA / Canada</option><option value="44">+44 UK</option><option value="971">+971 UAE</option><option value="61">+61 Australia</option><option value="65">+65 Singapore</option><option value="966">+966 Saudi Arabia</option><option value="974">+974 Qatar</option><option value="965">+965 Kuwait</option><option value="968">+968 Oman</option><option value="973">+973 Bahrain</option><option value="64">+64 New Zealand</option><option value="977">+977 Nepal</option><option value="880">+880 Bangladesh</option><option value="94">+94 Sri Lanka</option><option value="60">+60 Malaysia</option><option value="852">+852 Hong Kong</option><option value="49">+49 Germany</option><option value="33">+33 France</option><option value="31">+31 Netherlands</option><option value="353">+353 Ireland</option><option value="39">+39 Italy</option><option value="27">+27 South Africa</option><option value="92">+92 Pakistan</option></select><input id="reg-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="Mobile number"></div>
+        <p class="err">Please enter a valid mobile number.</p>
       </div>
       <div class="row" data-field="email">
         <label for="reg-email">Email</label>
@@ -694,7 +697,7 @@
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><path d="m9 11 3 3L22 4"/></svg></div>
 <div class="no"></div>
 <h3>You decide</h3>
-        <p>If it feels right, we begin Revive, Rise &amp; Relive together. If not, koi baat nahi — no follow-up pressure.</p>
+        <p>If it feels right, we begin Revive, Rise &amp; Relive together. If not, that is perfectly fine — no follow-up pressure.</p>
       </div>
     </div>
   </div>
@@ -703,7 +706,7 @@
   <div class="wrap center">
     <p class="eyebrow rv">Questions</p>
     <h2 class="rv">Questions people usually ask</h2>
-    <div class="faq"><details class="rv"><summary>What language are the sessions in?</summary><p>Sessions run in English, Hindi or Hinglish — whichever feels most natural to you.</p><p>You do not need to be fluent in either. Speak, ask and express yourself in the language you are most comfortable in. If concepts land better in English but emotions come out in Hindi, Hinglish is perfectly okay.</p><p>When it comes to personal growth and relationships, you should never feel limited by language.</p><p class="q">&ldquo;Jis bhasha mein dil khul kar baat ho sake, wahi sabse achhi language hai.&rdquo;</p><p>The focus is not on perfect language. It is on real understanding and honest conversation.</p></details><details class="rv"><summary>Is this therapy?</summary><p>No. Coaching and therapy are different things.</p><p>Coaching works on your present situation — your thoughts, beliefs, patterns, communication and relationships — and above all on what you can do differently from here.</p><p>This is not a space for diagnosing or treating mental health conditions, and coaching should never replace professional clinical care. If I feel during a conversation that you need clinical or therapeutic support, I will tell you honestly and point you towards the right professional.</p><p class="q">&ldquo;Har problem ka solution coaching nahi hota — aur sahi help lena weakness nahi, wisdom hai.&rdquo;</p><p>Your emotional safety comes first, always.</p></details><details class="rv"><summary>What happens in the webinar?</summary><p>It is for women who know they are capable of more, but somewhere feel stuck, overwhelmed, confused or held back.</p><p>You will learn simple, practical ways to shift your mindset, strengthen your confidence, handle emotions better and build healthier relationships. And you can ask your questions directly.</p><p class="q">&ldquo;Aapko sirf motivation nahi, ek nayi direction milegi.&rdquo;</p><p>Come as you are. Leave with a clearer mind and a better way forward.</p></details><details class="rv"><summary>How long is the program?</summary><p>Revive, Rise &amp; Relive is a 6-month transformation program built around your mindset, confidence, emotional well-being and relationships.</p><p>It also includes one personal 1:1 coaching session with Shashi for focused guidance.</p></details><details class="rv"><summary>Are sessions online or in person?</summary><p>The entire program is 100% online, so you can take part from wherever you are.</p><p>We connect through a WhatsApp community, meet in interactive webinars, and use Mentie Go for practical challenges and missions.</p><p>No travel, no change to your routine — the work happens alongside your real life.</p><p class="q">&ldquo;Bas judna hai, seekhna hai, aur khud ko step-by-step upgrade karna hai.&rdquo;</p></details><details class="rv"><summary>Is this only for married women?</summary><p>Not at all. It is for women aged 18 to 55 — homemaker, working professional, entrepreneur, student, mother, daughter, married, unmarried, or simply at a new turning point in life.</p><p>Your growth is not defined by your relationship status or your role.</p><p class="q">&ldquo;Aapki kahani alag ho sakti hai, par growth ka haq sabka hai.&rdquo;</p></details></div>
+    <div class="faq"><details class="rv"><summary>What language are the sessions in?</summary><p>Sessions run in English, Hindi or Hinglish — whichever feels most natural to you.</p><p>You do not need to be fluent in either. Speak, ask and express yourself in the language you are most comfortable in. If concepts land better in English but emotions come out in Hindi, Hinglish is perfectly okay.</p><p>When it comes to personal growth and relationships, you should never feel limited by language.</p><p class="q">&ldquo;The best language is the one your heart can speak openly in.&rdquo;</p><p>The focus is not on perfect language. It is on real understanding and honest conversation.</p></details><details class="rv"><summary>Is this therapy?</summary><p>No. Coaching and therapy are different things.</p><p>Coaching works on your present situation — your thoughts, beliefs, patterns, communication and relationships — and above all on what you can do differently from here.</p><p>This is not a space for diagnosing or treating mental health conditions, and coaching should never replace professional clinical care. If I feel during a conversation that you need clinical or therapeutic support, I will tell you honestly and point you towards the right professional.</p><p class="q">&ldquo;Not every problem is solved by coaching — and asking for the right help is not weakness, it is wisdom.&rdquo;</p><p>Your emotional safety comes first, always.</p></details><details class="rv"><summary>What happens in the webinar?</summary><p>It is for women who know they are capable of more, but somewhere feel stuck, overwhelmed, confused or held back.</p><p>You will learn simple, practical ways to shift your mindset, strengthen your confidence, handle emotions better and build healthier relationships. And you can ask your questions directly.</p><p class="q">&ldquo;You will leave with a new direction, not just motivation.&rdquo;</p><p>Come as you are. Leave with a clearer mind and a better way forward.</p></details><details class="rv"><summary>How long is the program?</summary><p>Revive, Rise &amp; Relive is a 6-month transformation program built around your mindset, confidence, emotional well-being and relationships.</p><p>It also includes one personal 1:1 coaching session with Shashi for focused guidance.</p></details><details class="rv"><summary>Are sessions online or in person?</summary><p>The entire program is 100% online, so you can take part from wherever you are.</p><p>We connect through a WhatsApp community, meet in interactive webinars, and use Mentie Go for practical challenges and missions.</p><p>No travel, no change to your routine — the work happens alongside your real life.</p><p class="q">&ldquo;Just join, learn, and upgrade yourself step by step.&rdquo;</p></details><details class="rv"><summary>Is this only for married women?</summary><p>Not at all. It is for women aged 18 to 55 — homemaker, working professional, entrepreneur, student, mother, daughter, married, unmarried, or simply at a new turning point in life.</p><p>Your growth is not defined by your relationship status or your role.</p><p class="q">&ldquo;Your story may be different, but everyone deserves to grow.&rdquo;</p></details></div>
   </div>
 </section>
 <section id="stories" class="stories" hidden>
@@ -1016,13 +1019,19 @@
     regForm.addEventListener('submit', function(ev){
       ev.preventDefault();
       var name = regForm.elements.name.value.trim();
+      var cc = regForm.elements.cc.value;
       var phone = digitsOnly(regForm.elements.phone.value);
+      /* a trunk zero is not dialled after the country code */
+      if (phone.charAt(0) === '0') { phone = phone.slice(1); }
+      if (cc === '91') { if (phone.length === 12) { if (phone.indexOf('91') === 0) { phone = phone.slice(2); } } }
       var email = regForm.elements.email.value.trim();
       var city = regForm.elements.city.value.trim();
       var ok = true;
       if (name.length === 0) { markBad('name', true); ok = false; }
       else { markBad('name', false); }
-      if (phone.length !== 10) { markBad('phone', true); ok = false; }
+      var phoneOk = phone.length === 10;
+      if (cc !== '91') { phoneOk = phone.length === Math.max(6, Math.min(phone.length, 14)); }
+      if (!phoneOk) { markBad('phone', true); ok = false; }
       else { markBad('phone', false); }
       var emailOk = true;
       if (email.length === 0) { emailOk = false; }
@@ -1032,7 +1041,7 @@
       else { markBad('email', false); }
       if (!ok) { return; }
       var lines = ['Hi Shashi, I would like to register for the free webinar.',
-                   '', 'Name: ' + name, 'WhatsApp: ' + phone, 'Email: ' + email];
+                   '', 'Name: ' + name, 'WhatsApp: +' + cc + ' ' + phone, 'Email: ' + email];
       if (city.length !== 0) { lines.push('City: ' + city); }
       lastLink = 'https://wa.me/919876732099?text=' + encodeURIComponent(lines.join('\n'));
       regSection.classList.add('sent');

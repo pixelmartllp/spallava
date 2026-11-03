@@ -3,6 +3,7 @@
 
     python website/tools/push_game.py            # dry run: validate everything
     python website/tools/push_game.py --confirm  # publish
+    python website/tools/push_game.py --confirm --no-bank  # code only, leave the live bank alone
 
 What goes where:
   website/game/sp-game.php  -> a Code Snippets snippet named "SP Game backend"
@@ -73,6 +74,7 @@ class WP:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--confirm", action="store_true")
+    ap.add_argument("--no-bank", action="store_true", help="publish the snippet and game files but not bank.json")
     args = ap.parse_args()
     problems = validate()
     for p in problems:
@@ -106,11 +108,11 @@ def main() -> int:
             return 1
         print(f"  snippet {out['id']} active={out['active']}")
 
-        bank = json.loads((GAME / "bank.json").read_text(encoding="utf-8"))
-        saved = wp.call("/wp-json/sp/v1/admin/assets", {
-            "bank": bank,
-            "js": (GAME / "game.js").read_text(encoding="utf-8"),
-            "css": (GAME / "game.css").read_text(encoding="utf-8")})
+        assets = {"js": (GAME / "game.js").read_text(encoding="utf-8"),
+                  "css": (GAME / "game.css").read_text(encoding="utf-8")}
+        if not args.no_bank:
+            assets["bank"] = json.loads((GAME / "bank.json").read_text(encoding="utf-8"))
+        saved = wp.call("/wp-json/sp/v1/admin/assets", assets)
         print("  assets:", saved.get("saved"))
 
         if not wp.call("/wp-json/wp/v2/pages?slug=missions&status=publish,draft,private&_fields=id"):

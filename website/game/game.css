@@ -133,12 +133,54 @@
 .sp .appbar .spg-pill{margin-left:auto;color:#FBBD23}
 .sp.light .appbar .spg-pill{color:#9A6B06}
 .sp .appbar .spg-pill + .themer{margin-left:0}
+/* language switch in the top bar */
+.spg-lang{flex:none;height:38px;min-width:42px;padding:0 10px;border-radius:10px;border:1px solid var(--g-line);background:transparent;
+  color:var(--g-fg);font-weight:800;font-size:.78rem;cursor:pointer}
+/* country code + number */
+.spg-cc{display:flex;gap:8px}
+.spg .spg-cc select{flex:0 0 132px;width:132px;padding:12px 8px}
+.spg .spg-cc input{flex:1;min-width:0}
+.spg .spg-otp{font-size:1.4rem;letter-spacing:.4em;text-align:center;font-weight:800}
+/* missions: a button per mission, what is inside below */
+.spg-mgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+.spg-mb{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px;border-radius:16px;border:1px solid var(--g-line);
+  background:var(--g-card);color:var(--g-fg);cursor:pointer;text-align:left}
+.spg-mb .n{font-size:1.6rem;font-weight:800;line-height:1;color:var(--g-gold)}
+.spg-mb .l{font-weight:800;font-size:.95rem}
+.spg-mb .s{font-size:.72rem;font-weight:700;color:var(--g-muted)}
+.spg-mb.on{border-color:var(--g-gold);background:var(--g-soft)}
+.spg-mb.lock .n{color:var(--g-muted)}
+.spg-mb.done .s{color:var(--g-ok)}
+.spg-mdet{margin-top:14px}
+.spg-mdet .spg-m h3{margin:8px 0 0}
+.spg-join{text-align:center}
+.spg-join .em,.spg-cg .em{font-size:2.2rem;line-height:1}
+.spg-join h3{margin:8px 0 6px}
+/* congratulations */
+.spg-cg{position:fixed;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.6);overflow:hidden}
+.spg-cg .in{position:relative;z-index:1;width:100%;max-width:380px;padding:28px 22px;border-radius:20px;background:var(--g-card);
+  border:1px solid var(--g-gl);text-align:center;animation:spgIn .35s cubic-bezier(.2,1.4,.4,1)}
+.spg-cg h3{font-size:1.6rem;margin:10px 0 4px}
+.spg-cg .t{font-weight:800;color:var(--g-gold);margin-bottom:6px}
+.spg-cg .pts{display:inline-block;margin:12px 0 16px;padding:8px 14px;border-radius:999px;background:var(--g-soft);border:1px solid var(--g-gl);
+  color:var(--g-gold);font-weight:800}
+.spg-cg .spg-btn{width:100%}
+.spg-cf{position:absolute;inset:0;pointer-events:none}
+.spg-cf i{position:absolute;top:-12px;width:8px;height:14px;border-radius:2px;animation:spgFall 2.2s ease-in forwards}
+@keyframes spgFall{to{transform:translateY(110vh) rotate(540deg);opacity:.2}}
+@keyframes spgIn{from{transform:scale(.7);opacity:0}}
+@media (prefers-reduced-motion:reduce){.spg-cf{display:none}.spg-cg .in{animation:none}}
+/* admin: member plan row */
+.spg-mem{flex-wrap:wrap}
+.spg-memf{display:flex;flex-wrap:wrap;gap:6px;align-items:center;width:100%;margin-top:6px}
+.spg .spg-memf select,.spg .spg-memf input{width:auto;flex:1 1 130px;padding:8px}
 @media (min-width:700px){
   .spg-tabs button{flex-direction:row;justify-content:center;gap:6px;font-size:.82rem;padding:9px 12px}
   .spg-tabs button .ic{font-size:1rem}
   .spg-dash{grid-template-columns:1fr 1fr}
   .spg-levels.five{grid-template-columns:repeat(5,1fr)}
   .spg-levels{grid-template-columns:repeat(5,1fr)}
+  .spg-mgrid{grid-template-columns:repeat(4,1fr)}
   .spg-opts.pics{grid-template-columns:repeat(4,1fr)}
   .spg-main{padding:28px 24px 48px}
 }

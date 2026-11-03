@@ -52,7 +52,7 @@ add_action( 'wp_head', function () {
 		'sameAs'      => $f['same_as'],
 		'homeLocation' => array( '@type' => 'Place', 'name' => $f['city'] . ', ' . $f['region'] . ', India' ),
 		'knowsAbout'  => array( 'Life coaching', 'Relationship coaching', 'Mindset coaching', 'Emotional well-being', 'Boundaries', 'Self-worth', 'Mindfulness', 'NLP' ),
-		'hasCredential' => array( '@type' => 'EducationalOccupationalCredential', 'name' => 'Life Coaching Certified',
+		'hasCredential' => array( '@type' => 'EducationalOccupationalCredential', 'name' => 'Certified Life Coach',
 			'recognizedBy' => array( '@type' => 'Organization', 'name' => 'Alison' ) ),
 		'worksFor'    => array( '@id' => home_url( '/#coaching' ) ),
 	);
@@ -86,7 +86,7 @@ add_action( 'parse_request', function () {
 	$lines = array(
 		'# ' . $f['name'] . ' - ' . $f['roles'],
 		'',
-		'> ' . $f['name'] . ' is a life, relationship and mindset coach, mindset mentor and entrepreneur based in ' . $f['city'] . ', ' . $f['region'] . ', India. She coaches women aged 18 to 55 online, in English, Hindi and Hinglish, on mindset, confidence, emotional well-being and relationships, through coaching conversations, practical mindset tools and an NLP-based approach. Life Coaching Certified (Alison); 4+ years of practice.',
+		'> ' . $f['name'] . ' is a life, relationship and mindset coach, mindset mentor and entrepreneur based in ' . $f['city'] . ', ' . $f['region'] . ', India. She coaches women aged 18 to 55 online, in English, Hindi and Hinglish, on mindset, confidence, emotional well-being and relationships, through coaching conversations and practical mindset tools. Certified Life Coach.',
 		'',
 		'## Key pages',
 		'- [Home](' . $f['url'] . '): programs, free webinar registration, FAQ',

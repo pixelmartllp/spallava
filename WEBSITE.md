@@ -395,8 +395,29 @@ AI** - no API key, no server, no plugin. It is all
    language, online, who it is for, about, contact, community, blog.
 3. **The knowledge base she teaches it** (below). A strong match there beats a
    built-in answer.
-4. Otherwise "pakka jawab mere paas nahi" plus a WhatsApp button carrying the
-   visitor's question. **Never add an answer she has not given.**
+4. Blog posts on the subject, from WordPress's own search (`/wp/v2/search`).
+5. Otherwise "I do not have a ready answer" plus **Talk to Shashi**. **Never
+   add an answer she has not given.**
+
+**English only, since 3 Nov 2026** (owner: "English me hi sabkuchh hona
+chahiye, chat bhi"). Hindi readers use the site-wide Hindi switch (§7g), which
+translates the chat too. Typed Hinglish still *matches* (the keyword lists and
+stop-words keep Hinglish words) - only the replies are English.
+
+**Intents** (3 Nov 2026, after "RRR Agent is not responding"): it answered
+almost every ordinary question with "no answer". Now a greeting gets a reply
+with buttons, and there are intents for *help*, *book* (session, appointment,
+1:1, call back...) and *support* (anxious, stressed, relationship, marriage,
+coaching...: a kind reply, webinar / 1:1 buttons, and matching blog posts).
+On a tie the earlier intent in `INTENTS` wins - order matters.
+
+**Talk to Shashi = a form, not her number.** *Book a 1:1 session* or *Request
+a call back*: name, country code + mobile, optional email, topic, and for a
+booking a preferred date and time slot. It posts to `/sp/v1/contact`, which
+stores it in option `sp_g_leads` (shown in Play & Grow → Admin, with Done) and
+emails `conf.notify` (shashipallava@gmail.com) - **once the site can send mail,
+see §7e "Email"**. Shashi confirms the exact time herself; there is no
+calendar, because her availability was never given.
 
 **Knowledge base** (13 Oct 2026). Every child page of the private page
 **"Assistant Knowledge" (id 141, slug `assistant-kb`)** is one chapter:
@@ -445,8 +466,10 @@ In admin mode a headline word outweighs a keyword (+5 vs +3), and when one
 chapter clearly wins a search it opens on top of the list, ready for Full
 screen. The knowledge base loads in pages of 100.
 
-**Always visible:** the five quick questions sit in a scrolling bar above the
-input, and **End chat** in the header clears the conversation.
+**Always visible:** the quick buttons (Brain Game, Missions, Programs & fees,
+Free webinar, Is this therapy?, Book a 1:1 session, Talk to Shashi) sit in a
+scrolling bar above the input, and **End chat** in the header clears the
+conversation.
 
 **The EQ check was removed** on 13 Oct 2026 at the owner's request; the
 Brain Game replaced it (§7e). "game", "points", "mission" and the like in the
@@ -495,13 +518,17 @@ member also removes their reflections and requests (`deleted_user` hook).
 | Mindset Challenge | 2 points each, 5 levels of 12, 8 right to unlock, 1 level for visitors |
 
 **Question bank.** `website/game/bank_gen.py` builds 600 questions - 10
-levels x 60 - from generators that know their answers: number and letter
-series, analogies, odd one out, word problems, codes, ordering logic,
-calendar and clock, and SVG puzzles (arrow rotation, counting, odd picture,
-3x3 grids). It is deterministic (fixed seed) and question ids are
-`L<level>Q<n>`, and **players' progress is keyed by those ids**, so once real
-members exist, changing a generator reshuffles what each id means - add new
-ids rather than rebuilding old ones. Two traps were found by looking at a
+levels x 60. **Rebuilt 3 Nov 2026** (owner: "isse bahot better aur level wise
+difficult"): each level has its own mix, from counting and single-step sums at
+Grade 1 to seating puzzles with 5-6 clues, dice and probability, work-rate,
+boats and streams and coded family relations at Grade 10; wrong options are
+the common mistakes. A self-check runs before the file is written (60+ per
+level, 4 distinct options, no duplicate text, ~290 answers recomputed a second
+way). Deterministic (fixed seed). Question ids are now `L<level>B<n>` (the old
+bank was `L<level>Q<n>`): **players' progress is keyed by ids**, so the rebuild
+took new ids rather than letting old "already solved" marks point at different
+questions - the one member at the time started the levels again; points
+already earned stayed. Two traps were found by looking at a
 contact sheet, not by the asserts: a square and a diamond are the same shape
 turned (never count one beside the other), and a triangle repeats every 120
 degrees so a 135-degree turn reads as 15 (rotation puzzles use arrows only).
@@ -541,6 +568,22 @@ Week N opens on day 1 + 7(N-1). A mission pays once per member, after a
 reflection of at least 20 characters. October 2026 was seeded with four
 example missions (`website/game/missions.txt`) for her to rewrite;
 `push_game.py` creates the page only if it is missing and never overwrites it.
+The October text was translated to English on 3 Nov 2026 (page 155). **The
+month must be rewritten each month** - in November it still said October.
+
+**Missions are for paid members (3 Nov 2026).** Everyone sees the buttons
+*Mission 1, 2, 3, 4*; the title and text come from the server only for a
+member with an active plan (`sp_g_missions_public()` strips them otherwise),
+and `/mission` refuses anyone else. A non-member who taps one gets *Join the
+program / See memberships*. Finishing one shows a **Congratulations** card
+with confetti and the points added (the same card appears when a game level
+opens).
+
+**Paid plans.** User meta `sp_plan` (`rrr`, `silver`, `gold`, `platinum`) and
+`sp_plan_until` (YYYY-MM-DD, empty = no end; a past date = lapsed). Payments
+are manual (UPI, WhatsApp), so **Shashi sets the plan herself**: Play & Grow →
+Admin → *Paid members* → search by name, email or phone → plan + date → Save.
+Administrators always count as members, to preview.
 
 **Wallet and redeem.** A redeem request takes the points off at once (on
 hold), creates a code like `SP-7F3K2Q`, and offers a WhatsApp message to Shashi
@@ -549,10 +592,26 @@ it *Done* or *Rejects* it, which refunds the points. The Silver, Gold and
 Platinum memberships have **no prices on the site yet** - redemption only
 records how many points the member wants to use.
 
-**Accounts.** Sign-up asks name, email, WhatsApp number and a password and
-logs the member straight in; log-in takes email and password. Both are
-throttled per IP. Password reset uses WordPress's own lost-password page,
-which depends on the site sending email - not verified.
+**Accounts - OTP, waiting on email (3 Nov 2026).** The owner asked for OTP
+login. Built: email -> 6-digit code (10 minutes, 5 tries, one resend a minute,
+hashed in a transient) -> a new member adds name and number once. Staff
+accounts are refused and use wp-admin. Mobile/SMS OTP was **not** built: in
+India it needs a paid gateway with DLT template registration, or an approved
+WhatsApp authentication template.
+
+**Email.** Hostinger has PHP `mail()` switched off - every `wp_mail()` fails
+with *Could not instantiate mail function* (the last failure is shown as
+`mail_err` in the Admin overview). So the snippet sends over **SMTP** from the
+option `sp_g_smtp`, set by `POST /sp/v1/admin/smtp` {host, port, secure,
+user, pass, from, test_to} - **never put those credentials in this repo.**
+That call sends a test email; only when it goes through does `conf.otp` turn
+true, and only then does the Account tab switch from password to code
+sign-in. Until then the old **email + password** sign-up and log-in stay on
+(now with a country code), and the booking/call-back emails to Shashi do not
+go out - the requests are still saved in the Admin tab.
+
+Phone numbers are stored as `+<country code> <number>` (`sp_g_phone()`:
+India must be 10 digits from 6-9, others 6-14 digits; a trunk 0 is dropped).
 
 **Entry points.** Any link to `#play`, `#missions` or `#wallet` opens the app on
 that tab (the homepage menu, a *Play & Grow* section above the blog, the
@@ -579,6 +638,30 @@ right to see, correct or delete data, the points rules exactly as
 promises **no refund terms** for paid programs, because none were given; add
 them only from her. Not reviewed by a lawyer - worth saying to her if it ever
 matters. `page_for_privacy_policy` is not settable over REST.
+
+## 7g. English and Hindi switch
+
+The site is written in English. A **हिं / EN** button sits beside the theme
+button in the homepage app bar, as *हिंदी में पढ़ें* in the menu, in the blog
+and page header, and in the Play & Grow top bar. Snippet **SP Lang** (id 7,
+source `website/seo/sp-lang.php`, published by `push_seo.py` with SP SEO).
+
+Choosing Hindi loads Google's website translator and translates the page in
+place, including what the assistant and the game add later; the choice is
+Google's `googtrans` cookie, so it follows the visitor. Back to English clears
+the cookie and reloads. Nothing loads for English readers. It is **machine
+translation** - names that must not change carry `class="notranslate"`
+(Shashi Pallava, Revive, Rise & Relive, the switch itself). Google's own bar
+and hover tooltip are hidden by CSS. Checked live 3 Nov 2026: homepage and
+blog to Hindi and back. The policy page says that Hindi sends page text to
+Google.
+
+**All 32 blog posts were translated to English** the same day (their bodies
+came from Hinglish Instagram captions). The originals are in
+`website/blog/hinglish_backup.json`. **New posts made from captions must be
+put into English before `blog_sync.py`**, which never rewrites a post once it
+exists. Post 214's slug is still Hinglish (`khud-ko-sambhalna-...`) on purpose,
+so its link does not change.
 
 ## 8. Sharing
 
@@ -657,6 +740,11 @@ program it is an ordinary number. Settled — do not raise it again.
   predates the blog work and is not in any file here; most likely a plugin.
 - **Older posts still close with "free demo session"** while the template's
   call to action says free webinar.
+- **Email cannot be sent** until SMTP is set (§7e) - this blocks OTP login,
+  booking emails and "Forgot password".
+- **Hero stat "4+ Years Experience"** is still on the homepage; the owner had
+  the 4+ years and NLP badges removed from the About section (3 Nov 2026),
+  leaving *Certified Life Coach*. Ask before touching the stat.
 - **Role lines differ.** The site says *Life, Relationship & Mindset Coach*;
   the creatives' signature reads *Life and Mindset Coach*; the daily pipeline's
   `BRAND_TAGLINE` is *Life & Relationship Coach*. He has been told; do not
