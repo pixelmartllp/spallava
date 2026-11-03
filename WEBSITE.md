@@ -304,6 +304,31 @@ search snippets and AI answers lift.
 **A new post needs an entry in both JSON files**, then `blog_sync.py` and
 `seo_sync.py`.
 
+**Local and entity SEO (3 Nov 2026).** The owner's target phrase: *life,
+relationship and mindset coach, mindset mentor and entrepreneur based in
+Punjab*. Footer said Chandigarh, so the site says **Chandigarh, Punjab** and
+"coaching women online across India" - change both together if her city is
+different. What carries it:
+
+- `website/seo/sp-seo.php`, snippet **SP SEO** (push with `push_seo.py`):
+  Person (`/#shashi`) and ProfessionalService (`/#coaching`, areaServed
+  Punjab, Chandigarh, India) JSON-LD on every page, and a live **`/llms.txt`**
+  listing key pages and every published post for AI crawlers. The Person
+  schema that used to sit in the single-post template was removed so there
+  is one statement of who she is, not two that disagree.
+- Homepage (page 4) Slim SEO title *Life, Relationship & Mindset Coach in
+  Punjab | Shashi Pallava*; role line now ends "Mindset Mentor ·
+  Entrepreneur"; a location line under it; an About-section sentence linking
+  to the new page; footer "Chandigarh, Punjab, India".
+- **About Shashi Pallava** (page 363, `/about-shashi-pallava/`, from
+  `website/pages/about.html`): answer-first definition, what she helps with,
+  how she works, credentials, and four questions with FAQPage schema -
+  the kind of page AI answers quote. Linked from the homepage, both footers
+  and the author box.
+- Tagline "Life, Relationship & Mindset Coach in Punjab"; blog page and
+  category descriptions carry Punjab. Individual posts were deliberately not
+  stuffed with the place name.
+
 ## 7b. Search Console
 
 The owner installed **Site Kit by Google** on 09 Oct 2026: Search Console,

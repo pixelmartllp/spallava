@@ -34,6 +34,7 @@ from insta_sync import WP  # noqa: E402
 SEO = pathlib.Path(__file__).resolve().parent.parent / "blog" / "seo.json"
 SITE = "https://shashipallava.com"
 ROLE = "Life, Relationship & Mindset Coach"
+TAGLINE = "Life, Relationship & Mindset Coach in Punjab"
 BLOCK = re.compile(r"\n?<!-- sp-seo:start -->.*?<!-- sp-seo:end -->", re.S)
 JSON_H = {"Content-Type": "application/json"}
 
@@ -129,13 +130,13 @@ def main() -> int:
             print(f"  {slug}: done")
 
         wp.call("/wp-json/wp/v2/settings", method="POST", headers=JSON_H,
-                data=json.dumps({"description": ROLE, "posts_per_page": 12}).encode())
+                data=json.dumps({"description": TAGLINE, "posts_per_page": 12}).encode())
         wp.call("/wp-json/wp/v2/pages/5", method="POST", headers=JSON_H, data=json.dumps({
             "meta": {"slim_seo": {
-                "title": "Blog | Shashi Pallava - Life, Relationship & Mindset Coach",
+                "title": "Blog | Shashi Pallava - Life, Relationship & Mindset Coach, Punjab",
                 "description": "Short reads on boundaries, relationships, healing and mindset "
-                               "for women, by Shashi Pallava - Life, Relationship & Mindset "
-                               "Coach. Practical steps in English and Hinglish."}}}).encode())
+                               "for women, by Shashi Pallava - life, relationship and mindset "
+                               "coach based in Chandigarh, Punjab. Practical steps."}}}).encode())
         print("  tagline, posts per page and the /blog/ meta set")
     except urllib.error.HTTPError as exc:
         print("  FAILED:", exc.code, exc.read()[:400].decode("utf-8", "replace"))
