@@ -1,0 +1,539 @@
+<!-- wp:html -->
+<style>
+.sms{--bg:#0A0A0B;--card:#131315;--card2:#1A1A1D;--line:#2A2A2E;--fg:#FAFAFA;--dim:#C4C4CB;--muted:#A2A2AB;--gold:#FBBD23;--gold-hi:#FFD666;--gold-dk:#DA9C0B;--panel:#1C1810;background:var(--bg);color:var(--fg);font-family:"Archivo",-apple-system,"Segoe UI",Arial,sans-serif;border-radius:18px;overflow:hidden;margin:0 auto;max-width:1180px;line-height:1.55}
+.sms *{box-sizing:border-box}
+.sms [hidden]{display:none!important}
+.sms a{text-decoration:none;color:inherit}
+.sms button{font:inherit;cursor:pointer}
+.sms-tabs{display:flex;justify-content:center;gap:2px;background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px 6px 0;overflow-x:auto;scrollbar-width:none}
+.sms-tabs button{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:5px;background:none;border:0;border-bottom:3px solid transparent;padding:8px 14px 9px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sms-tabs button:hover{color:var(--gold)}
+.sms-tabs button.on{color:var(--gold);border-bottom-color:var(--gold)}
+.sms-tabs svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.page-id-405 .wp-block-post-title{display:none}
+.sms-hero{position:relative;text-align:center;padding:56px clamp(16px,5vw,56px) 40px;background:radial-gradient(120% 90% at 50% 0%,rgba(251,189,35,.16),rgba(251,189,35,0) 60%),var(--bg)}
+.sms-hero .eyebrow{margin-bottom:12px}
+.sms-hero h1{margin:0 0 12px;font-size:clamp(32px,5.4vw,52px);line-height:1.1;font-weight:800;letter-spacing:-.02em;color:#fff}
+.sms-hero h1 span{color:var(--gold)}
+.sms-hero .lede{max-width:560px;margin:0 auto 26px;font-size:16px;color:var(--dim)}
+.sms-hero .sms-row{justify-content:center;margin:0}
+.sms-hero .sms-stats{margin:0 0 22px}
+.sms-acct{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--gold);border-radius:10px;padding:11px 20px;font-size:14px;font-weight:700;letter-spacing:.02em;color:var(--gold)}
+.sms a.sms-acct{color:var(--gold)}
+.sms a.sms-acct:hover{background:var(--gold);color:#0A0A0B}
+.sms-acct svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sms-p{padding:40px clamp(16px,5vw,56px) 48px}
+.sms.js .sms-p{display:none}
+.sms.js .sms-p.on{display:block}
+.sms h2{margin:0 0 6px;font-size:clamp(26px,4vw,36px);line-height:1.2;color:#fff}
+.sms h2 span{color:var(--gold)}
+.sms .lede{margin:0 0 26px;color:var(--muted);font-size:15px}
+.sms .eyebrow{margin:0 0 6px;color:var(--gold);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.sms .center{text-align:center}
+.sms .center .lede{max-width:600px;margin-left:auto;margin-right:auto}
+.sms-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:11px 20px;font-weight:700;font-size:14px;border:1px solid var(--line);background:var(--card);color:#fff}
+.sms-btn:hover{border-color:var(--gold)}
+.sms-btn.gold{background:var(--gold);border-color:var(--gold);color:#0A0A0B}
+.sms-btn.gold:hover{background:var(--gold-hi)}
+.sms-btn.ghost{background:transparent;color:var(--gold);border-color:#4a3c18}
+.sms-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.sms-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:0 0 26px}
+.sms-stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 20px;text-align:center;min-width:130px}
+.sms-stat b{display:block;font-size:22px;color:var(--gold)}
+.sms-stat span{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.sms-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:1040px;margin:0 auto 40px}
+.sms-tile{display:flex;flex-direction:column;align-items:center;text-align:center;background:var(--card);border:1px solid #3a2f1c;border-radius:14px;padding:24px 14px;transition:transform .2s,border-color .2s;color:#fff;width:100%}
+.sms-tile:hover{transform:translateY(-3px);border-color:var(--gold)}
+.sms-ic{width:52px;height:52px;border-radius:50%;background:#2a2114;display:flex;align-items:center;justify-content:center;color:var(--gold);margin-bottom:14px}
+.sms-ic svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.sms-tile h3{margin:0 0 6px;font-size:17px;color:#fff}
+.sms-tile p{margin:0;color:var(--muted);font-size:13px}
+.sms-ch{max-width:760px;margin:0 auto}
+.sms-ch h3.t{display:flex;align-items:center;gap:10px;margin:0 0 4px;font-size:24px;color:#fff}
+.sms-ch h3.t svg{width:26px;height:26px;fill:none;stroke:var(--gold);stroke-width:1.9}
+.sms-chal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:18px 0 12px}
+.sms-chal b{font-size:17px;color:#fff}
+.sms-prog{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:12px;color:var(--muted)}
+.sms-prog i{display:block;flex:1;max-width:220px;height:6px;border-radius:9px;background:#26262a;overflow:hidden}
+.sms-prog i em{display:block;height:100%;width:0;background:var(--gold);border-radius:9px}
+.sms-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.sms-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid #4a3c18;color:var(--gold);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;background:transparent}
+.sms-m{display:flex;align-items:center;gap:14px;background:linear-gradient(180deg,var(--panel),#111113);border:1px solid #3a2f1c;border-radius:12px;padding:14px 16px;margin-bottom:10px;color:#fff;width:100%;text-align:left}
+.sms-m:hover{border-color:var(--gold)}
+.sms-m .ck{flex:0 0 34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#2a2114;color:var(--gold);font-size:15px}
+.sms-m .tx{flex:1}
+.sms-m .tx b{display:block;font-size:15px}
+.sms-m .tx small{color:var(--muted);font-size:12px}
+.sms-m.done .tx small{color:var(--gold)}
+.sms-m .go{color:var(--gold);font-size:18px}
+.sms-note{color:var(--muted);font-size:13px;text-align:center;margin:12px 0 0}
+.sms-feed{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.sms-post{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:border-color .2s}
+.sms-post:hover{border-color:var(--gold)}
+.sms-post .im{aspect-ratio:4/5;background:linear-gradient(135deg,#2a2114,#0f0f11);background-size:cover;background-position:center}
+.sms-post .bd{padding:14px 16px 18px}
+.sms-post h3{margin:0 0 6px;font-size:16px;color:#fff;line-height:1.35}
+.sms-post p{margin:0;color:var(--muted);font-size:13px}
+.sms-post .rd{display:inline-block;margin-top:10px;color:var(--gold);font-size:13px;font-weight:700}
+.sms-split{display:grid;grid-template-columns:1fr;gap:18px;max-width:980px;margin:0 auto}
+.sms-box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+.sms-box h3{margin:0 0 8px;font-size:20px;color:#fff}
+.sms-box p,.sms-box li{color:var(--dim);font-size:14px}
+.sms-box ul{margin:8px 0 16px;padding-left:18px}
+.sms-wdet{color:var(--dim);font-size:14px}
+.sms-wdet p{margin:0 0 8px}
+.sms-wdet strong{color:#fff}
+.sms-courses{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.sms-course{display:flex;flex-direction:column;background:#fff;color:#111;border-radius:14px;overflow:hidden;border:1px solid #e9e4d8}
+.sms-art{position:relative;height:150px;background:radial-gradient(circle at 75% 30%,rgba(251,189,35,.55),transparent 55%),radial-gradient(circle at 20% 80%,rgba(251,189,35,.25),transparent 50%),#0b0b0c;display:flex;align-items:flex-end;justify-content:center;padding:0 0 10px}
+.sms-art::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,214,102,.7) 1px,transparent 1.5px);background-size:22px 22px;opacity:.35}
+.sms-art span{position:relative;font-family:Impact,"Arial Narrow Bold",sans-serif;font-size:17px;letter-spacing:.04em;text-transform:uppercase;color:var(--gold-hi);text-shadow:0 2px 0 #6b4a00;padding:0 10px;text-align:center}
+.sms-art .em{position:absolute;top:22px;left:50%;transform:translateX(-50%);font-size:44px;text-shadow:none}
+.sms-course .bd{flex:1;display:flex;flex-direction:column;padding:14px 16px 16px}
+.sms-course .tag{align-self:flex-end;background:var(--gold);color:#111;font-size:10px;font-weight:800;border-radius:999px;padding:2px 8px;margin-top:-4px}
+.sms-course h3{margin:6px 0 2px;font-size:17px;line-height:1.3}
+.sms-course .by{font-size:13px;color:#555;margin:0}
+.sms-course .meta{font-size:12px;color:#777;margin:2px 0 12px}
+.sms-course .sms-btn{margin-top:auto;background:#0A0A0B;border-color:#0A0A0B;color:#fff;font-size:13px;padding:10px}
+.sms-course .sms-btn:hover{background:var(--gold);border-color:var(--gold);color:#111}
+.sms-wins{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;max-width:880px;margin:0 auto 26px}
+.sms-win{background:linear-gradient(180deg,var(--panel),#111113);border:1px solid #3a2f1c;border-radius:14px;padding:20px;text-align:center}
+.sms-win .em{font-size:30px}
+.sms-win b{display:block;font-size:26px;color:var(--gold);margin:4px 0}
+.sms-win span{color:var(--muted);font-size:13px}
+.sms-chat{max-width:860px;margin:0 auto;background:#fff;color:#222;border-radius:16px;overflow:hidden;border:10px solid #151517}
+.sms-warn{display:flex;gap:10px;padding:14px 18px;border-bottom:1px solid #eee;font-size:13px;color:#444;text-align:center;justify-content:center}
+.sms-who{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;border-bottom:1px solid #f1f1f1;font-size:19px;font-weight:600}
+.sms-who img{width:34px;height:34px;border-radius:50%;background:#0A0A0B;object-fit:contain;padding:3px}
+.sms-who .v{width:18px;height:18px;border-radius:50%;background:#1d9bf0;color:#fff;font-size:11px;display:inline-flex;align-items:center;justify-content:center}
+.sms-log{padding:18px;min-height:200px}
+.sms-bub{display:inline-block;max-width:80%;background:#ececec;border-radius:16px;padding:10px 14px;font-size:15px;margin:0 0 10px}
+.sms-quick{display:flex;flex-wrap:wrap;gap:8px;padding:0 18px 12px}
+.sms-quick button{border:1px solid #e0d6bd;background:#fff8e6;color:#6b4a00;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600}
+.sms-quick button:hover{background:var(--gold);border-color:var(--gold);color:#111}
+.sms-in{margin:0 18px 8px;display:flex;align-items:center;border:1px solid #e3e3e3;border-radius:999px;padding:12px 20px;color:#999;font-size:15px;box-shadow:0 4px 14px rgba(0,0,0,.08);cursor:pointer;background:#fff;width:calc(100% - 36px);text-align:left}
+.sms-fine{font-size:11px;color:#888;text-align:center;padding:0 18px 14px}
+.sms-fine a{color:#666;text-decoration:underline}
+.sms-tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;max-width:980px;margin:0 auto 22px}
+.sms-tier{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 22px;text-align:center}
+.sms-tier.feat{border-color:var(--gold);box-shadow:0 0 60px -14px rgba(251,189,35,.45)}
+.sms-tier .k{color:var(--gold);font-size:13px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.sms-tier .pr{font-size:30px;font-weight:800;color:#fff;margin:6px 0 16px}
+.sms-tier .sms-row{flex-direction:column}
+.sms-foot{border-top:1px solid var(--line);text-align:center;padding:34px 20px;color:var(--muted);font-size:13px}
+.sms-foot img{width:64px;height:64px;object-fit:contain;display:block;margin:0 auto 8px}
+@media(min-width:820px){.sms-split{grid-template-columns:1fr 1fr}}
+@media(min-width:1000px){.sms-tiles{grid-template-columns:repeat(6,1fr)}}
+@media(max-width:600px){.sms-tiles{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.sms-hero{padding-top:40px}.sms-tabs{justify-content:flex-start}.sms-tile{padding:18px 10px}.sms-tabs button{padding:7px 10px 8px;font-size:10px}.sms-p{padding-top:30px}}
+</style>
+
+<div class="sms" id="sms">
+  <header class="sms-hero">
+    <p class="eyebrow notranslate">Shashi Pallava · Revive, Rise &amp; Relive</p>
+    <h1>Welcome<span class="sms-name"></span> 👋</h1>
+    <p class="lede sms-sub">Your own space for missions, sessions, programs and support, all in one place.</p>
+    <div class="sms-stats" hidden>
+      <div class="sms-stat"><b class="sms-pts">0</b><span>Points</span></div>
+      <div class="sms-stat"><b class="sms-mdone">0</b><span>Missions done</span></div>
+      <div class="sms-stat"><b class="sms-plan">Free</b><span>Plan</span></div>
+    </div>
+    <div class="sms-row">
+      <a class="sms-btn gold sms-guest" href="#account">Log in / Create free account</a>
+      <a class="sms-acct" hidden href="#account"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg><span>Log in</span></a>
+    </div>
+  </header>
+  <nav class="sms-tabs" aria-label="Member Space">
+    <button type="button" data-tab="pulse" class="on"><svg viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>Pulse</button>
+    <button type="button" data-tab="brain"><svg viewBox="0 0 24 24"><path d="M9 3a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a2 2 0 0 0-3-2zM15 3a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1"/></svg>Brain Game</button>
+    <button type="button" data-tab="membership"><svg viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg>Membership</button>
+    <button type="button" data-tab="feed"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9" r="2.4"/><path d="M3 19c.8-3.2 3.1-5 6-5s5.2 1.8 6 5M15 14.6c2.6-.3 4.6 1.2 5.4 4.4"/></svg>Feed</button>
+    <button type="button" data-tab="sessions"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg>Sessions</button>
+    <button type="button" data-tab="programs"><svg viewBox="0 0 24 24"><path d="M3 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H3zM21 5h-7a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h7z"/></svg>Programs</button>
+    <button type="button" data-tab="wins"><svg viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8"/></svg>Wins</button>
+    <button type="button" data-tab="ask"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Ask Shashi</button>
+  </nav>
+
+  <!-- PULSE -->
+  <section class="sms-p on" data-panel="pulse">
+    <div class="sms-tiles">
+      <button type="button" class="sms-tile" data-go="challenges">
+        <span class="sms-ic"><svg viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8"/></svg></span>
+        <h3>Challenges</h3><p>This month&rsquo;s missions</p>
+      </button>
+      <a class="sms-tile" href="#play">
+        <span class="sms-ic"><svg viewBox="0 0 24 24"><path d="M9 3a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a2 2 0 0 0-3-2zM15 3a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1"/></svg></span>
+        <h3>Brain Game</h3><p>Play &amp; earn points</p>
+      </a>
+      <button type="button" class="sms-tile" data-to="membership">
+        <span class="sms-ic"><svg viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg></span>
+        <h3>Membership</h3><p>Silver, Gold &amp; Platinum</p>
+      </button>
+      <a class="sms-tile" href="#dashboard">
+        <span class="sms-ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></span>
+        <h3>My Dashboard</h3><p>Progress &amp; points</p>
+      </a>
+      <a class="sms-tile" href="#wallet">
+        <span class="sms-ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2.5"/><path d="M3 10h18M16 15h2"/></svg></span>
+        <h3>Wallet</h3><p>1 point = &#8377;1</p>
+      </a>
+      <a class="sms-tile" href="https://wa.me/919876732099?text=Hi%20Shashi%2C%20I%20need%20support%20with%20the%20website" target="_blank" rel="noopener">
+        <span class="sms-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M5.6 5.6l3.6 3.6M14.8 14.8l3.6 3.6M18.4 5.6l-3.6 3.6M9.2 14.8l-3.6 3.6"/></svg></span>
+        <h3>Support</h3><p>Technical query | Feedback</p>
+      </a>
+    </div>
+
+    <div class="sms-ch" id="sms-challenges">
+      <h3 class="t"><svg viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8"/></svg>Challenges</h3>
+      <p class="lede" style="margin:0">One small mission a week. Small steps, real change.</p>
+      <div class="sms-chal">
+        <b class="sms-theme">This month&rsquo;s missions</b>
+        <div class="sms-prog"><i><em class="sms-bar-fill"></em></i><span class="sms-count"></span></div>
+      </div>
+      <div class="sms-chips">
+        <a class="sms-chip" href="https://chat.whatsapp.com/C2tCs8KDwiYCEmvj9CLXNy" target="_blank" rel="noopener">&#8599; Join the Community</a>
+        <a class="sms-chip" href="#dashboard">&#9733; My points</a>
+      </div>
+      <div class="sms-mlist">
+        <a class="sms-m" href="#missions"><span class="ck">&#9733;</span><span class="tx"><b>Open this month&rsquo;s missions</b><small>Missions are open to Revive, Rise &amp; Relive, Silver, Gold and Platinum members</small></span><span class="go">&rsaquo;</span></a>
+      </div>
+      <p class="sms-note">Finish each mission, share your learning in the community, and mark it complete to earn your points.</p>
+    </div>
+  </section>
+
+  <!-- BRAIN GAME -->
+  <section class="sms-p" data-panel="brain">
+    <div class="center">
+      <p class="eyebrow">Brain Game</p>
+      <h2>Play &amp; <span>grow</span></h2>
+      <p class="lede">Solve puzzles, win points. With a free account every right answer earns points - and 1 point = &#8377;1 off a membership or a 1:1 session.</p>
+    </div>
+    <div class="sms-split">
+      <div class="sms-box">
+        <p class="eyebrow">🧠 Brain Game</p>
+        <h3>Grade 1 to Grade 10</h3>
+        <p>Pick your grade and start answering. Every right answer earns points.</p>
+        <div class="sms-row" style="justify-content:flex-start;margin-top:14px"><a class="sms-btn gold" href="#play">Start playing</a></div>
+      </div>
+      <div class="sms-box">
+        <p class="eyebrow">🌸 Mindset Challenge</p>
+        <h3>5 levels</h3>
+        <p>Questions about how you think and react. Open it from the game and work your way up, level by level.</p>
+        <div class="sms-row" style="justify-content:flex-start;margin-top:14px"><a class="sms-btn gold" href="#play">Start the challenge</a></div>
+      </div>
+    </div>
+    <div class="sms-row" style="margin-top:26px">
+      <a class="sms-btn gold sms-guest" href="#account">Log in / Create free account</a>
+      <a class="sms-btn" href="#wallet">My points</a>
+      <a class="sms-btn" href="#dashboard">My Dashboard</a>
+    </div>
+  </section>
+
+  <!-- FEED -->
+  <section class="sms-p" data-panel="feed">
+    <p class="eyebrow">Feed</p>
+    <h2>Thoughts to sit with</h2>
+    <p class="lede">Short reads on boundaries, self-worth and relationships - two minutes each.</p>
+    <div class="sms-feed">
+      <a class="sms-post" href="/healing-is-not-becoming-someone-new/"><span class="im"></span><span class="bd"><h3>Healing is not becoming someone new</h3><span class="rd">Read &rarr;</span></span></a>
+      <a class="sms-post" href="/protect-the-first-hour/"><span class="im"></span><span class="bd"><h3>Protect the first hour</h3><span class="rd">Read &rarr;</span></span></a>
+      <a class="sms-post" href="/you-are-not-too-much/"><span class="im"></span><span class="bd"><h3>You are not too much</h3><span class="rd">Read &rarr;</span></span></a>
+      <a class="sms-post" href="/like-a-butterfly-leave-the-cocoon-behind/"><span class="im"></span><span class="bd"><h3>Like a butterfly, you have to leave the cocoon behind</h3><span class="rd">Read &rarr;</span></span></a>
+    </div>
+    <div class="sms-row" style="margin-top:26px">
+      <a class="sms-btn gold" href="/blog/">Read all posts</a>
+      <a class="sms-btn" href="https://www.instagram.com/shashipallava/" target="_blank" rel="noopener">Follow on Instagram</a>
+      <a class="sms-btn" href="https://www.youtube.com/@shashipallava" target="_blank" rel="noopener">YouTube</a>
+    </div>
+  </section>
+
+  <!-- SESSIONS -->
+  <section class="sms-p" data-panel="sessions">
+    <div class="center">
+      <p class="eyebrow">Sessions</p>
+      <h2>Live with <span>Shashi</span></h2>
+      <p class="lede">100% online, in English, Hindi and Hinglish - join from anywhere in India.</p>
+    </div>
+    <div class="sms-split">
+      <div class="sms-box">
+        <p class="eyebrow">Free</p>
+        <h3>Live Webinar</h3>
+        <div class="sms-wdet"><p>Open to everyone, and the easiest way to see whether this way of working fits you. Ask Shashi your questions directly.</p></div>
+        <div class="sms-row" style="justify-content:flex-start;margin-top:14px"><a class="sms-btn gold" href="/#register">Register free</a></div>
+      </div>
+      <div class="sms-box">
+        <p class="eyebrow">1:1</p>
+        <h3>Personal session with Shashi</h3>
+        <p>A private coaching conversation about what you are carrying right now - mindset, relationships, emotions or confidence. Included once in Revive, Rise &amp; Relive; points can be used towards it.</p>
+        <div class="sms-row" style="justify-content:flex-start;margin-top:14px">
+          <button type="button" class="sms-btn gold" data-ask="1">Book in the assistant</button>
+          <a class="sms-btn" href="https://wa.me/919876732099?text=Hi%20Shashi%2C%20I%20would%20like%20a%201%3A1%20session" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAMS -->
+  <section class="sms-p" data-panel="programs">
+    <p class="eyebrow">Programs</p>
+    <h2>Grow with Shashi</h2>
+    <p class="lede">Pick where you want to begin. Every step is online.</p>
+    <div class="sms-courses">
+      <div class="sms-course"><div class="sms-art"><span class="em">🎤</span><span>Live Webinar</span></div><div class="bd"><span class="tag">FREE</span><h3>Live Webinar with Shashi</h3><p class="by">Shashi Pallava</p><p class="meta">Live · English &amp; Hinglish · No obligation</p><a class="sms-btn" href="/#register">Register free</a></div></div>
+      <div class="sms-course"><div class="sms-art"><span class="em">🦋</span><span>Revive, Rise &amp; Relive</span></div><div class="bd"><span class="tag">&#8377;999</span><h3>Revive, Rise &amp; Relive</h3><p class="by">Shashi Pallava</p><p class="meta">6 months · WhatsApp community · live webinars · missions · one 1:1 session</p><a class="sms-btn" href="https://wa.me/919876732099?text=Hi%20Shashi%2C%20I%20want%20to%20join%20Revive%2C%20Rise%20%26%20Relive" target="_blank" rel="noopener">Join on WhatsApp</a></div></div>
+      <div class="sms-course"><div class="sms-art"><span class="em">🎯</span><span>Monthly Missions</span></div><div class="bd"><span class="tag">MEMBERS</span><h3>Monthly Missions</h3><p class="by">Shashi Pallava</p><p class="meta">One small mission every week · earn points</p><a class="sms-btn" href="#missions">Open missions</a></div></div>
+      <div class="sms-course"><div class="sms-art"><span class="em">🧠</span><span>Brain Game</span></div><div class="bd"><span class="tag">PLAY</span><h3>Brain Game</h3><p class="by">Shashi Pallava</p><p class="meta">Grade 1 to Grade 10 · every right answer earns points</p><a class="sms-btn" href="#play">Start playing</a></div></div>
+      <div class="sms-course"><div class="sms-art"><span class="em">🌸</span><span>Mindset Challenge</span></div><div class="bd"><span class="tag">PLAY</span><h3>Mindset Challenge</h3><p class="by">Shashi Pallava</p><p class="meta">5 levels · questions about how you think and react</p><a class="sms-btn" href="#play">Start the challenge</a></div></div>
+      <div class="sms-course"><div class="sms-art"><span class="em">👑</span><span>Memberships</span></div><div class="bd"><span class="tag">GO DEEPER</span><h3>Silver, Gold &amp; Platinum</h3><p class="by">Shashi Pallava</p><p class="meta">For going deeper with Shashi</p><a class="sms-btn" href="/membership/">See memberships</a></div></div>
+    </div>
+  </section>
+
+  <!-- WINS -->
+  <section class="sms-p" data-panel="wins">
+    <div class="center">
+      <p class="eyebrow">Wins</p>
+      <h2>Your <span>wins</span></h2>
+      <p class="lede">Every mission you finish and every right answer is a small promise kept to yourself. Celebrate it.</p>
+    </div>
+    <div class="sms-wins">
+      <div class="sms-win"><div class="em">&#9733;</div><b class="sms-pts">0</b><span>Points earned</span></div>
+      <div class="sms-win"><div class="em">🎯</div><b class="sms-mdone">0</b><span>Missions completed</span></div>
+      <div class="sms-win"><div class="em">🧠</div><b class="sms-solved">0</b><span>Brain Game answers right</span></div>
+    </div>
+    <div class="sms-row">
+      <a class="sms-btn gold sms-guest" href="#account">Log in to see your wins</a>
+      <a class="sms-btn" href="https://wa.me/919876732099?text=Hi%20Shashi%2C%20I%20want%20to%20share%20a%20win" target="_blank" rel="noopener">Share your win with Shashi</a>
+    </div>
+  </section>
+
+  <!-- ASK SHASHI -->
+  <section class="sms-p" data-panel="ask">
+    <div class="sms-chat">
+      <div class="sms-warn">&#9888;&#65039;&nbsp;Hi, welcome to Shashi&rsquo;s assistant! It answers from Shashi&rsquo;s own notes. It is coaching, not therapy, and can occasionally get things wrong - for anything personal, talk to Shashi directly. If you are in crisis in India, call Tele-MANAS on 14416, or 112 in an emergency.</div>
+      <div class="sms-who"><img src="https://shashipallava.com/wp-content/uploads/2026/10/sp-logo-rrr-dark.png" alt="">Shashi Pallava <span class="v">&#10003;</span></div>
+      <div class="sms-log"><span class="sms-bub">Hi! What is on your mind today? Ask me about emotions, relationships, boundaries, the programs or the free webinar - or book a 1:1 session with Shashi.</span></div>
+      <div class="sms-quick">
+        <button type="button" data-ask="1">How do I manage anger?</button>
+        <button type="button" data-ask="1">Programs &amp; fees</button>
+        <button type="button" data-ask="1">Free webinar</button>
+        <button type="button" data-ask="1">Book a 1:1 session</button>
+      </div>
+      <button type="button" class="sms-in" data-ask="1">Type your question&hellip;</button>
+      <p class="sms-fine">By using this assistant you agree to the <a href="/policy/">Privacy &amp; Points Policy</a>.</p>
+    </div>
+    <p class="sms-note">Assistant not opening? <a href="https://wa.me/919876732099" target="_blank" rel="noopener" style="color:var(--gold)">Message Shashi on WhatsApp</a>.</p>
+  </section>
+
+  <!-- MEMBERSHIP -->
+  <section class="sms-p" data-panel="membership">
+    <div class="center">
+      <p class="eyebrow">Membership</p>
+      <h2>Go <span>deeper</span> with Shashi</h2>
+      <p class="lede">Choose the membership that fits where you are right now. Use your points: 1 point = &#8377;1 off.</p>
+    </div>
+    <div class="sms-tiers">
+      <div class="sms-tier"><p class="k">Silver</p><p class="pr">&#8377;9,999</p><div class="sms-row"><a class="sms-btn gold" href="https://wa.me/919876732099?text=Hi%20Shashi%2C%20I%27m%20interested%20in%20the%20Silver%20membership." target="_blank" rel="noopener">Enquire on WhatsApp</a><a class="sms-btn ghost" href="#wallet">Use my points</a></div></div>
+      <div class="sms-tier feat"><p class="k">Gold</p><p class="pr">&#8377;49,999</p><div class="sms-row"><a class="sms-btn gold" href="https://wa.me/919876732099?text=Hi%20Shashi%2C%20I%27m%20interested%20in%20the%20Gold%20membership." target="_blank" rel="noopener">Enquire on WhatsApp</a><a class="sms-btn ghost" href="#wallet">Use my points</a></div></div>
+      <div class="sms-tier"><p class="k">Platinum</p><p class="pr">&#8377;4,99,999</p><div class="sms-row"><a class="sms-btn gold" href="https://wa.me/919876732099?text=Hi%20Shashi%2C%20I%27m%20interested%20in%20the%20Platinum%20membership." target="_blank" rel="noopener">Enquire on WhatsApp</a><a class="sms-btn ghost" href="#wallet">Use my points</a></div></div>
+    </div>
+    <div class="sms-split">
+      <div class="sms-box">
+        <h3>Use your points</h3>
+        <p>1 point = &#8377;1 off any membership or a 1:1 session. Earn points in the Brain Game, the Mindset Challenge and the monthly missions.</p>
+        <div class="sms-row" style="justify-content:flex-start;margin-top:14px"><button type="button" class="sms-btn" data-to="brain">Play the Brain Game</button><a class="sms-btn" href="#wallet">My points</a></div>
+      </div>
+      <div class="sms-box">
+        <h3>How to join</h3>
+        <p>Message Shashi on WhatsApp with the membership you want. She will share the details and payment personally, and apply any points you redeem.</p>
+        <div class="sms-row" style="justify-content:flex-start;margin-top:14px"><a class="sms-btn" href="/membership/">Full membership details</a></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* Member Space. Written without ampersands, pipes or angle brackets, like the
+   home page script: WordPress escapes those inside post content. */
+(function(){
+  var root = document.getElementById('sms');
+  if (!root) { return; }
+  root.classList.add('js');
+  var tabs = root.querySelectorAll('.sms-tabs button');
+  var panels = root.querySelectorAll('.sms-p');
+  function show(name){
+    if (name === 'levelup') { name = 'membership'; }
+    var found = false;
+    panels.forEach(function(p){
+      var on = p.getAttribute('data-panel') === name;
+      if (on) { found = true; }
+      p.classList.toggle('on', on);
+    });
+    if (!found) { return show('pulse'); }
+    tabs.forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-tab') === name); });
+    history.replaceState(null, '', location.pathname + '?tab=' + name);
+  }
+  tabs.forEach(function(b){
+    b.addEventListener('click', function(){ show(b.getAttribute('data-tab')); });
+  });
+  var start = new URLSearchParams(location.search).get('tab');
+  if (start) { show(start); }
+
+  root.querySelectorAll('[data-to]').forEach(function(b){
+    b.addEventListener('click', function(){
+      show(b.getAttribute('data-to'));
+      root.scrollIntoView({behavior: 'smooth', block: 'start'});
+    });
+  });
+
+  root.querySelectorAll('[data-go=challenges]').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.getElementById('sms-challenges').scrollIntoView({behavior: 'smooth', block: 'start'});
+    });
+  });
+
+  /* the assistant lives in the footer of every page */
+  root.querySelectorAll('[data-ask]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var fab = document.querySelector('#spa .spa-fab');
+      if (fab) { fab.click(); return; }
+      window.open('https://wa.me/919876732099', '_blank');
+    });
+  });
+
+  function setAll(sel, text){
+    root.querySelectorAll(sel).forEach(function(n){ n.textContent = text; });
+  }
+  function el(tag, cls, text){
+    var n = document.createElement(tag);
+    if (cls) { n.className = cls; }
+    if (text) { n.textContent = text; }
+    return n;
+  }
+  var API = window.SPG_API ? window.SPG_API : '/wp-json/sp/v1/';
+  var nonce = '';
+  function api(path){
+    var opt = {credentials: 'same-origin', headers: {}};
+    if (nonce) { opt.headers['X-WP-Nonce'] = nonce; }
+    return fetch(API + path, opt).then(function(r){ return r.json(); });
+  }
+  function getNonce(){
+    if (!document.body.classList.contains('logged-in')) { return Promise.resolve(''); }
+    return fetch('/wp-admin/admin-ajax.php?action=rest-nonce', {credentials: 'same-origin'}).then(function(r){
+      return r.text();
+    }).then(function(t){
+      t = t.trim();
+      if (t.length === 10) { nonce = t; }
+      return nonce;
+    }).catch(function(){ return ''; });
+  }
+
+  function drawMe(me){
+    if (!me.logged_in) { return; }
+    var first = String(me.name ? me.name : '').split(' ')[0];
+    if (first) { setAll('.sms-name', ', ' + first); }
+    root.querySelector('.sms-sub').textContent = 'What would you like to work on today? Pick a place to start.';
+    root.querySelectorAll('.sms-guest').forEach(function(n){ n.hidden = true; });
+    root.querySelector('.sms-acct span').textContent = 'My Account';
+    root.querySelector('.sms-acct').hidden = false;
+    root.querySelector('.sms-stats').hidden = false;
+    setAll('.sms-pts', String(me.points ? me.points : 0));
+    setAll('.sms-mdone', String(me.missions_done ? me.missions_done : 0));
+    setAll('.sms-plan', me.plan ? me.plan : 'Free');
+    var solved = 0;
+    if (me.progress) {
+      Object.keys(me.progress.correct).forEach(function(k){ solved = solved + me.progress.correct[k]; });
+    }
+    if (me.progress_mind) {
+      Object.keys(me.progress_mind.correct).forEach(function(k){ solved = solved + me.progress_mind.correct[k]; });
+    }
+    setAll('.sms-solved', String(solved));
+  }
+
+  function drawMissions(m){
+    if (!m.weeks) { return; }
+    var total = m.weeks.length;
+    var done = m.weeks.filter(function(w){ return w.done; }).length;
+    root.querySelector('.sms-theme').textContent = (m.theme ? m.theme : 'Missions') + (m.month ? ' · ' + m.month : '');
+    root.querySelector('.sms-count').textContent = total ? done + ' / ' + total : 'Coming soon';
+    root.querySelector('.sms-bar-fill').style.width = (total ? Math.round(done * 100 / total) : 0) + '%';
+    if (!total) { return; }
+    var list = root.querySelector('.sms-mlist');
+    list.textContent = '';
+    m.weeks.forEach(function(w){
+      var row = el('a', 'sms-m');
+      row.href = '#missions';
+      var state = 'Opens on day ' + w.opens + ' of the month';
+      if (w.open) { state = 'Open now'; }
+      if (w.open) { if (!m.member) { state = 'Open now · members only'; } }
+      if (w.done) { state = 'Completed'; row.classList.add('done'); }
+      row.appendChild(el('span', 'ck', w.done ? '✓' : (w.open ? '★' : '○')));
+      var tx = el('span', 'tx');
+      tx.appendChild(el('b', '', w.label + ' · Week ' + w.week));
+      tx.appendChild(el('small', '', state + ' · +' + w.points + ' pts'));
+      row.appendChild(tx);
+      row.appendChild(el('span', 'go', '›'));
+      list.appendChild(row);
+    });
+  }
+
+  function drawPosts(posts){
+    if (!posts) { return; }
+    if (!posts.length) { return; }
+    var box = root.querySelector('.sms-feed');
+    box.textContent = '';
+    posts.slice(0, 6).forEach(function(p){
+      var a = el('a', 'sms-post');
+      a.href = p.link;
+      var im = el('span', 'im');
+      var media = p._embedded ? p._embedded['wp:featuredmedia'] : null;
+      if (media) { if (media[0]) { if (media[0].source_url) { im.style.backgroundImage = 'url(' + media[0].source_url + ')'; } } }
+      a.appendChild(im);
+      var bd = el('span', 'bd');
+      var tmp = document.createElement('div');
+      tmp.innerHTML = p.title.rendered;
+      bd.appendChild(el('h3', '', tmp.textContent));
+      tmp.innerHTML = p.excerpt ? p.excerpt.rendered : '';
+      var ex = tmp.textContent.trim();
+      if (ex) { bd.appendChild(el('p', '', ex.split(' ').slice(0, 22).join(' ') + '…')); }
+      bd.appendChild(el('span', 'rd', 'Read →'));
+      a.appendChild(bd);
+      box.appendChild(a);
+    });
+  }
+
+  /* webinar-details holds lines like "Date: Sunday, 19 October 2026" -
+     the same page the home page reads. A date already gone is not shown. */
+  function drawWebinar(list){
+    if (!list) { return; }
+    if (!list.length) { return; }
+    var d = document.createElement('div');
+    d.innerHTML = list[0].content.rendered;
+    var f = {};
+    d.querySelectorAll('p').forEach(function(p){
+      var t = p.textContent.trim();
+      var i = t.indexOf(': ');
+      if (i === -1) { return; }
+      f[t.slice(0, i)] = t.slice(i + 2).trim();
+    });
+    if (!f.Title) { return; }
+    if (f.Date) {
+      var when = Date.parse(f.Date.replace(/^[A-Za-z]+, /, '') + ' 23:59');
+      if (when) { if (Math.max(when, Date.now()) === Date.now()) { return; } }
+    }
+    var box = root.querySelector('.sms-wdet');
+    box.appendChild(el('p', '', '')).appendChild(el('strong', '', 'Next: ' + f.Title));
+    ['Date', 'Time', 'Duration', 'Where'].forEach(function(k){
+      if (f[k]) { box.appendChild(el('p', '', k + ': ' + f[k])); }
+    });
+  }
+
+  getNonce().then(function(){
+    api('me').then(drawMe).catch(function(){});
+    api('missions').then(drawMissions).catch(function(){});
+  });
+  fetch('/wp-json/wp/v2/posts?_embed').then(function(r){ return r.json(); }).then(drawPosts).catch(function(){});
+  fetch('/wp-json/wp/v2/pages?slug=webinar-details').then(function(r){ return r.json(); }).then(drawWebinar).catch(function(){});
+})();
+</script>
+<!-- /wp:html -->
